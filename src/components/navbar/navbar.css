@@ -1,0 +1,6 @@
+.section-user, .section-search{
+  display: flex;
+  justify-content: end;
+  align-items: center;
+}   
+
