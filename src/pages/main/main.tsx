@@ -8,7 +8,7 @@ export const Main = () => {
   <div className='mainPage'>
     <NavBarComponent></NavBarComponent>
     <div className='content'>
-      <SideBarComponent></SideBarComponent>
+      {/* <SideBarComponent></SideBarComponent> */}
       <Outlet />
     </div>
   </div>

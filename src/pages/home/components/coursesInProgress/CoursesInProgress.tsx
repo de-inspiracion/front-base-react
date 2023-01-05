@@ -12,6 +12,7 @@ import "./coursesInProgress.css";
 import { getListInProgress } from "../../services/home.service";
 import { useSelector, useDispatch } from 'react-redux'
 import { newDataUser } from '../../../../store/user/userData'
+import CardSlice from "../../../../components/cardSlice/cardSlice";
 
 const { Title } = Typography;
 const { Meta } = Card;
@@ -36,48 +37,28 @@ const CoursesInProgress: React.FC =  () => {
     dispatch(newDataUser('alejandro'))
   }
 return (
-  
-  <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-
+  <>
+  {/* <div className="titleV">
+    <p>Cursos que aun no terminas</p>
+  </div> */}
+  <Row className="" gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} style={{ overflow: 'hidden'}}>
+  <CardSlice title='en progreso'></CardSlice>
+  <CardSlice title='Recomendado'></CardSlice>
+  <CardSlice title='educacion'></CardSlice>
+  <CardSlice title='rura 1'></CardSlice>
 {/* <div style="position: relative; padding-top: 56.25%;"><iframe src="https://iframe.mediadelivery.net/embed/80619/2d4d89ed-f1f8-4a7d-8e61-1b04f58a0a33?autoplay=false&preload=false" loading="lazy" style="border: none; position: absolute; top: 0; height: 100%; width: 100%;" allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" allowfullscreen="true"></iframe></div>
     <div style={{ color: 'black' }}>
       {count.name}
     </div> */}
-
-    {/* <div>
-      <button onClick={() => changeValue()}>Cambiar nombre</button>
-    </div> */}
-      <Divider>Cursos que aun no terminas</Divider>
-      {inProfressList.map((course) => {
+      {/* {inProfressList.map((course) => {
         return (
           <Col className="gutter-row" xs={12} sm={8} md={12} lg={4} xl={4} key={course.key}>
-            <Card
-              bodyStyle={{ fontSize: 10 }}
-              style={{  fontSize: "10px" }}
-              cover={
-                <img
-                  alt="example"
-                  src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-                />
-              }
-              actions={[
-                // <SettingOutlined key="PlayCircleOutlined" />,
-                <PlayCircleOutlined key="PlayCircleOutlined" />,
-                // <EditOutlined key="edit" />,
-                // <EllipsisOutlined key="ellipsis" />,
-              ]}
-            >
-              <Meta
-                className="infoCardCoursesInProgress"
-                // avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
-                title={course.title}
-              />
-            </Card>
+            <CardSlice></CardSlice>
           </Col>
         );
-      })}
+      })} */}
     </Row>
-
+      </>
 );
 }
 export default CoursesInProgress;

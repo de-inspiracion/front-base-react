@@ -59,31 +59,33 @@ const NavBarComponent: React.FC = () => {
 
   return (
     <Layout>
-      <Header style={{ position: "sticky", top: 0, zIndex: 1, width: "100%", padding:0 }}>
+      <Header style={{ position: "sticky", top: 0, zIndex: 1, width: "100%", padding: 5, background:'#141414' }}>
         <Row>
           <Col xs={6} sm={6} md={6} lg={6} xl={4}>
             <div
               style={{
-                float: "left",
-                width: 120,
-                height: 31,
-                margin: "16px 24px 16px 0",
-                background: "rgba(255, 255, 255, 0.2)",
+                color: '#fff',
+                fontWeight: '900',
+                paddingLeft: '15px',
+                fontSize: '15px',
               }}
-            />
+            > 
+              VIRGO
+            </div>
           </Col>
           <Col xs={12} sm={8} md={12} lg={12} xl={14} className='section-search'>
-          <Input placeholder="Busca algun curso" allowClear onChange={onChange} />
-          <Button style={{ width: 80 }} onClick={() => onSearch('')}>
+          {/* <Input placeholder="Busca algun curso" allowClear onChange={onChange} /> */}
+          <Input.Search allowClear style={{ width: '100%' }} defaultValue="" />
+          {/* <Button style={{ width: 80 }} onClick={() => onSearch('')}>
               Buscar
-          </Button>
+          </Button> */}
           </Col>
           <Col xs={4} sm={4} md={4} lg={6} xl={4} className='section-user'>
           <Dropdown menu={menuProps}>
             <Avatar
               size="small"
               icon={<UserOutlined />}
-              style={{ backgroundColor: "#87d068" }}
+              style={{ backgroundColor: "#87d068", marginRight:'10px' }}
             />
 
           </Dropdown>

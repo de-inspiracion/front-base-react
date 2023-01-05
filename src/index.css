@@ -54,8 +54,8 @@ body {
   font-weight: 400;
   width: 100%;
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #fff;
+  color: rgba(65, 64, 64, 0.87);
+  background-color: black;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;

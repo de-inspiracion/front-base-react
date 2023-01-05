@@ -2,5 +2,23 @@
   display: flex;
   justify-content: end;
   align-items: center;
+  background: #141414;
 }   
 
+.ant-input-group-addon button{
+  background-color: #141414;
+}
+
+
+.ant-input-group-addon button svg{
+  color: #fff;
+}
+
+.ant-input-affix-wrapper {
+  background-color: #141414;
+}
+
+.ant-input-affix-wrapper input{
+  background-color: #141414;
+  color: #fff;
+}
