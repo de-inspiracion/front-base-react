@@ -5,3 +5,7 @@
 .content {
   display: flex;
 }
+
+.ant-modal-content {
+  background-color: black !important;
+}
