@@ -1,7 +1,6 @@
 import { useState } from 'react'
-import { ConfigProvider,Button, Modal } from 'antd'
-import reactSvg from '../../assets/react.svg'
 import { CloseOutlined } from '@ant-design/icons'
+import { Rate, Modal, Button } from 'antd';
 
 
 const CardV: any  = ({itemData, key,index}: any) => {
@@ -27,7 +26,71 @@ const CardV: any  = ({itemData, key,index}: any) => {
 const ModalCard = ( {index, Abierto, Cerrar}:any  ) => {
   const [open,setOpen] = useState(Abierto)
   const [confirmLoading, setConfirmLoading] = useState(false);
+  const [rateValue, setRateValue] = useState(0)
+  const [showVideos,setShowVideos] = useState(false)
+  const [showPath,setShowPath] = useState(false)
+  const cuourse_tags = ['tag1','tag2','tag3','tag4','tag5','tag6','tag7']
+  const course_videos = [
+    {
+      'name':'Nombre Video 1',
+      'decription':'Descripción del video 1',
+      'url':'https://www.youtube.com/embed/-AgrqLgXUGo',
+      'duration':'10 min'
+    },
+    {
+      'name':'Nombre Video 2',
+      'decription':'Descripción del video 2',
+      'url':'https://www.youtube.com/embed/-AgrqLgXUGo',
+      'duration':'10 min'
+    },
+    {
+      'name':'Nombre Video 3',
+      'decription':'Descripción del video 3',
+      'url':'https://www.youtube.com/embed/-AgrqLgXUGo',
+      'duration':'10 min'
+    },
+    {
+      'name':'Nombre Video 3',
+      'decription':'Descripción del video 3',
+      'url':'https://www.youtube.com/embed/-AgrqLgXUGo',
+      'duration':'10 min'
+    },
+    {
+      'name':'Nombre Video 4',
+      'decription':'Descripción del video 4',
+      'url':'https://www.youtube.com/embed/-AgrqLgXUGo',
+      'duration':'10 min'
+    },
+    {
+      'name':'Nombre Video 5',
+      'decription':'Descripción del video 5',
+      'url':'https://www.youtube.com/embed/-AgrqLgXUGo',
+      'duration':'10 min'
+    },
+    
+    {
+      'name':'Nombre Video 6',
+      'decription':'Descripción del video 6',
+      'url':'https://www.youtube.com/embed/-AgrqLgXUGo',
+      'duration':'10 min'
+    }
+  ]
+  const container_height:any = {
+    'none':'100 vh',
+    'dual':'255 vh',
+    'one':'155 vh'
+  }
 
+  let container_height_mode:any = 'none'
+  if(showVideos && !showPath){
+    container_height_mode = 'one'
+  }
+  else if(!showVideos && showPath){
+    container_height_mode = 'one'
+  }
+  else if(showVideos && showPath){
+    container_height_mode = 'dual'
+  }
   const cerrarModal = () => {
     Cerrar(false)
     setOpen(false)
@@ -47,12 +110,88 @@ const ModalCard = ( {index, Abierto, Cerrar}:any  ) => {
       confirmLoading={confirmLoading}
       footer={false}
       closeIcon={<CloseOutlined style={{color:'white'}}/>}
+      
     >
-      <div style={{width:'95%',display:'flex',flexDirection:'column',height:'50vh',border:'1px solid white', borderRadius:'10px',alignItems:'center'}}>
-          <h2  style={{color:'white'}}>{index}</h2>
-          <iframe width="40%" height="40%"
-              src="https://www.youtube.com/embed/-AgrqLgXUGo">
-          </iframe>
+      <div style={{width:'100%',height:container_height[container_height_mode],display:'flex',flexDirection:'column', borderRadius:'10px',alignItems:'center',border:'1px solid green',overflowY:'auto'}}>
+          <div style={{width:'90%',maxWidth:'400px',height:'70%',maxHeight:'250px',marginTop:'5%'}}>
+            <iframe width="100%" height="100%" 
+                src="https://www.youtube.com/embed/-AgrqLgXUGo">
+            </iframe>
+          </div>
+          <div style={{display:'flex',flexDirection:'row',width:'100%',height:'40vh',border:'1px solid blue',marginTop:'5%',justifyContent:'space-evenly'}}>
+            <div style={{display:'flex',flexDirection:'column',width:'50%',height:'100%',border:'1px solid red'}}>      
+              <div style={{display:'flex',flexDirection:'row',justifyContent:'space-evenly',flexWrap:'wrap'}}>
+                <Rate allowHalf defaultValue={rateValue} onChange={(evt)=>{
+                  setRateValue(evt)
+                }}/>
+                <div style={{color:'white',marginTop:'2.5%'}}>
+                  {rateValue} / 5
+                </div>
+              </div>
+              <p style={{color:'white',overflowY:'auto',width:'90%',marginLeft:'5%'}}>
+                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Placeat ipsum sit eveniet tempora suscipit explicabo rem amet accusantium maiores, laborum eius porro labore, excepturi corrupti autem unde quis nihil cum
+                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Placeat ipsum sit eveniet tempora suscipit explicabo rem amet accusantium maiores, laborum eius porro labore, excepturi corrupti autem unde quis nihil cum
+
+              </p>
+            </div>
+            <div style={{display:'flex',flexDirection:'column',width:'40%',height:'100%',border:'1px solid white',justifyContent:'space-evenly'}}>
+              <div style={{display:'flex',flexDirection:'row',width:'100%',flexWrap:'wrap', justifyContent:'space-evenly'}}>
+                <div style={{color:'grey'}}>Experto</div>
+                <div style={{color:'white',textAlign:'center'}}>Nombre Completo Experto</div>
+              </div>
+              <div style={{display:'flex',flexDirection:'row',width:'100%',flexWrap:'wrap', justifyContent:'center'}}>
+                <div style={{color:'grey'}}>Etiquetas</div>
+                <div style={{color:'white',display:'flex',justifyContent:'center',flexWrap:'wrap'}}>
+                  {cuourse_tags.length > 0 && cuourse_tags.map((item,index)=> {
+                    if(index === cuourse_tags.length -1){
+                      return <div style={{marginRight:'1%'}}>{item}</div>
+                    }
+                    else{
+                      return <div style={{marginRight:'1%'}}>{item}, </div>
+                    }
+                  })}
+                </div>
+              </div>
+            </div>
+          </div>
+          <Button style={{marginTop:'2.5%'}} onClick={()=>{
+            setShowVideos(!showVideos)
+          }}>
+            {showVideos ? 'Ocultar Videos': 'Mostrar Videos'}
+          </Button>
+          <Button style={{marginTop:'2.5%'}} onClick={()=>{
+            setShowPath(!showPath)
+          }}>
+            {showPath ? 'Ocultar Rutas': 'Mostrar Rutas'}
+          </Button>
+          {
+            showVideos && 
+            <div style={{width:'90%',height:'50vh',overflow:'scroll',display:'flex',flexDirection:'column',border:'1px solid blue',marginTop:'2.5%'}}>
+                {course_videos.map((item,index)=> {
+                  return <div style={{display:'flex',flexDirection:'row',width:'100%',height:'100px',border:'1px solid green',marginTop:'2%',color:'white'}}>
+                    <div style={{width:'5%',height:'100%',display:'flex',justifyContent:'center',alignItems:'center',color:'white'}}>{index + 1 }</div>
+                    <iframe width="20%" height="100%" src={item.url}/>
+                    <div style={{display:'flex',flexDirection:'column',width:'60%',height:'100%',border:'1px solid red',color:'white',textAlign:'center'}}>
+                      <div>{item.name}</div>
+                      <div style={{overflow:'scroll'}}>{item.decription} Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempora vero laudantium totam laborum aut, dolorum fuga, porro ducimus, enim consectetur omnis eius aliquam nisi. A maxime quis reprehenderit quo reiciendis!</div>
+                    </div>
+                    <div style={{width:'15%',display:'flex',flexDirection:'column',height:'100%',justifyContent:'center',textAlign:'center'}}>
+                      {item.duration}
+                    </div>
+                  </div>
+                })}
+            </div>
+          }
+          {
+            showPath && 
+            <div style={{width:'90%',height:'50vh',overflow:'scroll',display:'flex',flexDirection:'column',border:'1px solid blue',marginTop:'2.5%'}}>
+                {course_videos.map((item,index)=> {
+                  return <div style={{display:'flex',flexDirection:'row',width:'100%',height:'100px',border:'1px solid green',marginTop:'2%',color:'white'}}>
+                    Ruta de aprendizaje {index + 1}
+                  </div>
+                })}
+            </div>
+          }
       </div>
     </Modal>
   )
