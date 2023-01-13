@@ -1,15 +1,19 @@
 import { createSlice } from '@reduxjs/toolkit'
 
+const initialState = {
+  name: null,
+  age: null,
+  authenticated: null
+}
 export const UserData = createSlice({
   name: 'userInfo',
-  initialState: {
-    name: 'ale',
-    age: 33
-  },
+  initialState,
   reducers: {
     newDataUser: (state, newdata) => {
-      console.log(newdata)
-      state.name = newdata.payload
+      console.log('en slice: payload: ',newdata)
+      state.name = newdata.payload.userName
+      state.authenticated = newdata.payload.isAthenticated
+      state.age = newdata.payload.age
     },
   },
 })
