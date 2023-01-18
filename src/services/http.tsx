@@ -33,11 +33,18 @@ const getCourseVideos = async( courseId: String ) => {
   return res.data
 }
 
+const getUserInfo = async( email:String ) => {
+  console.log('emauil ',email)
+  const res = await axios.get(`https://nestjs-virgo-production.up.railway.app/user/${email}`)
+  console.log(res)
+  return res.data.payload
+}
 
 export default {
   post,
   getCourses,
-  getCourseVideos
+  getCourseVideos,
+  getUserInfo
 }
 
 
