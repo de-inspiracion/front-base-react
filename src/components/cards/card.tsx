@@ -190,13 +190,13 @@ const ModalCard = ( {data, Abierto, Cerrar}:any  ) => {
           </Button>
           {
             showVideos && 
-            <div style={{width:'90%',height:'50vh',overflow:'scroll',display:'flex',flexDirection:'column',marginTop:'2.5%'}}>
+            <div style={{width:'100%',height:'50vh',overflow:'scroll',display:'flex',flexDirection:'column',marginTop:'2.5%'}}>
                 {data.map((item:any)=> {
                   return <div style={{display:'flex',flexDirection:'row',width:'95%',height:'150px',marginTop:'2%',color:'white',border:'1px solid grey'}}>
                     <div style={{width:'10%',height:'100%',display:'flex',justifyContent:'center',alignItems:'center',color:'white'}}>{item.position }</div>
                     {/* <iframe width="40%" height="90%" src="https://iframe.mediadelivery.net/embed/759/eb1c4f77-0cda-46be-b47d-1118ad7c2ffe?autoplay=false" style={{borderStyle:'none'}}  loading="lazy" allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" allowFullScreen={true}/> */}
-                    <iframe src="https://iframe.mediadelivery.net/embed/759/eb1c4f77-0cda-46be-b47d-1118ad7c2ffe?autoplay=false" 
-                      loading="lazy"  style={{width:'40%'}}
+                    <iframe src={item.urlEmbed+'?autoplay=false'} 
+                      loading="lazy"  style={{width:'60%'}}
                       allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" allowFullScreen={true}>
                   </iframe>
                     <div style={{display:'flex',flexDirection:'column',width:'60%',height:'100%',color:'white',textAlign:'center',borderRight:'1px solid grey'}}>
