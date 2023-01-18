@@ -5,3 +5,16 @@
 .content {
   display: flex;
 }
+
+.ant-modal-content {
+  background-color: black !important;
+}
+
+::-webkit-scrollbar {/* esconde la barra de scroll  */
+  display: none;
+} 
+
+
+::-moz-scrollbar-button, ::-webkit-scrollbar-button {
+  width: 0px;
+}

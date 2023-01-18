@@ -19,6 +19,8 @@ import {
 } from "@ant-design/icons";
 import { Input } from 'antd';
 import './navbar.css'
+
+import { useAuth0 } from "@auth0/auth0-react";
 const { Search } = Input;
 
 const { Header, Content, Footer } = Layout;
@@ -41,11 +43,15 @@ const items: MenuProps['items'] = [
 ];
 
 const NavBarComponent: React.FC = () => {
+  const { logout } = useAuth0()
   const {
     token: { colorBgContainer },
   } = theme.useToken();
   
   const handleMenuClick: MenuProps['onClick'] = (e) => {
+    if(e.key === '2'){
+      logout({returnTo:'http://localhost:3000'})
+    }
     message.info('Click on menu item.');
     console.log('click', e);
   };
