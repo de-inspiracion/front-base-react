@@ -50,7 +50,7 @@ const NavBarComponent: React.FC = () => {
   
   const handleMenuClick: MenuProps['onClick'] = (e) => {
     if(e.key === '2'){
-      logout({returnTo:'http://localhost:3000'})
+      logout({returnTo:'http://localhost:5173'})
     }
     message.info('Click on menu item.');
     console.log('click', e);

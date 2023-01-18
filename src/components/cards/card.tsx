@@ -1,10 +1,12 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { CloseOutlined } from '@ant-design/icons'
 import { Rate, Modal, Button } from 'antd';
+import services  from '../../services/http'
 
 
 const CardV: any  = ({itemData, key,index}: any) => {
   const [open, setOpen] = useState(false)
+  const [courseData,setCourseData] = useState([])
   const showModal = () => {
     setOpen(true)
   }
@@ -12,10 +14,22 @@ const CardV: any  = ({itemData, key,index}: any) => {
   const handleClose = () => {
     setOpen(false)
   }
+
+  useEffect(()=>{
+    const getData = async () => {
+      // setIems(await services.getCourseVideos(courseData[0].id).payload)
+      let res = await services.getCourseVideos(itemData.id)
+      setCourseData(res.payload)
+    }
+    getData()
+  },[])
+
+  // console.log(`INDEX: ${index} `,courseData)
+
   return (
     <div key={key} className="movieRow--item">
-        { open && <ModalCard index={index}  Abierto={open} Cerrar = {handleClose}/>}
-        <img src={`https://image.tmdb.org/t/p/w300${itemData.poster_path}`} onClick={()=>{
+        { open && <ModalCard index={index}  data={courseData}  Abierto={open} Cerrar = {handleClose}/>}
+        <img src={'https://image.tmdb.org/t/p/w300/20mOwAAPwZ1vLQkw0fvuQHiG7bO.jpg'} onClick={()=>{
           showModal()
         }}/>
     </div>
@@ -23,12 +37,21 @@ const CardV: any  = ({itemData, key,index}: any) => {
 }
 
 
-const ModalCard = ( {index, Abierto, Cerrar}:any  ) => {
+const ModalCard = ( {data, Abierto, Cerrar}:any  ) => {
   const [open,setOpen] = useState(Abierto)
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [rateValue, setRateValue] = useState(2.5)
   const [showVideos,setShowVideos] = useState(false)
   const [showPath,setShowPath] = useState(false)
+  console.log('en modal: ',data)
+  // const data_videos = data.map((item:any) => {
+  //   let data_object = {
+  //     "name":item.name,
+  //     "duration":item.duration,
+
+  //   }
+  //   return data_object 
+  // })
   const cuourse_tags = ['tag1','tag2','tag3','tag4','tag5','tag6','tag7']
   const course_videos = [
     {
@@ -110,12 +133,13 @@ const ModalCard = ( {index, Abierto, Cerrar}:any  ) => {
       confirmLoading={confirmLoading}
       footer={false}
       closeIcon={<CloseOutlined style={{color:'white'}}/>}
-      
+      width='60vw'
     >
       <div style={{width:'100%',height:container_height[container_height_mode],display:'flex',flexDirection:'column',alignItems:'center',overflowY:'auto'}}>
           <div style={{width:'90%',maxWidth:'400px',height:'70%',maxHeight:'250px',marginTop:'5%'}}>
-            <iframe width="100%" height="100%" 
-                src="https://www.youtube.com/embed/-AgrqLgXUGo">
+            <iframe src="https://iframe.mediadelivery.net/embed/759/eb1c4f77-0cda-46be-b47d-1118ad7c2ffe?autoplay=true" 
+                loading="lazy"  style={{width:'100%'}}
+                allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" allowFullScreen={true}>
             </iframe>
           </div>
           <div style={{display:'flex',flexDirection:'row',width:'100%',height:'40vh',marginTop:'5%',justifyContent:'space-evenly'}}>
@@ -134,7 +158,7 @@ const ModalCard = ( {index, Abierto, Cerrar}:any  ) => {
 
               </p>
             </div>
-            <div style={{display:'flex',flexDirection:'column',width:'40%',height:'100%',justifyContent:'space-evenly'}}>
+            <div style={{display:'flex',flexDirection:'column',width:'40%',maxWidth:'200px',height:'100%',justifyContent:'space-evenly'}}>
               <div style={{display:'flex',flexDirection:'row',width:'100%',flexWrap:'wrap', justifyContent:'space-evenly'}}>
                 <div style={{color:'grey'}}>Experto</div>
                 <div style={{color:'white',textAlign:'center'}}>Nombre Completo Experto</div>
@@ -167,16 +191,20 @@ const ModalCard = ( {index, Abierto, Cerrar}:any  ) => {
           {
             showVideos && 
             <div style={{width:'90%',height:'50vh',overflow:'scroll',display:'flex',flexDirection:'column',marginTop:'2.5%'}}>
-                {course_videos.map((item,index)=> {
-                  return <div style={{display:'flex',flexDirection:'row',width:'95%',height:'100px',marginTop:'2%',color:'white',border:'1px solid grey'}}>
-                    <div style={{width:'5%',height:'100%',display:'flex',justifyContent:'center',alignItems:'center',color:'white'}}>{index + 1 }</div>
-                    <iframe width="20%" height="100%" src={item.url} />
+                {data.map((item:any)=> {
+                  return <div style={{display:'flex',flexDirection:'row',width:'95%',height:'150px',marginTop:'2%',color:'white',border:'1px solid grey'}}>
+                    <div style={{width:'10%',height:'100%',display:'flex',justifyContent:'center',alignItems:'center',color:'white'}}>{item.position }</div>
+                    {/* <iframe width="40%" height="90%" src="https://iframe.mediadelivery.net/embed/759/eb1c4f77-0cda-46be-b47d-1118ad7c2ffe?autoplay=false" style={{borderStyle:'none'}}  loading="lazy" allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" allowFullScreen={true}/> */}
+                    <iframe src="https://iframe.mediadelivery.net/embed/759/eb1c4f77-0cda-46be-b47d-1118ad7c2ffe?autoplay=false" 
+                      loading="lazy"  style={{width:'40%'}}
+                      allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" allowFullScreen={true}>
+                  </iframe>
                     <div style={{display:'flex',flexDirection:'column',width:'60%',height:'100%',color:'white',textAlign:'center',borderRight:'1px solid grey'}}>
                       <div>{item.name}</div>
                       <div style={{overflow:'scroll'}}>{item.decription} Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempora vero laudantium totam laborum aut, dolorum fuga, porro ducimus, enim consectetur omnis eius aliquam nisi. A maxime quis reprehenderit quo reiciendis!</div>
                     </div>
-                    <div style={{width:'15%',display:'flex',flexDirection:'column',height:'100%',justifyContent:'center',textAlign:'center'}}>
-                      {item.duration}
+                    <div style={{width:'25%',display:'flex',flexDirection:'column',height:'100%',justifyContent:'center',textAlign:'center'}}>
+                      {item.duration} min.
                     </div>
                   </div>
                 })}

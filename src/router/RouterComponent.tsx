@@ -10,11 +10,12 @@ import { HomePage } from "../pages/home/HomePage";
 import { Main } from "../pages/main/main";
 import { Login } from "../pages/login/Login"
 import { useAuth0 } from '@auth0/auth0-react'
-
+import { AdminCourses } from "../pages/admin-virgo/pages/editCourses/AdminCourses";
+import { ViewCourses } from "../pages/admin-virgo/pages/editCourses/ViewCourses";
 
 export default function RouterComponent() {
     const { user, isAuthenticated, isLoading } = useAuth0()
-    console.log('EN ROUTER 2', isAuthenticated,user,isLoading)
+    // console.log('EN ROUTER 2', isAuthenticated,user,isLoading)
     const router = createBrowserRouter([
         {
           path:'/',
@@ -38,6 +39,14 @@ export default function RouterComponent() {
         {
           path: "/account",
           element: <AccountPage></AccountPage>,
+        },
+        {
+          path: "/admin/course",
+          element: <ViewCourses></ViewCourses>,
+        },
+        {
+          path: "/admin/course/:idCourse",
+          element: <AdminCourses></AdminCourses>,
         },
       ]);
     

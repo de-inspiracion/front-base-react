@@ -1,21 +1,11 @@
-import { FC } from "react";
-import React,{ useEffect } from "react";
-import {
-  EditOutlined,
-  EllipsisOutlined,
-  PlayCircleOutlined,
-  SettingOutlined,
-} from "@ant-design/icons";
-import { Avatar, Card, Col, Divider, Row } from "antd";
-import { Typography } from "antd";
+import React from "react";
+import { Row } from "antd";;
 import "./coursesInProgress.css";
 import { getListInProgress } from "../../services/home.service";
 import { useSelector, useDispatch } from 'react-redux'
 import { newDataUser } from '../../../../store/user/userData'
 import CardSlice from "../../../../components/cardSlice/cardSlice";
-import axios from 'axios'
-const { Title } = Typography;
-const { Meta } = Card;
+
 
 const inProfressList = [
   { title: "curso 1", key: 0 },
@@ -23,7 +13,7 @@ const inProfressList = [
 ];
 
 const coursesInProgress = getListInProgress().then(data => {
-console.log(data.data)
+// console.log(data.data)
 })
 
 
@@ -37,20 +27,7 @@ const CoursesInProgress: React.FC =  () => {
     dispatch(newDataUser('alejandro'))
   }
 
-  useEffect(()=>{
-    const getCourses = async () => {
-      const courses_res = await axios.get(
-        'https://nestjs-virgo-production.up.railway.app/courses',
-        {
-          headers:{
-            "Access-Control-Allow-Origin":true
-          }
-        }
-      )
-      console.log('respuesta: ',courses_res)
-    }
-    getCourses()
-  },[])
+
   return (
     <>
     {/* <div className="titleV">
@@ -58,9 +35,9 @@ const CoursesInProgress: React.FC =  () => {
     </div> */}
     <Row className="" gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} style={{ overflow: 'hidden'}}>
     <CardSlice title='en progreso'></CardSlice>
-    <CardSlice title='Recomendado'></CardSlice>
+    {/* <CardSlice title='Recomendado'></CardSlice>
     <CardSlice title='educacion'></CardSlice>
-    <CardSlice title='rura 1'></CardSlice>
+    <CardSlice title='liderazgo'></CardSlice> */}
   {/* <div style="position: relative; padding-top: 56.25%;"><iframe src="https://iframe.mediadelivery.net/embed/80619/2d4d89ed-f1f8-4a7d-8e61-1b04f58a0a33?autoplay=false&preload=false" loading="lazy" style="border: none; position: absolute; top: 0; height: 100%; width: 100%;" allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" allowfullscreen="true"></iframe></div>
       <div style={{ color: 'black' }}>
         {count.name}

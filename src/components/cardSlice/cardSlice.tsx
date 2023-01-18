@@ -1,76 +1,37 @@
-import { FC, useState } from "react";
-import React from "react";
-import { Avatar, Card, Col, Divider, Row } from "antd";
-import { Typography } from "antd";
+import { useState, useEffect } from "react";
 import "./cardSlice.css";
 // import { getListInProgress } from "../../services/home.service";
-import { useSelector, useDispatch } from 'react-redux'
 import CardV from "../cards/card";
 // import { newDataUser } from '../../../../store/user/userData'
 import { useSwipeable } from 'react-swipeable';
-const { Title } = Typography;
-const { Meta } = Card;
 
-const inProfressList = [
-  { title: "curso 1", key: 0 },
-  { title: "curso 2" ,  key: 1},
-];
+import services  from '../../services/http'
 
-// const coursesInProgress = getListInProgress().then(data => {
-// console.log(data.data)
-// })
-
-
-
-// const CoursesInProgress: React.FC =  () => {
-
-// //   const count = useSelector((state: any) => state.userInfo)
-// //   console.log(count)
-// //   const dispatch = useDispatch()
-// //   const changeValue = () => {
-// //     dispatch(newDataUser('alejandro'))
-// //   }
-// // return (
-// //   <>
-// //   <div className="titleV">
-// //     <p>Cursos que aun no terminas</p>
-// //   </div>
-
-
-// //       </>
-// // );
-// }
-// export default CoursesInProgress;
 
 function CardSlide({title}: any) {
 
-  const items = [
-    {
-      poster_path : 'https://image.tmdb.org/t/p/w300/20mOwAAPwZ1vLQkw0fvuQHiG7bO.jpg'
-    },
-    {
-      poster_path : 'https://image.tmdb.org/t/p/w300/20mOwAAPwZ1vLQkw0fvuQHiG7bO.jpg'
-    },
-    {
-      poster_path : 'https://image.tmdb.org/t/p/w300/20mOwAAPwZ1vLQkw0fvuQHiG7bO.jpg'
-    },
-    {
-      poster_path : 'https://image.tmdb.org/t/p/w300/20mOwAAPwZ1vLQkw0fvuQHiG7bO.jpg'
-    },
-    {
-      poster_path : 'https://image.tmdb.org/t/p/w300/20mOwAAPwZ1vLQkw0fvuQHiG7bO.jpg'
-    },
-    {
-      poster_path : 'https://image.tmdb.org/t/p/w300/20mOwAAPwZ1vLQkw0fvuQHiG7bO.jpg'
-    },
-    {
-      poster_path : 'https://image.tmdb.org/t/p/w300/20mOwAAPwZ1vLQkw0fvuQHiG7bO.jpg'
-    },
-    {
-      poster_path : 'https://image.tmdb.org/t/p/w300/20mOwAAPwZ1vLQkw0fvuQHiG7bO.jpg'
-    },
+  const [items, setIems] = useState([])  
+  useEffect(()=>{
+    console.log('USEFFECT 1')
+    const getData = async() => {
+      const res = await services.getCourses()
+      setIems(res.data.payload)
+    }
+    getData()
+  },[])
 
-  ]
+
+  // useEffect(()=>{
+  //   console.log('USEEFFECT 2')
+  //   const getData = async () => {
+  //     // setIems(await services.getCourseVideos(courseData[0].id).payload)
+  //     let res = await services.getCourseVideos(courseData[0]?.id)
+  //     console.log('RES:    ',res)
+  //     setIems(res.payload)
+  //   }
+  //   getData()
+  // },[courseData]) // esto trigerea el useffec cuando se setea el courseData
+
 
   const [scrollX, setScrollX] = useState(0);
 
@@ -120,6 +81,7 @@ function CardSlide({title}: any) {
              marginLeft: scrollX,
          }}>
                   {items?.length > 0 && items.map((item, key)=>(
+
                     <CardV  key={key} itemData={item} index={key} ></CardV>
                       // <div key={key} className="movieRow--item">
                       //     <img src={`https://image.tmdb.org/t/p/w300${item.poster_path}`}/>
@@ -132,5 +94,6 @@ function CardSlide({title}: any) {
 
   );
 };
+
 
 export default CardSlide;
