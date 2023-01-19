@@ -81,7 +81,7 @@ function CardSlide({title}: any) {
              marginLeft: scrollX,
          }}>
                   {items?.length > 0 && items.map((item, key)=>(
-
+                    console.log(items),
                     <CardV  key={key} itemData={item} index={key} ></CardV>
                       // <div key={key} className="movieRow--item">
                       //     <img src={`https://image.tmdb.org/t/p/w300${item.poster_path}`}/>
