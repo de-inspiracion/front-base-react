@@ -137,7 +137,7 @@ const ModalCard = ( {data, score, Abierto, Cerrar}:any  ) => {
               videoIndex === 0 ? 
               <img src="https://image.tmdb.org/t/p/w300/20mOwAAPwZ1vLQkw0fvuQHiG7bO.jpg" alt="foto curso" style={{width:'100%',height:'100%'}}/>
               :
-              <iframe src={`${data[videoIndex-1].urlEmbed}?autoplay=true`} 
+              <iframe src={`${data.videos[videoIndex-1].urlEmbed}?autoplay=true`} 
                 loading="lazy"  style={{width:'100%'}}
                 allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" allowFullScreen={true}>
               </iframe>
