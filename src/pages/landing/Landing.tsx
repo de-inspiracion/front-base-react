@@ -15,7 +15,7 @@ const Landing = () => {
                     background: `url(${imgBackground}) no-repeat center / cover`,
                     height: '100vh',
                 }}>
-                <Header style={{ position: "relative", top: 0, zIndex: 1, width: "100%", padding: 5, background: 'transparent' }}>
+                <Header style={{ position: "absolute", top: 0, zIndex: 1, width: "100%", padding: 5, background: 'transparent' }}>
                     <div
                         style={{
                             color: '#fff',
