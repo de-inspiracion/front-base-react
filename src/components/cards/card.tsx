@@ -10,7 +10,7 @@ const CardV: any  = ({itemData, key,index}: any) => {
   const showModal = () => {
     setOpen(true)
   }
-
+  console.log('data curso: ',courseData)
   const handleClose = () => {
     setOpen(false)
   }
@@ -28,7 +28,7 @@ const CardV: any  = ({itemData, key,index}: any) => {
 
   return (
     <div key={key} className="movieRow--item">
-        { open && <ModalCard index={index}  data={courseData}  Abierto={open} Cerrar = {handleClose}/>}
+        { open && <ModalCard index={index}  data={courseData} score={itemData.score} Abierto={open} Cerrar = {handleClose}/>}
         <img src={'https://image.tmdb.org/t/p/w300/20mOwAAPwZ1vLQkw0fvuQHiG7bO.jpg'} onClick={()=>{
           showModal()
         }}/>
@@ -37,12 +37,11 @@ const CardV: any  = ({itemData, key,index}: any) => {
 }
 
 
-const ModalCard = ( {data, Abierto, Cerrar}:any  ) => {
+const ModalCard = ( {data, score, Abierto, Cerrar}:any  ) => {
   const [open,setOpen] = useState(Abierto)
   const [confirmLoading, setConfirmLoading] = useState(false);
-  const [rateValue, setRateValue] = useState(2.5)
-  const [showVideos,setShowVideos] = useState(false)
-  const [showPath,setShowPath] = useState(false)
+  const [videoIndex,setVideoIndex] = useState(0)
+
   console.log('en modal: ',data)
   // const data_videos = data.map((item:any) => {
   //   let data_object = {
@@ -104,16 +103,7 @@ const ModalCard = ( {data, Abierto, Cerrar}:any  ) => {
     'one':'155 vh'
   }
 
-  let container_height_mode:any = 'none'
-  if(showVideos && !showPath){
-    container_height_mode = 'one'
-  }
-  else if(!showVideos && showPath){
-    container_height_mode = 'one'
-  }
-  else if(showVideos && showPath){
-    container_height_mode = 'dual'
-  }
+
   const cerrarModal = () => {
     Cerrar(false)
     setOpen(false)
@@ -133,23 +123,33 @@ const ModalCard = ( {data, Abierto, Cerrar}:any  ) => {
       confirmLoading={confirmLoading}
       footer={false}
       closeIcon={<CloseOutlined style={{color:'white'}}/>}
-      width='60vw'
+      width='50vw'
+      height='1300px'
+      style={{border:'1px solid white',maxWidth:'500px',overflowY:'auto'}}
     >
-      <div style={{width:'100%',height:container_height[container_height_mode],display:'flex',flexDirection:'column',alignItems:'center',overflowY:'auto'}}>
-          <div style={{width:'90%',maxWidth:'400px',height:'70%',maxHeight:'250px',marginTop:'5%'}}>
-            <iframe src="https://iframe.mediadelivery.net/embed/759/eb1c4f77-0cda-46be-b47d-1118ad7c2ffe?autoplay=true" 
+      <div style={{width:'100%',height:'100%',display:'flex',flexDirection:'column',alignItems:'center',overflowY:'auto'}}>
+          <div style={{width:'90%',maxWidth:'400px',height:'20vh',maxHeight:'250px',marginTop:'5%',border:'1px solid red'}}>
+            {/* <iframe src="https://iframe.mediadelivery.net/embed/759/eb1c4f77-0cda-46be-b47d-1118ad7c2ffe?autoplay=true" 
                 loading="lazy"  style={{width:'100%'}}
                 allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" allowFullScreen={true}>
-            </iframe>
+            </iframe> */}
+            {
+              videoIndex === 0 ? 
+              <img src="https://image.tmdb.org/t/p/w300/20mOwAAPwZ1vLQkw0fvuQHiG7bO.jpg" alt="foto curso" style={{width:'100%',height:'100%'}}/>
+              :
+              <iframe src={`${data[videoIndex-1].urlEmbed}?autoplay=true`} 
+                loading="lazy"  style={{width:'100%'}}
+                allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" allowFullScreen={true}>
+              </iframe>
+
+            }
           </div>
           <div style={{display:'flex',flexDirection:'row',width:'100%',height:'40vh',marginTop:'5%',justifyContent:'space-evenly'}}>
             <div style={{display:'flex',flexDirection:'column',width:'50%',height:'100%'}}>      
               <div style={{display:'flex',flexDirection:'row',justifyContent:'space-evenly',flexWrap:'wrap'}}>
-                <Rate allowHalf defaultValue={rateValue} onChange={(evt)=>{
-                  setRateValue(evt)
-                }}/>
+                <Rate allowHalf defaultValue={score} />
                 <div style={{color:'white',marginTop:'2.5%'}}>
-                  {rateValue} / 5
+                  {score} / 5
                 </div>
               </div>
               <p style={{color:'white',overflowY:'auto',width:'90%',marginLeft:'5%'}}>
@@ -178,48 +178,36 @@ const ModalCard = ( {data, Abierto, Cerrar}:any  ) => {
               </div>
             </div>
           </div>
-          <Button style={{marginTop:'2.5%'}} onClick={()=>{
-            setShowVideos(!showVideos)
-          }}>
-            {showVideos ? 'Ocultar Videos': 'Mostrar Videos'}
-          </Button>
-          <Button style={{marginTop:'2.5%'}} onClick={()=>{
-            setShowPath(!showPath)
-          }}>
-            {showPath ? 'Ocultar Rutas': 'Mostrar Rutas'}
-          </Button>
-          {
-            showVideos && 
-            <div style={{width:'100%',height:'50vh',overflow:'scroll',display:'flex',flexDirection:'column',marginTop:'2.5%'}}>
-                {data.map((item:any)=> {
-                  return <div style={{display:'flex',flexDirection:'row',width:'95%',height:'150px',marginTop:'2%',color:'white',border:'1px solid grey'}}>
-                    <div style={{width:'10%',height:'100%',display:'flex',justifyContent:'center',alignItems:'center',color:'white'}}>{item.position }</div>
-                    {/* <iframe width="40%" height="90%" src="https://iframe.mediadelivery.net/embed/759/eb1c4f77-0cda-46be-b47d-1118ad7c2ffe?autoplay=false" style={{borderStyle:'none'}}  loading="lazy" allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" allowFullScreen={true}/> */}
-                    <iframe src={item.urlEmbed+'?autoplay=false'} 
-                      loading="lazy"  style={{width:'60%'}}
-                      allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" allowFullScreen={true}>
-                  </iframe>
-                    <div style={{display:'flex',flexDirection:'column',width:'60%',height:'100%',color:'white',textAlign:'center',borderRight:'1px solid grey'}}>
-                      <div>{item.name}</div>
-                      <div style={{overflow:'scroll'}}>{item.decription} Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempora vero laudantium totam laborum aut, dolorum fuga, porro ducimus, enim consectetur omnis eius aliquam nisi. A maxime quis reprehenderit quo reiciendis!</div>
-                    </div>
-                    <div style={{width:'25%',display:'flex',flexDirection:'column',height:'100%',justifyContent:'center',textAlign:'center'}}>
-                      {item.duration} min.
-                    </div>
+ 
+          <div style={{width:'100%',height:'50vh',overflow:'scroll',display:'flex',flexDirection:'column',marginTop:'2.5%'}}>
+              {data.map((item:any)=> {
+                return <div style={{display:'flex',flexDirection:'row',width:'95%',height:'150px',marginTop:'2%',color:'white',border:'1px solid grey'}}>
+                  <div style={{width:'10%',height:'100%',display:'flex',justifyContent:'center',alignItems:'center',color:'white'}}>{item.position }</div>
+                  {/* <iframe width="40%" height="90%" src="https://iframe.mediadelivery.net/embed/759/eb1c4f77-0cda-46be-b47d-1118ad7c2ffe?autoplay=false" style={{borderStyle:'none'}}  loading="lazy" allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" allowFullScreen={true}/> */}
+                  {/* <iframe src={item.urlEmbed+'?autoplay=false'} 
+                    loading="lazy"  style={{width:'60%'}}
+                    allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" allowFullScreen={true}>
+                  </iframe> */}
+                  <img src={item.thumbnail} width='60%' style={{cursor:'pointer'}} onClick={()=>{
+                    setVideoIndex(item.position)
+                  }}/>
+                  <div style={{display:'flex',flexDirection:'column',width:'60%',height:'100%',color:'white',textAlign:'center',borderRight:'1px solid grey'}}>
+                    <div>{item.name}</div>
+                    <div style={{overflow:'scroll'}}>{item.decription} Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempora vero laudantium totam laborum aut, dolorum fuga, porro ducimus, enim consectetur omnis eius aliquam nisi. A maxime quis reprehenderit quo reiciendis!</div>
                   </div>
-                })}
-            </div>
-          }
-          {
-            showPath && 
-            <div style={{width:'90%',height:'50vh',overflow:'scroll',display:'flex',flexDirection:'column',border:'1px solid blue',marginTop:'2.5%'}}>
-                {course_videos.map((item,index)=> {
-                  return <div style={{display:'flex',flexDirection:'row',width:'100%',height:'100px',border:'1px solid green',marginTop:'2%',color:'white'}}>
-                    Ruta de aprendizaje {index + 1}
+                  <div style={{width:'25%',display:'flex',flexDirection:'column',height:'100%',justifyContent:'center',textAlign:'center'}}>
+                    {item.duration} min.
                   </div>
-                })}
-            </div>
-          }
+                </div>
+              })}
+          </div>
+          <div style={{width:'90%',height:'50vh',overflow:'scroll',display:'flex',flexDirection:'column',border:'1px solid blue',marginTop:'10%'}}>
+              {course_videos.map((item,index)=> {
+                return <div style={{display:'flex',flexDirection:'row',width:'100%',height:'100px',border:'1px solid green',marginTop:'2%',color:'white'}}>
+                  Ruta de aprendizaje {index + 1}
+                </div>
+              })}
+          </div>
       </div>
     </Modal>
   )

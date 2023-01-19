@@ -10,6 +10,7 @@ export const HomePage = () => {
   const { user, isAuthenticated, isLoading } = useAuth0()
   const [userInfo,setUserInfo] = useState({})
   console.log(isAuthenticated,user?.email)
+  
   useEffect(()=>{
     const getData = async () => {
       let res = await services.getUserInfo(String(user?.email))
