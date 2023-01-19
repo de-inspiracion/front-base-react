@@ -180,7 +180,7 @@ const ModalCard = ( {data, score, Abierto, Cerrar}:any  ) => {
           </div>
  
           <div style={{width:'100%',height:'50vh',overflow:'scroll',display:'flex',flexDirection:'column',marginTop:'2.5%'}}>
-              {data.map((item:any)=> {
+              {data.videos.map((item:any)=> {
                 return <div style={{display:'flex',flexDirection:'row',width:'95%',height:'150px',marginTop:'2%',color:'white',border:'1px solid grey'}}>
                   <div style={{width:'10%',height:'100%',display:'flex',justifyContent:'center',alignItems:'center',color:'white'}}>{item.position }</div>
                   {/* <iframe width="40%" height="90%" src="https://iframe.mediadelivery.net/embed/759/eb1c4f77-0cda-46be-b47d-1118ad7c2ffe?autoplay=false" style={{borderStyle:'none'}}  loading="lazy" allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" allowFullScreen={true}/> */}
