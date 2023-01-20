@@ -159,10 +159,9 @@ const ModalCard = ({ data, score, Abierto, Cerrar }: any) => {
                   {score} / 5
                 </p>
               </div>
-              <h2 style={{ color: 'grey', margin: '0' }}>Titulo del Curso</h2>
+              <h2 style={{ color: 'grey', margin: '0' }}>{data.name}</h2>
               <p style={{ color: 'white', overflowY: 'auto', width: '100%' }}>
-                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Placeat ipsum sit eveniet tempora suscipit explicabo rem amet accusantium maiores, laborum eius porro labore, excepturi corrupti autem unde quis nihil cum
-                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Placeat ipsum sit eveniet tempora suscipit explicabo rem amet accusantium maiores, laborum eius porro labore, excepturi corrupti autem unde quis nihil cum
+              {data.description}
               </p>
             </div>
             <div style={{ background: '#101012e3', marginTop: '3%', padding: '0 25px', display: 'flex', width: '100%', maxWidth: '750px', height: '100%', alignItems: 'center' }}>
@@ -195,12 +194,12 @@ const ModalCard = ({ data, score, Abierto, Cerrar }: any) => {
                     loading="lazy"  style={{width:'60%'}}
                     allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" allowFullScreen={true}>
                   </iframe> */}
-                <img src={item.thumbnail} width='60%' style={{ cursor: 'pointer' }} onClick={() => {
+                <img src={item.thumbnail} width='20%' style={{ cursor: 'pointer' }} onClick={() => {
                   setVideoIndex(item.position)
                 }} />
                 <div style={{ display: 'flex', flexDirection: 'column', width: '60%', height: '100%', color: 'white', textAlign: 'center' }}>
                   <div>{item.name}</div>
-                  <div style={{ overflow: 'scroll' }}>{item.decription} Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempora vero laudantium totam laborum aut, dolorum fuga, porro ducimus, enim consectetur omnis eius aliquam nisi. A maxime quis reprehenderit quo reiciendis!</div>
+                  <div style={{ overflow: 'scroll' }}>{item.decription}</div>
                 </div>
                 <div style={{ width: '25%', display: 'flex', flexDirection: 'column', height: '100%', justifyContent: 'center', textAlign: 'center' }}>
                   {item.duration} min.
