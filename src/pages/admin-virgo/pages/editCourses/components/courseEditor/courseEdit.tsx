@@ -52,11 +52,11 @@ export const CourseEditor = (state:any) => {
   }
 
   return (
-    <>
+    <div style = {{backgroundColor:'black',color:'white'}}>
     <ConfigProvider
-        // theme={{
-        //   algorithm:darkAlgorithm
-        // }}
+        theme={{
+          algorithm:darkAlgorithm
+        }}
     >
       <Row justify="center" align="middle">
         <Col span={4}>
@@ -69,8 +69,8 @@ export const CourseEditor = (state:any) => {
         justify="center"
         align="middle"
       >
-        <Col span={6}>
-          <Typography.Title level={5}>Nombre del curso</Typography.Title>
+        <Col span={6} >
+          <Typography.Title level={5} >Nombre del curso</Typography.Title>
         </Col>
 
         <Col span={6}>
@@ -203,7 +203,7 @@ export const CourseEditor = (state:any) => {
         </Col>
       </Row>
       </ConfigProvider>
-    </>
+    </ div>
     
   );
 };

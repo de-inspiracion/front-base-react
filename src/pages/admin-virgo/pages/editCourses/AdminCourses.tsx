@@ -7,8 +7,8 @@ export const AdminCourses = () => {
   let { idCourse } = useParams();
   let { state } = useLocation()
   return (
-    <div className='admin-course'>
-      <Divider>Editor de curso</Divider>
+    <div className='admin-course' style = {{backgroundColor:'black',color:'white'}}>
+      <Divider style={{color:'white'}}>Editor de curso</Divider>
       <CourseEditor state = {state}></CourseEditor>
       <VideoEditor></VideoEditor>
     </div>
