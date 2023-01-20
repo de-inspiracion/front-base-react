@@ -1,18 +1,43 @@
 import { Button, Col, Input, Row, Select, SelectProps } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import { Divider, Radio, Typography } from "antd";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { ConfigProvider, theme, Card } from "antd";
 import UploadImage from "../upload/uploadImage";
-
+import services from '../../../../../../services/http'
 const { Paragraph } = Typography;
+import { useParams } from "react-router-dom";
 
-export const CourseEditor = () => {
-  const [titleCourse, setTitleCourse] = useState("Nombre del curso");
-
-  const [descriptionCourse, setDescriptionCourse] = useState(
-    "descripcion del curso"
-  );
+export const CourseEditor = (state:any) => {
+  const [loading,setLoading] = useState(false)
+  let idCourse:string|undefined = useParams()['idCourse']
+  const { defaultAlgorithm, darkAlgorithm } = theme;
+  const[currentState,setCurrentState] = useState<any>({})
+  const [titleCourse, setTitleCourse] = useState('');
+  const [descriptionCourse, setDescriptionCourse] = useState('');
   const options: SelectProps["options"] = [];
+  const [tags,setTags] = useState<any>(currentState.tags)
+  const [routes,setRoutes] = useState<any>([])
+  const [category,setCategory] = useState<any>([])
+  const [value, setValue] = useState(0); // integer state
+  const [c_,setC_] = useState<any>([])
+  const [r_,setR_] = useState<any>([])
+
+  useEffect( () => {
+    (async ()=>{
+      let res = await services.getInfo(idCourse)
+      setC_(res[0])
+      setR_(res[1])
+      setCurrentState(res[2])
+      setTitleCourse(res[2]['name'])
+      setDescriptionCourse(res[2]['description'])
+      setTags(res[2]['tags'])
+      setRoutes(res[2]['route'])
+      setCategory(res[2]['category'])
+    })()
+
+  }, [])
+
 
   for (let i = 10; i < 36; i++) {
     options.push({
@@ -21,16 +46,18 @@ export const CourseEditor = () => {
     });
   }
 
-  const handleChangeTags = (value: string) => {
-    console.log(`selected ${value}`);
-  };
 
-  const handleChangeRoute = (value: string) => {
-    console.log(`selected ${value}`);
-  };
+  const editCourseData = async (id:string,field:string,data:any) => {
+    let res = await services.updateCourse(id,field,data)
+  }
 
   return (
     <>
+    <ConfigProvider
+        // theme={{
+        //   algorithm:darkAlgorithm
+        // }}
+    >
       <Row justify="center" align="middle">
         <Col span={4}>
           <UploadImage></UploadImage>
@@ -49,7 +76,10 @@ export const CourseEditor = () => {
         <Col span={6}>
           <Typography.Title
             editable={{
-              onChange: setTitleCourse,
+              onChange: (value) => {
+                setTitleCourse(value)
+                editCourseData(currentState.id,'name',value)
+              }
             }}
             level={5}
           >
@@ -64,13 +94,18 @@ export const CourseEditor = () => {
         align="middle"
       >
         <Col span={6}>
-          <h3>Descripcion</h3>
+          <h3>Descripción</h3>
         </Col>
         <Col span={6}>
           <Typography.Title
             editable={{
-              onChange: setDescriptionCourse,
+              onChange: (value) => {
+                console.log(value)
+                setDescriptionCourse(value)
+                editCourseData(currentState.id,'description',value)
+              }
             }}
+            onChange = {(data)=>console.log(data)}
             level={5}
             style={{ margin: 0 }}
           >
@@ -92,13 +127,20 @@ export const CourseEditor = () => {
             mode="tags"
             style={{ width: "100%" }}
             placeholder="Tags"
-            onChange={handleChangeTags}
+            value={tags}
+            onChange = {(value:string)=>{
+              setTags(value)
+            }}
             options={options}
           />
         </Col>
 
         <Col>
-          <Button shape="round">Actualizar</Button>
+          <Button shape="round"
+            onClick={()=>{
+              editCourseData(currentState.id,'tags',tags || [])
+            }}
+          >Actualizar</Button>
         </Col>
       </Row>
 
@@ -113,33 +155,21 @@ export const CourseEditor = () => {
         <Col span={8}>
           <Select
             mode="multiple"
-            defaultValue="lucy"
+            value={routes}
             style={{ width: "100%" }}
-            onChange={handleChangeRoute}
-            options={[
-              {
-                value: "jack",
-                label: "Jack",
-              },
-              {
-                value: "lucy",
-                label: "Lucy",
-              },
-              {
-                value: "disabled",
-                disabled: true,
-                label: "Disabled",
-              },
-              {
-                value: "Yiminghe",
-                label: "yiminghe",
-              },
-            ]}
+            onChange = {(value:string)=>{
+              setRoutes(value)
+            }}
+            options={r_}
           />
         </Col>
 
         <Col>
-          <Button shape="round">Actualizar</Button>
+          <Button shape="round"
+            onClick={()=>{
+              editCourseData(currentState.id,'routes',routes || [])
+            }}
+          >Actualizar</Button>
         </Col>
       </Row>
 
@@ -154,35 +184,26 @@ export const CourseEditor = () => {
         <Col span={8}>
           <Select
             mode="multiple"
-            defaultValue="lucy"
+            value={category}
             style={{ width: "100%" }}
-            onChange={handleChangeRoute}
-            options={[
-              {
-                value: "jack",
-                label: "Jack",
-              },
-              {
-                value: "lucy",
-                label: "Lucy",
-              },
-              {
-                value: "disabled",
-                disabled: true,
-                label: "Disabled",
-              },
-              {
-                value: "Yiminghe",
-                label: "yiminghe",
-              },
-            ]}
+            // onChange={handleChangeRoute}
+            onChange = {(value:string)=>{
+              setCategory(value)
+            }}
+            options={c_}
           />
         </Col>
 
         <Col>
-          <Button shape="round">Actualizar</Button>
+          <Button shape="round"
+            onClick={()=>{
+              editCourseData(currentState.id,'category',category || [])
+            }}
+          >Actualizar</Button>
         </Col>
       </Row>
+      </ConfigProvider>
     </>
+    
   );
 };
