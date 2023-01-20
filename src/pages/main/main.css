@@ -7,14 +7,16 @@
 }
 
 .ant-modal-content {
-  background-color: black !important;
+  background-color: #181818 !important;
 }
 
-::-webkit-scrollbar {/* esconde la barra de scroll  */
+::-webkit-scrollbar {
+  /* esconde la barra de scroll  */
   display: none;
-} 
+}
 
 
-::-moz-scrollbar-button, ::-webkit-scrollbar-button {
+::-moz-scrollbar-button,
+::-webkit-scrollbar-button {
   width: 0px;
 }

@@ -1,3 +1,6 @@
-.ant-modal-content {
-    background-color: aquamarine !important;
+.videoInfo:hover {
+    background-color: #333333;
+    opacity: 0.7;
+    color: #ffffff;
+    transition: 0.5s;
 }
