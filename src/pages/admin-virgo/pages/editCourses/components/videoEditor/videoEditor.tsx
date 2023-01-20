@@ -1,7 +1,10 @@
 import { Button, Descriptions, List, Space } from "antd";
 import Paragraph from "antd/es/typography/Paragraph";
 import React, { useState } from "react";
+import { ConfigProvider, theme, Card } from "antd";
+
 export const VideoEditor = () => {
+  const { defaultAlgorithm, darkAlgorithm } = theme;
   const data = Array.from({ length: 10 }).map((_, i) => ({
     href: "https://ant.design",
     title: `ant design part ${i}`,
@@ -51,7 +54,13 @@ export const VideoEditor = () => {
   };
   return (
     <>
+    <ConfigProvider
+        theme={{
+          algorithm:darkAlgorithm
+        }}
+    >
       <List
+
         itemLayout="vertical"
         size="large"
         dataSource={dataVideo}
@@ -82,6 +91,7 @@ export const VideoEditor = () => {
           </List.Item>
         )}
       />
+      </ConfigProvider>
     </>
   );
 };
