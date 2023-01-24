@@ -3,12 +3,12 @@ import Paragraph from "antd/es/typography/Paragraph";
 import React, { useState } from "react";
 import { ConfigProvider, theme } from "antd";
 import { Card, Space } from 'antd';
-import { Divider, Radio, Typography,Popover  } from "antd";
+import { Divider, Radio, Typography,Popover,Modal } from "antd";
 import { PlusCircleOutlined } from '@ant-design/icons';
 export const VideoEditor = ({videos}) => {
   const { defaultAlgorithm, darkAlgorithm } = theme;
+  const [open,setOpen] = useState(false)  
 
-  // const [video,setVideos] = useState(videos)
   console.log(videos)
   return (
     <>
@@ -41,7 +41,7 @@ export const VideoEditor = ({videos}) => {
                 style={{ width: 300,marginLeft:10 }}
                 extra = {
                   <Popover  content={<p>Preguntas</p>}>
-                    <PlusCircleOutlined style = {{color:'green',cursor:'pointer'}} onClick= {()=>{alert("open modal to add question")}} />
+                    <PlusCircleOutlined style = {{color:'green',cursor:'pointer'}} onClick= {()=>{setOpen(true)}} />
                   </Popover>
                 
               }
@@ -74,6 +74,54 @@ export const VideoEditor = ({videos}) => {
       </Space>
 
       
+
+      <Modal width="80%" title="Preguntas" open={open} onOk = {()=>{setOpen(false)}}>
+        
+          <div style={{display:'flex',gap:50,width:'100%',justifyContent:'center'}}>
+            <Card title = "QUESTION 1">
+                <Radio.Group >
+                  <Space direction="vertical">
+                    <Radio value={1}>Option AOption AOption AOption Option AOption AOption AOption Option AOption AOption AOption Option AOption AOption AOption Option AOption AOption AOption Option AOption AOption AOption A</Radio>
+                    <Radio value={2}>Option B</Radio>
+                    <Radio value={3}>Option C</Radio>
+                    <Radio value={4}>
+                      More...
+                    </Radio>
+                  </Space>
+                </Radio.Group>
+            </Card>
+
+            <Card title = "QUESTION 1">
+                <Radio.Group >
+                  <Space direction="vertical">
+                    <Radio value={1}>OpOption AOption AOption AOption Option AOption AOption AOption Option AOption AOption AOption tion A</Radio>
+                    <Radio value={2}>Option B</Radio>
+                    <Radio value={3}>OptiOption AOption AOption AOption Option AOption AOption AOption Option AOption AOption AOption on C</Radio>
+                    <Radio value={4}>
+                      More...
+                    </Radio>
+                  </Space>
+                </Radio.Group>
+            </Card>
+
+            <Card title = "QUESTION 1">
+                <Radio.Group >
+                  <Space direction="vertical">
+                    <Radio value={1}>Option A</Radio>
+                    <Radio value={2}>Option B</Radio>
+                    <Radio value={3}>OpOption AOption AOption AOption Option AOption AOption AOption Option AOption AOption AOption tion C</Radio>
+                    <Radio value={4}>
+                      More...
+                    </Radio>
+                  </Space>
+                </Radio.Group>
+            </Card>
+          </div>
+
+
+      </Modal>
+
+
       </ConfigProvider>
     </>
   );
