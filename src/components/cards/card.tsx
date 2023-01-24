@@ -1,11 +1,12 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { CloseOutlined } from '@ant-design/icons'
-import { Rate, Modal, Button, Layout, Divider } from 'antd';
+import { Rate, Modal, Button, Layout, Divider, Card } from 'antd';
 import services from '../../services/http'
 import './card.css'
-//estilos del modal
 
+//estilos del modal
 const { Content } = Layout;
+
 
 
 const CardV: any = ({ itemData, key, index }: any) => {
@@ -40,6 +41,9 @@ const CardV: any = ({ itemData, key, index }: any) => {
   )
 }
 
+
+
+
 const ModalCard = ({ data, score, Abierto, Cerrar }: any) => {
   const [open, setOpen] = useState(Abierto)
   const [confirmLoading, setConfirmLoading] = useState(false);
@@ -54,6 +58,10 @@ const ModalCard = ({ data, score, Abierto, Cerrar }: any) => {
   //   }
   //   return data_object 
   // })
+
+  const modalRef = useRef(null);
+  const { Meta } = Card;
+
   const cuourse_tags = ['tag1', 'tag2', 'tag3', 'tag4', 'tag5', 'tag6', 'tag7']
   const course_videos = [
     {
@@ -120,6 +128,7 @@ const ModalCard = ({ data, score, Abierto, Cerrar }: any) => {
   };
   return (
     <Modal
+
       open={open}
       onCancel={cerrarModal}
       onOk={handleOk}
@@ -131,8 +140,8 @@ const ModalCard = ({ data, score, Abierto, Cerrar }: any) => {
       style={{ maxWidth: '800px', overflowY: 'auto' }}
     >
       <Layout
+        ref={modalRef}
         style={{ background: '#181818', padding: '0 0' }}>
-
 
 
         <div style={{ width: '100%', maxWidth: '750px', height: '45vh', maxHeight: '550px' }}>
@@ -161,7 +170,7 @@ const ModalCard = ({ data, score, Abierto, Cerrar }: any) => {
               </div>
               <h2 style={{ color: 'grey', margin: '0' }}>{data.name}</h2>
               <p style={{ color: 'white', overflowY: 'auto', width: '100%' }}>
-              {data.description}
+                {data.description}
               </p>
             </div>
             <div style={{ background: '#101012e3', marginTop: '3%', padding: '0 25px', display: 'flex', width: '100%', maxWidth: '750px', height: '100%', alignItems: 'center' }}>
@@ -187,16 +196,17 @@ const ModalCard = ({ data, score, Abierto, Cerrar }: any) => {
 
           <div style={{ width: '100%', height: '50vh', overflow: 'scroll', display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '2.5%' }}>
             {data.videos.map((item: any) => {
-              return <div className='videoInfo' style={{ cursor: 'pointer', display: 'flex', flexDirection: 'row', width: '95%', height: '150px', marginTop: '2%', color: 'white' }}>
+              return <div className='videoInfo' onClick={() => {
+                setVideoIndex(item.position)
+                modalRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
+              }} style={{ cursor: 'pointer', display: 'flex', flexDirection: 'row', width: '95%', height: '150px', marginTop: '2%', color: 'white' }}>
                 <div style={{ width: '10%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', color: 'white' }}>{item.position}</div>
                 {/* <iframe width="40%" height="90%" src="https://iframe.mediadelivery.net/embed/759/eb1c4f77-0cda-46be-b47d-1118ad7c2ffe?autoplay=false" style={{borderStyle:'none'}}  loading="lazy" allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" allowFullScreen={true}/> */}
                 {/* <iframe src={item.urlEmbed+'?autoplay=false'} 
                     loading="lazy"  style={{width:'60%'}}
                     allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" allowFullScreen={true}>
                   </iframe> */}
-                <img src={item.thumbnail} width='20%' style={{ cursor: 'pointer' }} onClick={() => {
-                  setVideoIndex(item.position)
-                }} />
+                <img src={item.thumbnail} width='20%' style={{ cursor: 'pointer' }} />
                 <div style={{ display: 'flex', flexDirection: 'column', width: '60%', height: '100%', color: 'white', textAlign: 'center' }}>
                   <div>{item.name}</div>
                   <div style={{ overflow: 'scroll' }}>{item.decription}</div>
@@ -207,11 +217,19 @@ const ModalCard = ({ data, score, Abierto, Cerrar }: any) => {
               </div>
             })}
           </div>
-          <div style={{ width: '90%', height: '50vh', overflow: 'scroll', display: 'flex', flexDirection: 'column', border: '1px solid blue', marginTop: '10%' }}>
+          <div style={{ flexWrap: 'wrap', gap: '15px', width: '90%', height: '50vh', overflow: 'scroll', justifyContent: 'center', display: 'flex', marginTop: '10%' }}>
             {course_videos.map((item, index) => {
-              return <div style={{ display: 'flex', flexDirection: 'row', width: '100%', height: '100px', border: '1px solid green', marginTop: '2%', color: 'white' }}>
-                Ruta de aprendizaje {index + 1}
-              </div>
+              return <Card
+                //  style={{ display: 'flex', flexDirection: 'row', width: '100%', height: '100px', border: '1px solid green', marginTop: '2%', color: 'white' }}
+                hoverable
+                style={{ width: '155px', height: '155px' }}
+                cover={<img style={{ height: '100px' }} alt="example" src="https://ichef.bbci.co.uk/news/640/cpsprodpb/870D/production/_111437543_197389d9-800f-4763-8654-aa30c04220e4.png" />}
+              >
+                <Meta
+                  style={{ color: 'white' }}
+                  title={`Ruta de aprendizaje {index + 1}`}
+                />
+              </Card>
             })}
           </div>
         </Content>

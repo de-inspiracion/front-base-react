@@ -21,6 +21,7 @@ import { Input } from 'antd';
 import './navbar.css'
 
 import { useAuth0 } from "@auth0/auth0-react";
+import { useNavigate } from "react-router-dom";
 const { Search } = Input;
 
 const { Header, Content, Footer } = Layout;
@@ -61,39 +62,75 @@ const NavBarComponent: React.FC = () => {
     onClick: handleMenuClick,
   };
 
+
+  const navigate = useNavigate();
+
   return (
     <Layout>
-      <Header style={{ position: "sticky", top: 0, zIndex: 1, width: "100%", padding: 5, background: '#141414' }}>
-        <Row>
-          <Col xs={6} sm={6} md={6} lg={6} xl={4}>
-            <div
-              style={{
-                color: '#fff',
-                fontWeight: '900',
-                paddingLeft: '15px',
-                fontSize: '15px',
-              }}
-            >
-              VIRGO
-            </div>
+      <Header style={{ position: "sticky", top: 0, zIndex: 1, width: "100%", padding: 5, background: '#141414', height: '74px' }}>
+        <Row justify={'center'} gutter={[20, 20]} style={{ padding: '0 35px' }}>
+          <Col style={{
+            color: '#fff',
+            fontWeight: '900',
+            padding: '10px',
+            fontSize: '15px',
+            textAlign: 'initial',
+          }} xs={2}>
+
+            VIRGO
+
           </Col>
-          <Col xs={12} sm={8} md={12} lg={12} xl={14} className='section-search'>
+
+          <Col xs={16} >
+            <Menu
+              defaultSelectedKeys={['/home']}
+              onClick={({ key }) => {
+                navigate(key)
+              }}
+              theme="dark"
+              style={{ background: '#141414', border: 'none' }}
+              mode="horizontal"
+              items={[
+                {
+                  label: "Home",
+                  key: "/home"
+                },
+
+                {
+                  label: "Rutas de Aprendizaje",
+                  key: "/home/rutas-de-aprendizaje"
+                },
+
+                {
+                  label: "Mi Progreso",
+                  key: "/home/mi-progreso"
+                },
+
+              ]}
+            />
+          </Col>
+
+          <Col span={4} xs={4} md={4} xl={4} className='section-search'>
             {/* <Input placeholder="Busca algun curso" allowClear onChange={onChange} /> */}
-            <Input.Search allowClear style={{ width: '100%' }} defaultValue="" />
+            {/* // este estaba */}
+            {/* <Input.Search allowClear style={{ width: '100%' }} defaultValue="" /> */}
+
             {/* <Button style={{ width: 80 }} onClick={() => onSearch('')}>
               Buscar
           </Button> */}
+            <Search placeholder="search text" onSearch={onSearch} style={{ width: 100 }} />
           </Col>
-          <Col xs={4} sm={4} md={4} lg={6} xl={4} className='section-user'>
+          <Col style={{ textAlign: 'end' }} xs={2}>
             <Dropdown menu={menuProps}>
               <Avatar
                 size="small"
                 icon={<UserOutlined />}
-                style={{ backgroundColor: "#87d068", marginRight: '10px' }}
+                style={{ backgroundColor: "#87d068", margin: '0 10px' }}
               />
 
             </Dropdown>
           </Col>
+
         </Row>
       </Header>
     </Layout>

@@ -1,8 +1,8 @@
 import React from 'react'
 import {
-    createBrowserRouter,
-    RouterProvider
-  } from "react-router-dom";
+  createBrowserRouter,
+  RouterProvider
+} from "react-router-dom";
 import { AccountPage } from "../pages/account/Account";
 import PublicRoute from "./PublicRoute";
 import PrivateRoute from "./PrivateRoute";
@@ -12,45 +12,56 @@ import { Login } from "../pages/login/Login"
 import { useAuth0 } from '@auth0/auth0-react'
 import { AdminCourses } from "../pages/admin-virgo/pages/editCourses/AdminCourses";
 import { ViewCourses } from "../pages/admin-virgo/pages/editCourses/ViewCourses";
+import MiProgreso from '../pages/mi-progreso/MiProgreso';
+import RutasDeAprendizaje from '../pages/rutas-aprendizaje/RutasDeAprendizaje';
 
 export default function RouterComponent() {
-    const { user, isAuthenticated, isLoading } = useAuth0()
-    // console.log('EN ROUTER 2', isAuthenticated,user,isLoading)
-    const router = createBrowserRouter([
-        {
-          path:'/',
-          element:<PublicRoute isAuthenticated={isAuthenticated} component={<Login/>}/>
-        },
+  const { user, isAuthenticated, isLoading } = useAuth0()
+  // console.log('EN ROUTER 2', isAuthenticated,user,isLoading)
+  const router = createBrowserRouter([
+    {
+      path: '/',
+      element: <PublicRoute isAuthenticated={isAuthenticated} component={<Login />} />
+    },
+    {
+      path: "/home",
+      element: <PrivateRoute isAuthenticated={isAuthenticated} component={<Main />} />,
+      children: [
+
         {
           path: "/home",
-          element: <PrivateRoute isAuthenticated={isAuthenticated} component={<Main/>}/>,
-          children: [
-            {
-              path: "/home",
-              element: <PrivateRoute isAuthenticated={isAuthenticated} component={<HomePage/>}/>,
-            },
-            // {
-            //   path: "/account",
-            //   element: <AccountPage />,
-            // },
-          ],
-          
+          element: <PrivateRoute isAuthenticated={isAuthenticated} component={<HomePage />} />,
         },
         {
-          path: "/account",
-          element: <AccountPage></AccountPage>,
+          path: "/home/rutas-de-aprendizaje",
+          element: <PrivateRoute isAuthenticated={isAuthenticated} component={<RutasDeAprendizaje />} />
         },
         {
-          path: "/admin/course",
-          element: <ViewCourses></ViewCourses>,
+          path: "/home/mi-progreso",
+          element: <PrivateRoute isAuthenticated={isAuthenticated} component={<MiProgreso />} />
         },
-        {
-          path: "/admin/course/:idCourse",
-          element: <AdminCourses></AdminCourses>,
-        },
-      ]);
-    
+        // {
+        //   path: "/account",
+        //   element: <AccountPage />,
+        // },
+      ],
+    },
+
+    {
+      path: "/account",
+      element: <AccountPage></AccountPage>,
+    },
+    {
+      path: "/admin/course",
+      element: <ViewCourses></ViewCourses>,
+    },
+    {
+      path: "/admin/course/:idCourse",
+      element: <AdminCourses></AdminCourses>,
+    },
+  ]);
+
   return (
-    <RouterProvider router={router}/>
+    <RouterProvider router={router} />
   )
 }
