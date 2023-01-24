@@ -1,57 +1,15 @@
-import { Button, Descriptions, List, Space } from "antd";
+import { Button, Descriptions, List } from "antd";
 import Paragraph from "antd/es/typography/Paragraph";
 import React, { useState } from "react";
-import { ConfigProvider, theme, Card } from "antd";
-
-export const VideoEditor = () => {
+import { ConfigProvider, theme } from "antd";
+import { Card, Space } from 'antd';
+import { Divider, Radio, Typography,Popover  } from "antd";
+import { PlusCircleOutlined } from '@ant-design/icons';
+export const VideoEditor = ({videos}) => {
   const { defaultAlgorithm, darkAlgorithm } = theme;
-  const data = Array.from({ length: 10 }).map((_, i) => ({
-    href: "https://ant.design",
-    title: `ant design part ${i}`,
-    avatar: "https://joeschmoe.io/api/v1/random",
-    description:
-      "Ant Design, a design language for background applications, is refined by Ant UED Team.",
-    content:
-      "We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.",
-  }));
 
-  const [dataVideo, setDataVideo] = useState<any[]>(
-    [
-      {
-        id: 1,
-        href: "https://ant.design",
-        title: `ant design part 1`,
-        avatar: "https://joeschmoe.io/api/v1/random",
-        description:
-          "Ant Design, a design language for background applications, is refined by Ant UED Team.",
-        content:
-          "We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.",
-      },
-      {
-        id: 2,
-        href: "https://ant.design",
-        title: `ant design part 1`,
-        avatar: "https://joeschmoe.io/api/v1/random",
-        description:
-          "Ant Design, a design language for background applications, is refined by Ant UED Team.",
-        content:
-          "We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.",
-      }
-    ]
-  );
-  const IconText = ({ icon, text }: { icon: React.FC; text: string }) => (
-    <Space>
-      {React.createElement(icon)}
-      {text}
-    </Space>
-  );
-  const updateDesc = (value: any, index: any) => {
-    const newData = [...dataVideo]
-    newData[index].description = value
-    console.log(newData)
-    setDataVideo(newData)
-    console.log(dataVideo)
-  };
+  // const [video,setVideos] = useState(videos)
+  console.log(videos)
   return (
     <>
     <ConfigProvider
@@ -59,38 +17,63 @@ export const VideoEditor = () => {
           algorithm:darkAlgorithm
         }}
     >
-      <List
+      <Space>
+        {
+          videos.map((value:any,index:any)=>{
+            return(
+              <Card 
+                title={
+                  <Typography.Title
+                  editable={{
+                    onChange: (value) => {
+                      console.log(value)
+                      // setDescriptionCourse(value)
+                      // editCourseData(currentState.id,'description',value)
+                    }
+                  }}
+                  onChange = {(data)=>console.log(data)}
+                  level={4}
+                  style = {{margin:0}}
+                >
+                  {value['name']}
+                </Typography.Title>
+                }
+                style={{ width: 300,marginLeft:10 }}
+                extra = {
+                  <Popover  content={<p>Preguntas</p>}>
+                    <PlusCircleOutlined style = {{color:'green',cursor:'pointer'}} onClick= {()=>{alert("open modal to add question")}} />
+                  </Popover>
+                
+              }
+              >
+                <img 
+                  src={value['thumbnail']}
+                  style = {{width:'100%'}}
+                />
+              
+                <span style = {{fontSize:18}}>
+                <Typography.Title
+                  editable={{
+                    onChange: (value) => {
+                      console.log(value)
+                      // setDescriptionCourse(value)
+                      // editCourseData(currentState.id,'description',value)
+                    }
+                  }}
+                  onChange = {(data)=>console.log(data)}
+                  level={4}
+                  style = {{margin:0}}
+                >
+                  {value['description']}
+                </Typography.Title>
+                </span>
+              </Card>
+            )
+          })
+        }
+      </Space>
 
-        itemLayout="vertical"
-        size="large"
-        dataSource={dataVideo}
-        renderItem={(item, index) => (
-          <List.Item
-            key={item.title}
-            actions={[
-              <Button type="primary" shape="round">
-                Editar Preguntas
-              </Button>,
-            ]}
-            extra={
-              <img
-                width={272}
-                alt="logo"
-                src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
-              />
-            }
-          >
-            <List.Item.Meta title={item.title} />
-            <Paragraph
-              editable={{
-                onChange: (value) => updateDesc(value, index),
-              }}
-            >
-              {item.description}
-            </Paragraph>
-          </List.Item>
-        )}
-      />
+      
       </ConfigProvider>
     </>
   );

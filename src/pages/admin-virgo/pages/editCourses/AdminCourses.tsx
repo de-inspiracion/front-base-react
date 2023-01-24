@@ -10,7 +10,6 @@ export const AdminCourses = () => {
     <div className='admin-course' style = {{backgroundColor:'black',color:'white'}}>
       <Divider style={{color:'white'}}>Editor de curso</Divider>
       <CourseEditor state = {state}></CourseEditor>
-      <VideoEditor></VideoEditor>
     </div>
   );
 };

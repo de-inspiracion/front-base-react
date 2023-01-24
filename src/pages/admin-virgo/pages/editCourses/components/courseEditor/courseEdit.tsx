@@ -7,6 +7,7 @@ import UploadImage from "../upload/uploadImage";
 import services from '../../../../../../services/http'
 const { Paragraph } = Typography;
 import { useParams } from "react-router-dom";
+import { VideoEditor } from "../videoEditor/videoEditor";
 
 export const CourseEditor = (state:any) => {
   const [loading,setLoading] = useState(false)
@@ -22,7 +23,7 @@ export const CourseEditor = (state:any) => {
   const [value, setValue] = useState(0); // integer state
   const [c_,setC_] = useState<any>([])
   const [r_,setR_] = useState<any>([])
-
+  const [videos,setVideos] = useState([])
   useEffect( () => {
     (async ()=>{
       let res = await services.getInfo(idCourse)
@@ -34,6 +35,7 @@ export const CourseEditor = (state:any) => {
       setTags(res[2]['tags'])
       setRoutes(res[2]['route'])
       setCategory(res[2]['category'])
+      setVideos(res[2]['videos'])
     })()
 
   }, [])
@@ -202,6 +204,10 @@ export const CourseEditor = (state:any) => {
           >Actualizar</Button>
         </Col>
       </Row>
+
+      <VideoEditor videos = {videos}>
+
+      </VideoEditor>
       </ConfigProvider>
     </ div>
     
