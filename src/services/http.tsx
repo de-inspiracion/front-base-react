@@ -96,6 +96,12 @@ const getInfo = async (id: string | undefined) => {
   return [c_, r_, course.data.payload]
 }
 
+const editVideoInfo = async (id: string, body: any) => {
+  const res = await axios.post(`https://nestjs-virgo-production.up.railway.app/videos/${id}`, body)
+  window.location.reload()
+  return res
+}
+
 export default {
   post,
   getCourses,
@@ -103,6 +109,7 @@ export default {
   getUserInfo,
   updateCourse,
   getInfo,
+  editVideoInfo,
   postScore
 }
 
