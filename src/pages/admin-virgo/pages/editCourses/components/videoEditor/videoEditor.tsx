@@ -2,13 +2,37 @@ import { Button, Descriptions, List } from "antd";
 import Paragraph from "antd/es/typography/Paragraph";
 import React, { useState } from "react";
 import { ConfigProvider, theme } from "antd";
-import { Card, Space } from 'antd';
+import { Card, Space ,Grid, Row,Col} from 'antd';
 import { Divider, Radio, Typography,Popover,Modal } from "antd";
-import { PlusCircleOutlined } from '@ant-design/icons';
+import { PlusCircleOutlined,DeleteOutlined } from '@ant-design/icons';
+import services from '../../../../../../services/http'
+
 export const VideoEditor = ({videos}) => {
+  
   const { defaultAlgorithm, darkAlgorithm } = theme;
   const [open,setOpen] = useState(false)  
 
+  const editVideoInfo = async (id:any,body:any) => {
+    await services.editVideoInfo(id,body)
+  }
+
+  const EditableText = ({func,text})=>{
+    return (
+      <Typography.Title
+                  editable={{
+                    onChange: async (value) => {
+                      await func(value)
+                      // window.location.reload()
+                    }
+                  }}
+                  level={4}
+                  style = {{margin:0}}
+                >
+                  {text}
+                </Typography.Title>
+    )
+  }
+  
   console.log(videos)
   return (
     <>
@@ -22,21 +46,13 @@ export const VideoEditor = ({videos}) => {
           videos.map((value:any,index:any)=>{
             return(
               <Card 
+                key={index}
                 title={
-                  <Typography.Title
-                  editable={{
-                    onChange: (value) => {
-                      console.log(value)
-                      // setDescriptionCourse(value)
-                      // editCourseData(currentState.id,'description',value)
+                  <EditableText text = {value['name']} func = {
+                    (text:any)=>{
+                      editVideoInfo(value['id'],{'name':text})
                     }
-                  }}
-                  onChange = {(data)=>console.log(data)}
-                  level={4}
-                  style = {{margin:0}}
-                >
-                  {value['name']}
-                </Typography.Title>
+                  }/>
                 }
                 style={{ width: 300,marginLeft:10 }}
                 extra = {
@@ -52,20 +68,11 @@ export const VideoEditor = ({videos}) => {
                 />
               
                 <span style = {{fontSize:18}}>
-                <Typography.Title
-                  editable={{
-                    onChange: (value) => {
-                      console.log(value)
-                      // setDescriptionCourse(value)
-                      // editCourseData(currentState.id,'description',value)
+                  <EditableText text={value['description']} func = {
+                    (text:any)=>{
+                      editVideoInfo(value['id'],{'description':text})
                     }
-                  }}
-                  onChange = {(data)=>console.log(data)}
-                  level={4}
-                  style = {{margin:0}}
-                >
-                  {value['description']}
-                </Typography.Title>
+                  }/>
                 </span>
               </Card>
             )
@@ -75,47 +82,56 @@ export const VideoEditor = ({videos}) => {
 
       
 
-      <Modal width="80%" title="Preguntas" open={open} onOk = {()=>{setOpen(false)}}>
-        
+      <Modal width="80vw" title="Preguntas" open={open} onOk = {()=>{setOpen(false)}} >
+          <div style = {{cursor:'pointer'}}>
+            + ADD QUESTION
+          </div>
           <div style={{display:'flex',gap:50,width:'100%',justifyContent:'center'}}>
-            <Card title = "QUESTION 1">
-                <Radio.Group >
-                  <Space direction="vertical">
-                    <Radio value={1}>Option AOption AOption AOption Option AOption AOption AOption Option AOption AOption AOption Option AOption AOption AOption Option AOption AOption AOption Option AOption AOption AOption A</Radio>
-                    <Radio value={2}>Option B</Radio>
-                    <Radio value={3}>Option C</Radio>
-                    <Radio value={4}>
-                      More...
-                    </Radio>
-                  </Space>
-                </Radio.Group>
-            </Card>
+            <Row>
+              <Col>
+                <Card title = {<EditableText text={'QUESTION 1'} />} extra = {<DeleteOutlined style = {{color:'red',fontSize:18,marginLeft:100}} />}>
+                    <Radio.Group >
+                      <Space direction="vertical">
+                        <Radio value={1}>{<EditableText text={'OPTION A'} />}</Radio>
+                        <Radio value={2}>{<EditableText text={'OPTION B'} />}</Radio>
+                        <Radio value={3}>{<EditableText text={'OPTION C'} />}</Radio>
+                        <div onClick={()=>{alert('ADD OPTION')}} style = {{cursor:'pointer'}}> + ADD OPTION</div>
+                      </Space>
+                    </Radio.Group>
+                </Card>
+              </Col>
+            </Row>
 
-            <Card title = "QUESTION 1">
-                <Radio.Group >
-                  <Space direction="vertical">
-                    <Radio value={1}>OpOption AOption AOption AOption Option AOption AOption AOption Option AOption AOption AOption tion A</Radio>
-                    <Radio value={2}>Option B</Radio>
-                    <Radio value={3}>OptiOption AOption AOption AOption Option AOption AOption AOption Option AOption AOption AOption on C</Radio>
-                    <Radio value={4}>
-                      More...
-                    </Radio>
-                  </Space>
-                </Radio.Group>
-            </Card>
+            <Row>
+              <Col>
+                <Card title = {<EditableText text={'QUESTION 1'} />} extra = {<DeleteOutlined style = {{color:'red',fontSize:18,marginLeft:100}} />}>
+                    <Radio.Group >
+                      <Space direction="vertical">
+                        <Radio value={1}>{<EditableText text={'OPTION A'} />}</Radio>
+                        <Radio value={2}>{<EditableText text={'OPTION B'} />}</Radio>
+                        <Radio value={3}>{<EditableText text={'OPTION C'} />}</Radio>
+                        <div onClick={()=>{alert('ADD OPTION')}} style = {{cursor:'pointer'}}> + ADD OPTION</div>
+                      </Space>
+                    </Radio.Group>
+                </Card>
+              </Col>
+            </Row>
 
-            <Card title = "QUESTION 1">
-                <Radio.Group >
-                  <Space direction="vertical">
-                    <Radio value={1}>Option A</Radio>
-                    <Radio value={2}>Option B</Radio>
-                    <Radio value={3}>OpOption AOption AOption AOption Option AOption AOption AOption Option AOption AOption AOption tion C</Radio>
-                    <Radio value={4}>
-                      More...
-                    </Radio>
-                  </Space>
-                </Radio.Group>
-            </Card>
+            <Row>
+              <Col>
+                <Card title = {<EditableText text={'QUESTION 1'} />} extra = {<DeleteOutlined style = {{color:'red',fontSize:18,marginLeft:100}} />}>
+                    <Radio.Group >
+                      <Space direction="vertical">
+                        <Radio value={1}>{<EditableText text={'OPTION A'} />}</Radio>
+                        <Radio value={2}>{<EditableText text={'OPTION B'} />}</Radio>
+                        <Radio value={3}>{<EditableText text={'OPTION C'} />}</Radio>
+                        <div onClick={()=>{alert('ADD OPTION')}} style = {{cursor:'pointer'}}> + ADD OPTION</div>
+                      </Space>
+                    </Radio.Group>
+                </Card>
+              </Col>
+            </Row>
+
           </div>
 
 
