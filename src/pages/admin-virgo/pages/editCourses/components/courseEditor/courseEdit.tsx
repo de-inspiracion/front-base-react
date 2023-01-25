@@ -9,6 +9,10 @@ const { Paragraph } = Typography;
 import { useParams } from "react-router-dom";
 import { VideoEditor } from "../videoEditor/videoEditor";
 
+import { UploadOutlined,FileImageOutlined } from '@ant-design/icons';
+import type { UploadProps } from 'antd';
+import { message, Upload } from 'antd';
+
 export const CourseEditor = (state:any) => {
   const [loading,setLoading] = useState(false)
   let idCourse:string|undefined = useParams()['idCourse']
@@ -24,6 +28,7 @@ export const CourseEditor = (state:any) => {
   const [c_,setC_] = useState<any>([])
   const [r_,setR_] = useState<any>([])
   const [videos,setVideos] = useState([])
+  const [img,setImg] = useState<any>([])
   useEffect( () => {
     (async ()=>{
       let res = await services.getInfo(idCourse)
@@ -60,9 +65,44 @@ export const CourseEditor = (state:any) => {
           algorithm:darkAlgorithm
         }}
     >
+
       <Row justify="center" align="middle">
+        <Col span={5}><img src={currentState['cover']} style = {{width:150}}/></Col>
         <Col span={4}>
-          <UploadImage></UploadImage>
+          {/* <input 
+            type='file'
+            style = {{backgroundColor:'black'}}
+            onChange={(e)=>{
+              console.log(e.target.files[0])
+              setImg(e.target.files[0])
+            }}
+            >
+          
+            </input> */}
+            <Upload
+              name="avatar"
+              listType="picture-card"
+              className="avatar-uploader"
+              showUploadList={false}
+              multiple = {false}
+              accept="image/*"
+
+              // action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+              onChange={(e)=>{
+                console.log(e.fileList[0]['originFileObj'])
+                setImg(e.fileList[0]['originFileObj'])
+              }}
+            >
+              < FileImageOutlined style = {{fontSize:30}} />
+
+        </Upload>
+        </Col>
+        <Col>
+        <Button onClick={async ()=>{
+            const formData = new FormData();
+            formData.append("cover",img)
+            await services.editCourseCover(currentState.id,formData)
+          }}>Subir Imagen</Button>
         </Col>
       </Row>
 

@@ -33,7 +33,6 @@ export const VideoEditor = ({videos}) => {
     )
   }
   
-  console.log(videos)
   return (
     <>
     <ConfigProvider
