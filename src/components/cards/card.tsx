@@ -1,6 +1,6 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, HtmlHTMLAttributes } from 'react'
 import { CloseOutlined } from '@ant-design/icons'
-import { Rate, Modal, Button, Layout, Divider, Card } from 'antd';
+import { Rate, Modal, Button, Layout, Divider, Card, Row } from 'antd';
 import services from '../../services/http'
 import './card.css'
 
@@ -42,14 +42,33 @@ const CardV: any = ({ itemData, key, index }: any) => {
 }
 
 
-
-
 const ModalCard = ({ data, score, Abierto, Cerrar }: any) => {
   const [open, setOpen] = useState(Abierto)
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [videoIndex, setVideoIndex] = useState(0)
+  const [rate, setRate] = useState(0)
 
-  console.log('en modal: ', data)
+
+
+  const handleSubmitScore = async () => {
+    try {
+      const res = await services.postScore(data.videos[videoIndex - 1]?.id, rate)
+      console.log('res, se envio a la base de datos', res)
+    } catch {
+      console.error('error al enviar la calificacion');
+    }
+  }
+
+  useEffect(() => {
+    if (rate > 0) {
+      handleSubmitScore
+    }
+  }, [rate])
+
+
+  console.log('data videos', data.videos)
+  // console.log('data videos', data.videos)
+  // console.log('datos de id', data.videos[(data.video[1].position)-1].id)
   // const data_videos = data.map((item:any) => {
   //   let data_object = {
   //     "name":item.name,
@@ -119,6 +138,8 @@ const ModalCard = ({ data, score, Abierto, Cerrar }: any) => {
     Cerrar(false)
     setOpen(false)
   }
+
+
   const handleOk = () => {
     setConfirmLoading(true);
     setTimeout(() => {
@@ -144,7 +165,7 @@ const ModalCard = ({ data, score, Abierto, Cerrar }: any) => {
         style={{ background: '#181818', padding: '0 0' }}>
 
 
-        <div style={{ width: '100%', maxWidth: '750px', height: '45vh', maxHeight: '550px' }}>
+        <Row style={{ width: '100%', maxWidth: '750px', height: '45vh', maxHeight: '550px' }}>
           {/* <iframe src="https://iframe.mediadelivery.net/embed/759/eb1c4f77-0cda-46be-b47d-1118ad7c2ffe?autoplay=true" 
                 loading="lazy"  style={{width:'100%'}}
                 allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" allowFullScreen={true}>
@@ -158,20 +179,37 @@ const ModalCard = ({ data, score, Abierto, Cerrar }: any) => {
                 allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" allowFullScreen={true}>
               </iframe>
           }
-        </div>
+        </Row>
+
         <Content style={{ alignItems: 'center', display: 'flex', flexDirection: 'column' }}>
           <div style={{ display: 'flex', flexDirection: 'column', width: '100%', height: '40vh', justifyContent: 'space-evenly' }}>
             <div style={{ background: '#101012e3', marginTop: '3%', padding: '0 25px', display: 'flex', flexDirection: 'column', width: '100%', height: '100%' }}>
               <div style={{ display: 'flex', alignItems: 'center', }}>
-                <Rate allowHalf defaultValue={score} />
-                <p style={{ color: 'white', fontSize: '18px' }}>
-                  {score} / 5
+                {
+                  rate === 0 ?
+                    <Rate onChange={setRate} defaultValue={rate} />
+                    :
+                    <Rate disabled defaultValue={2} />
+                }
+
+                <p style={{ color: 'white', fontSize: '18px', paddingLeft: '15px' }}>
+                  {rate} / 5
                 </p>
               </div>
-              <h2 style={{ color: 'grey', margin: '0' }}>{data.name}</h2>
-              <p style={{ color: 'white', overflowY: 'auto', width: '100%' }}>
-                {data.description}
-              </p>
+              {
+                videoIndex === 0 ?
+                  <h2 style={{ color: 'grey', margin: '0' }}>{data.name}</h2>
+                  :
+                  <h2 style={{ color: 'grey', margin: '0' }}>{data.videos[videoIndex - 1].name}</h2>
+              }
+              {
+                videoIndex === 0 ?
+                  <p style={{ color: 'white', overflowY: 'auto', width: '100%' }}>
+                    {data.description}
+                  </p>
+                  :
+                  <p style={{ color: 'white', overflowY: 'auto', width: '100%' }}>{data.videos[videoIndex - 1].description}</p>
+              }
             </div>
             <div style={{ background: '#101012e3', marginTop: '3%', padding: '0 25px', display: 'flex', width: '100%', maxWidth: '750px', height: '100%', alignItems: 'center' }}>
               <div style={{ display: 'flex', flexDirection: 'column', width: '100%', flexWrap: 'wrap', justifyContent: 'center' }}>

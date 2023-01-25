@@ -75,13 +75,13 @@ const NavBarComponent: React.FC = () => {
             padding: '10px',
             fontSize: '15px',
             textAlign: 'initial',
-          }} xs={2}>
+          }} xs={4}>
 
             VIRGO
 
           </Col>
 
-          <Col xs={16} >
+          <Col xs={12} >
             <Menu
               defaultSelectedKeys={['/home']}
               onClick={({ key }) => {
@@ -118,7 +118,7 @@ const NavBarComponent: React.FC = () => {
             {/* <Button style={{ width: 80 }} onClick={() => onSearch('')}>
               Buscar
           </Button> */}
-            <Search placeholder="search text" onSearch={onSearch} style={{ width: 100 }} />
+            <Search placeholder="search text" onSearch={onSearch} style={{ width: '100%' }} />
           </Col>
           <Col style={{ textAlign: 'end' }} xs={2}>
             <Dropdown menu={menuProps}>
