@@ -182,6 +182,7 @@ const ModalCard = ({ data, score, Abierto, Cerrar }: any) => {
           console.log(res, "se envio a la base de datos");
           user.scored.push({video: idVideo})
           isScored = true
+          setRate(userScore.score)
         })
         .catch((error) => {
           console.log(error, "error al enviar la calificacion");
