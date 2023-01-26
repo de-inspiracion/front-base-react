@@ -3,6 +3,8 @@ import { CloseOutlined } from '@ant-design/icons'
 import { Rate, Modal, Button, Layout, Divider, Card, Row } from 'antd';
 import services from '../../services/http'
 import './card.css'
+import axios from 'axios';
+import { useAuth0 } from '@auth0/auth0-react';
 
 //estilos del modal
 const { Content } = Layout;
@@ -43,30 +45,15 @@ const CardV: any = ({ itemData, key, index }: any) => {
 
 
 const ModalCard = ({ data, score, Abierto, Cerrar }: any) => {
+  const { user } = useAuth0()
   const [open, setOpen] = useState(Abierto)
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [videoIndex, setVideoIndex] = useState(0)
   const [rate, setRate] = useState(0)
+  const [userInfo, setUserInfo] = useState({})
 
-
-
-  const handleSubmitScore = async () => {
-    try {
-      const res = await services.postScore(data.videos[videoIndex - 1]?.id, rate)
-      console.log('res, se envio a la base de datos', res)
-    } catch {
-      console.error('error al enviar la calificacion');
-    }
-  }
-
-  useEffect(() => {
-    if (rate > 0) {
-      handleSubmitScore
-    }
-  }, [rate])
-
-
-  console.log('data videos', data.videos)
+  const modalRef = useRef(null);
+  const { Meta } = Card;
   // console.log('data videos', data.videos)
   // console.log('datos de id', data.videos[(data.video[1].position)-1].id)
   // const data_videos = data.map((item:any) => {
@@ -78,8 +65,6 @@ const ModalCard = ({ data, score, Abierto, Cerrar }: any) => {
   //   return data_object 
   // })
 
-  const modalRef = useRef(null);
-  const { Meta } = Card;
 
   const cuourse_tags = ['tag1', 'tag2', 'tag3', 'tag4', 'tag5', 'tag6', 'tag7']
   const course_videos = [
@@ -147,6 +132,69 @@ const ModalCard = ({ data, score, Abierto, Cerrar }: any) => {
       setConfirmLoading(false);
     }, 2000);
   };
+
+
+  console.log(userInfo.id, 'id del usuario')
+  // Post de Score
+  console.log(data.videos, 'data videos')
+
+
+  useEffect(() => {
+    const getData = async () => {
+      console.log('user', user)
+      let res = await services.getUserInfo(String(user?.email))
+      setUserInfo(res)
+    }
+
+  }, [])
+
+
+  // const scoredUser = getData.payload.scored
+
+
+
+  useEffect(() => {
+
+    const idVideo = data.videos[videoIndex - 1]?.id
+
+    console.log(idVideo, 'id del video')
+
+    console.log(videoIndex, 'index del video')
+
+    console.log(data.videos, 'data videos')
+
+    console.log(data.videos[videoIndex]?.score.averageScore, 'score del video')
+    console.log('user info', userInfo)
+    //aqui usamos el ID del usuario
+    const headers = {
+      'userId': userInfo.id //id del usuario
+    };
+
+    const userScore = {
+      'score': rate
+    }
+
+    if (rate > 0) {
+      axios.post(`https://nestjs-virgo-production.up.railway.app/videos/${idVideo}/score`, userScore, { headers: headers })
+        .then((res) => {
+          console.log(res, 'se envio a la base de datos')
+
+        })
+        .catch((error) => {
+          console.log(error, 'error al enviar la calificacion')
+        })
+        .finally(
+
+      )
+    } else {
+      console.log('no se envio nada')
+    }
+
+  }, [rate])
+
+
+
+
   return (
     <Modal
 
@@ -186,15 +234,23 @@ const ModalCard = ({ data, score, Abierto, Cerrar }: any) => {
             <div style={{ background: '#101012e3', marginTop: '3%', padding: '0 25px', display: 'flex', flexDirection: 'column', width: '100%', height: '100%' }}>
               <div style={{ display: 'flex', alignItems: 'center', }}>
                 {
-                  rate === 0 ?
-                    <Rate onChange={setRate} defaultValue={rate} />
+                  // Si existe el video en el array de videos puntuados por el usuario debo deshabilitar el rate
+
+                  // video actual vs video puntuado  utilizando un forEach de los scores del usuario
+                  data.videos[videoIndex - 1]?.score.averageScore ?
+                    <Rate allowHalf disabled value={data.videos[videoIndex - 1]?.score.averageScore} />
                     :
-                    <Rate disabled defaultValue={2} />
+                    <Rate allowHalf defaultValue={0} value={data.videos[videoIndex - 1]?.score.averageScore} onChange={value => setRate(value)} />
                 }
 
-                <p style={{ color: 'white', fontSize: '18px', paddingLeft: '15px' }}>
-                  {rate} / 5
-                </p>
+                {
+                  data.videos[videoIndex - 1]?.score.averageScore ?
+                    <p style={{ color: 'white', fontSize: '18px', paddingLeft: '15px' }}>
+                      {data.videos[videoIndex - 1]?.score.averageScore} / 5
+                    </p>
+                    :
+                    <p style={{ color: 'white', fontSize: '18px', paddingLeft: '15px' }}>{rate}/5</p>
+                }
               </div>
               {
                 videoIndex === 0 ?

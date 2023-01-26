@@ -9,16 +9,16 @@ import CardSlice from "../../../../components/cardSlice/cardSlice";
 
 const inProfressList = [
   { title: "curso 1", key: 0 },
-  { title: "curso 2" ,  key: 1},
+  { title: "curso 2", key: 1 },
 ];
 
 const coursesInProgress = getListInProgress().then(data => {
-// console.log(data.data)
+  // console.log(data.data)
 })
 
 
 
-const CoursesInProgress: React.FC =  () => {
+const CoursesInProgress: React.FC = () => {
 
   const count = useSelector((state: any) => state.userInfo)
   console.log(count)
@@ -30,15 +30,15 @@ const CoursesInProgress: React.FC =  () => {
 
   return (
     <>
-    {/* <div className="titleV">
+      {/* <div className="titleV">
       <p>Cursos que aun no terminas</p>
     </div> */}
-    <Row className="" gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} style={{ overflow: 'hidden'}}>
-    <CardSlice title='en progreso'></CardSlice>
-    {/* <CardSlice title='Recomendado'></CardSlice>
+      <Row className="" gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} style={{ overflow: 'hidden' }}>
+        <CardSlice title='en progreso'></CardSlice>
+        {/* <CardSlice title='Recomendado'></CardSlice>
     <CardSlice title='educacion'></CardSlice>
     <CardSlice title='liderazgo'></CardSlice> */}
-  {/* <div style="position: relative; padding-top: 56.25%;"><iframe src="https://iframe.mediadelivery.net/embed/80619/2d4d89ed-f1f8-4a7d-8e61-1b04f58a0a33?autoplay=false&preload=false" loading="lazy" style="border: none; position: absolute; top: 0; height: 100%; width: 100%;" allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" allowfullscreen="true"></iframe></div>
+        {/* <div style="position: relative; padding-top: 56.25%;"><iframe src="https://iframe.mediadelivery.net/embed/80619/2d4d89ed-f1f8-4a7d-8e61-1b04f58a0a33?autoplay=false&preload=false" loading="lazy" style="border: none; position: absolute; top: 0; height: 100%; width: 100%;" allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" allowfullscreen="true"></iframe></div>
       <div style={{ color: 'black' }}>
         {count.name}
       </div> */}
@@ -50,7 +50,7 @@ const CoursesInProgress: React.FC =  () => {
           );
         })} */}
       </Row>
-        </>
+    </>
   );
 }
 export default CoursesInProgress;

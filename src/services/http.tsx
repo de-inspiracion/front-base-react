@@ -21,17 +21,7 @@ const getCourses = async () => {
   return courses_res
 }
 
-// Post de Score
-const postScore = async (id: string, score: number) => {
-  const result = await axios({
-    method: 'post',
-    url: `https://nestjs-virgo-production.up.railway.app/videos/${id}/score`,
-    data: {
-      score
-    }
-  })
-  return result;
-}
+
 
 
 const getCourseVideos = async (courseId: String) => {
@@ -60,8 +50,6 @@ const updateCourse = async (id: string, field: string, data: any) => {
   const res = await axios.put(`https://nestjs-virgo-production.up.railway.app/courses/${id}`, body)
   return res
 }
-
-
 
 const getInfo = async (id: string | undefined) => {
   let category: any = await axios.get(`https://nestjs-virgo-production.up.railway.app/category`)
@@ -109,8 +97,7 @@ export default {
   getUserInfo,
   updateCourse,
   getInfo,
-  editVideoInfo,
-  postScore
+  editVideoInfo
 }
 
 
