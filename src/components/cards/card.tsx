@@ -2,9 +2,10 @@ import { useState, useEffect, useRef, HtmlHTMLAttributes } from 'react'
 import { CloseOutlined } from '@ant-design/icons'
 import { Rate, Modal, Button, Layout, Divider, Card, Row } from 'antd';
 import services from '../../services/http'
+import { ReactNetflixPlayer } from 'react-netflix-player';
 import './card.css'
-
 //estilos del modal
+
 const { Content } = Layout;
 
 
@@ -15,7 +16,6 @@ const CardV: any = ({ itemData, key, index }: any) => {
   const showModal = () => {
     setOpen(true)
   }
-  console.log('data curso: ', courseData)
   const handleClose = () => {
     setOpen(false)
   }
@@ -29,7 +29,6 @@ const CardV: any = ({ itemData, key, index }: any) => {
     getData()
   }, [])
 
-  // console.log(`INDEX: ${index} `,courseData)
 
   return (
     <div key={key} className="movieRow--item">
@@ -65,18 +64,6 @@ const ModalCard = ({ data, score, Abierto, Cerrar }: any) => {
     }
   }, [rate])
 
-
-  console.log('data videos', data.videos)
-  // console.log('data videos', data.videos)
-  // console.log('datos de id', data.videos[(data.video[1].position)-1].id)
-  // const data_videos = data.map((item:any) => {
-  //   let data_object = {
-  //     "name":item.name,
-  //     "duration":item.duration,
-
-  //   }
-  //   return data_object 
-  // })
 
   const modalRef = useRef(null);
   const { Meta } = Card;
@@ -166,18 +153,13 @@ const ModalCard = ({ data, score, Abierto, Cerrar }: any) => {
 
 
         <Row style={{ width: '100%', maxWidth: '750px', height: '45vh', maxHeight: '550px' }}>
-          {/* <iframe src="https://iframe.mediadelivery.net/embed/759/eb1c4f77-0cda-46be-b47d-1118ad7c2ffe?autoplay=true" 
-                loading="lazy"  style={{width:'100%'}}
-                allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" allowFullScreen={true}>
-            </iframe> */}
           {
             videoIndex === 0 ?
               <img src="https://i.ytimg.com/vi/Dc6likh5aWk/maxresdefault.jpg" alt="foto curso" style={{ width: '100%', height: '100%' }} />
               :
-              <iframe src={`${data.videos[videoIndex - 1].urlEmbed}?autoplay=true`}
-                loading="lazy" style={{ width: '100%', height: '100%' }}
-                allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" allowFullScreen={true}>
-              </iframe>
+              <div style={{width:'100%',height:'100%'}}>
+                <ReactNetflixPlayer src = "https://virgostore.blob.core.windows.net/files/3.%20clase%203.mp4" autoPlay={true} fullPlayer={false} onEnded={()=>{console.log('termino')}} />
+              </div>
           }
         </Row>
 

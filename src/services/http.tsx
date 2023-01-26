@@ -47,9 +47,7 @@ const getCourseVideos = async (courseId: String) => {
 }
 
 const getUserInfo = async (email: String) => {
-  console.log('emauil ', email)
   const res = await axios.get(`https://nestjs-virgo-production.up.railway.app/user/${email}`)
-  console.log(res)
   return res.data.payload
 }
 

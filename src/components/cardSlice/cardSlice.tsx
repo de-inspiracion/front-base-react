@@ -12,7 +12,6 @@ function CardSlide({ title }: any) {
 
   const [items, setIems] = useState([])
   useEffect(() => {
-    console.log('USEFFECT 1')
     const getData = async () => {
       const res = await services.getCourses()
       setIems(res.data.payload)
@@ -21,16 +20,6 @@ function CardSlide({ title }: any) {
   }, [])
 
 
-  // useEffect(()=>{
-  //   console.log('USEEFFECT 2')
-  //   const getData = async () => {
-  //     // setIems(await services.getCourseVideos(courseData[0].id).payload)
-  //     let res = await services.getCourseVideos(courseData[0]?.id)
-  //     console.log('RES:    ',res)
-  //     setIems(res.payload)
-  //   }
-  //   getData()
-  // },[courseData]) // esto trigerea el useffec cuando se setea el courseData
 
 
   const [scrollX, setScrollX] = useState(0);
@@ -63,6 +52,7 @@ function CardSlide({ title }: any) {
     },
   });
 
+
   return (
     <>
       <div className="movieRow" {...handlers}>
@@ -79,7 +69,6 @@ function CardSlide({ title }: any) {
             marginLeft: scrollX,
           }}>
             {items?.length > 0 && items.map((item, key) => (
-              console.log(items),
               <CardV key={key} itemData={item} index={key} ></CardV>
               // <div key={key} className="movieRow--item">
               //     <img src={`https://image.tmdb.org/t/p/w300${item.poster_path}`}/>

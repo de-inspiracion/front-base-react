@@ -8,8 +8,13 @@ import './home.css'
 import services from '../../services/http'
 export const HomePage = () => {
   const { user, isAuthenticated, isLoading } = useAuth0()
-  const [userInfo, setUserInfo] = useState({})
-  console.log(isAuthenticated, user?.email)
+  const [userInfo, setUserInfo] = useState({
+    id:"",
+    nombre:"",
+    email:"",
+    directive:"",
+    perfil:""
+  })
 
   useEffect(() => {
     const getData = async () => {
@@ -19,7 +24,6 @@ export const HomePage = () => {
     getData()
   }, [])
 
-  console.log('info user: ', userInfo)
   return (
     <Content className='homePage'>
       {isAuthenticated &&
@@ -32,7 +36,6 @@ export const HomePage = () => {
         </div>
       }
       <CoursesInProgress></CoursesInProgress>
-      <RecommendedCourses></RecommendedCourses>
     </Content>
   )
 }
