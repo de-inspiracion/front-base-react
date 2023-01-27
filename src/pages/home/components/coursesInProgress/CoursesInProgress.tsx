@@ -41,6 +41,7 @@ const CoursesInProgress: React.FC =  () => {
       <p>Cursos que aun no terminas</p>
     </div> */}
     <Row className="" gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} style={{ overflow: 'hidden'}}>
+    {/* <CardSlice title='en progreso'></CardSlice> */}
     { 
       categories.length > 0 && 
       categories.map((categoria:any) => {

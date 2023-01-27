@@ -28,11 +28,11 @@ export const HomePage = () => {
     <Content className='homePage'>
       {isAuthenticated &&
         <div style={{ color: 'white' }}>
-          <h5>id: {userInfo.id}</h5>
+          {/* <h5>id: {userInfo.id}</h5>
           <h5>nombre: {userInfo?.nombre}</h5>
           <h5>correo: {userInfo.email}</h5>
           <h5>director: {userInfo.directive}</h5>
-          <h5>director: {userInfo.perfil}</h5>
+          <h5>director: {userInfo.perfil}</h5> */}
         </div>
       }
       <CoursesInProgress></CoursesInProgress>
