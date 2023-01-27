@@ -39,3 +39,8 @@
 .ant-menu-light.ant-menu-horizontal>.ant-menu-item-selected::after {
   border-bottom-color: #ec0303;
 } */
+
+.ant-menu-item-selected {
+  background-color: #7a7a7a !important; 
+  color: #fff !important;
+}
