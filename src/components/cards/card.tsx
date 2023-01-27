@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, HtmlHTMLAttributes } from 'react'
 import { CloseOutlined } from '@ant-design/icons'
-import { Rate, Modal, Button, Layout, Divider, Card, Row,Space, Tag } from 'antd';
+import { Rate, Modal, Button, Layout, Divider, Card, Row, Space, Tag } from 'antd';
 import services from '../../services/http'
 import { ReactNetflixPlayer } from 'react-netflix-player';
 import './card.css'
@@ -10,7 +10,7 @@ const { Content } = Layout;
 
 
 
-const CardV: any = ({ itemData,Image, key, index }: any) => {
+const CardV: any = ({ itemData, Image, key, index }: any) => {
   const [open, setOpen] = useState(false)
   const [courseData, setCourseData] = useState([])
   const showModal = () => {
@@ -33,7 +33,7 @@ const CardV: any = ({ itemData,Image, key, index }: any) => {
   return (
     <div key={key} className="movieRow--item">
       {open && <ModalCard index={index} data={courseData} score={itemData.score} Abierto={open} Cerrar={handleClose} />}
-      <img src={ Image ? Image : 'https://image.tmdb.org/t/p/w300/20mOwAAPwZ1vLQkw0fvuQHiG7bO.jpg'} onClick={() => {
+      <img src={Image ? Image : 'https://image.tmdb.org/t/p/w300/20mOwAAPwZ1vLQkw0fvuQHiG7bO.jpg'} onClick={() => {
         showModal()
       }} />
     </div>
@@ -107,8 +107,8 @@ const ModalCard = ({ data, score, Abierto, Cerrar }: any) => {
             videoIndex === 0 ?
               <img src="https://i.ytimg.com/vi/Dc6likh5aWk/maxresdefault.jpg" alt="foto curso" style={{ width: '100%', height: '100%' }} />
               :
-              <div style={{width:'100%',height:'100%'}}>
-                <ReactNetflixPlayer src = "https://virgostore.blob.core.windows.net/files/3.%20clase%203.mp4" autoPlay={true} fullPlayer={false} onEnded={()=>{console.log('termino')}} />
+              <div style={{ width: '100%', height: '100%' }}>
+                <ReactNetflixPlayer src="https://virgostore.blob.core.windows.net/files/3.%20clase%203.mp4" autoPlay={true} fullPlayer={false} onEnded={() => { console.log('termino') }} />
               </div>
           }
         </Row>
@@ -143,28 +143,31 @@ const ModalCard = ({ data, score, Abierto, Cerrar }: any) => {
                   <p style={{ color: 'white', overflowY: 'auto', width: '100%' }}>{data.videos[videoIndex - 1].description}</p>
               }
             </div>
-            <div style={{ background: '#101012e3', marginTop: '3%', padding: '0 25px', display: 'flex', width: '100%', maxWidth: '750px', height: '100%', alignItems: 'center' }}>
+            <div style={{ background: '#101012e3', marginTop: '3%', padding: '0 25px', display: 'flex', width: '100%', maxWidth: '750px', height: '200px', alignItems: 'center' }}>
               <div style={{ display: 'flex', flexDirection: 'column', width: '100%', flexWrap: 'wrap', justifyContent: 'center' }}>
-                <div style={{ color: 'grey' }}>Experto</div>
+                <div style={{ color: 'grey', fontSize: '2.3vh' }}>Experto</div>
                 <div style={{ color: 'white' }}>Nombre Completo Experto</div>
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', width: '100%', flexWrap: 'wrap', justifyContent: 'center' }}>
-                <div style={{ color: 'grey' }}>Etiquetas</div>
+                <div style={{ color: 'grey', fontSize: '2.3vh' }}>Etiquetas</div>
                 <div style={{ color: 'white', display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
-                  {cuourse_tags.length > 0 && cuourse_tags.map((item:any, index:any) => {
-                      return <Tag style={{color:'white'}}>{item}</Tag>
-                   })}
+                  {cuourse_tags.length > 0 && cuourse_tags.map((item: any, index: any) => {
+                    return <Tag style={{ color: 'white' }}>{item}</Tag>
+                  })}
                 </div>
               </div>
             </div>
           </div>
 
           <div style={{ width: '100%', height: '50vh', overflow: 'scroll', display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '2.5%' }}>
+            <div style={{ padding: '0 25px', background: '#101012e3', display: 'flex', flexDirection: 'row', width: '100%', justifyContent: 'space-between', alignItems: 'center' }} >
+              <p style={{ color: 'white', fontSize: '13px', fontWeight: 'bold', margin: '5px' }}>Cápsulas de video</p>
+            </div>
             {data.videos.map((item: any) => {
               return <div className='videoInfo' onClick={() => {
                 setVideoIndex(item.position)
                 modalRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
-              }} style={{ cursor: 'pointer', display: 'flex', flexDirection: 'row', width: '95%', height: '150px', marginTop: '2%', color: 'white' }}>
+              }} style={{ cursor: 'pointer', display: 'flex', flexDirection: 'row', width: '100%', height: '80px', color: 'white' }}>
                 <div style={{ width: '10%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', color: 'white' }}>{item.position}</div>
                 {/* <iframe width="40%" height="90%" src="https://iframe.mediadelivery.net/embed/759/eb1c4f77-0cda-46be-b47d-1118ad7c2ffe?autoplay=false" style={{borderStyle:'none'}}  loading="lazy" allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" allowFullScreen={true}/> */}
                 {/* <iframe src={item.urlEmbed+'?autoplay=false'} 
@@ -182,7 +185,10 @@ const ModalCard = ({ data, score, Abierto, Cerrar }: any) => {
               </div>
             })}
           </div>
-          <div style={{ flexWrap: 'wrap', gap: '15px', width: '90%', height: '50vh', overflow: 'scroll', justifyContent: 'center', display: 'flex', marginTop: '10%' }}>
+          <div style={{ flexWrap: 'wrap', gap: '15px', width: '100%', overflow: 'scroll', justifyContent: 'center', display: 'flex' }}>
+            <div style={{ padding: '0 25px', background: '#101012e3', display: 'flex', flexDirection: 'row', width: '100%', justifyContent: 'space-between', alignItems: 'center' }} >
+              <p style={{ color: 'white', fontSize: '13px', fontWeight: 'bold', margin: '5px' }}>Rutas de aprendizaje</p>
+            </div>
             {course_routes.map((item, index) => {
               return <Card
                 //  style={{ display: 'flex', flexDirection: 'row', width: '100%', height: '100px', border: '1px solid green', marginTop: '2%', color: 'white' }}

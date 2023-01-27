@@ -32,10 +32,8 @@
   color: #7a7a7a;
 }
 
-/* .ant-menu-light.ant-menu-horizontal>.ant-menu-item-active:hover::after {
-  border-bottom-color: #ec0303;
-}
 
-.ant-menu-light.ant-menu-horizontal>.ant-menu-item-selected::after {
-  border-bottom-color: #ec0303;
-} */
+.ant-menu-dark.ant-menu-horizontal>.ant-menu-item-selected {
+  background-color: rgb(255, 255, 255);
+  height: 65px;
+}

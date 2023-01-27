@@ -12,7 +12,7 @@ export const AccountPage = () => {
       <Layout style={{ padding: '80px 20px', width: '100%', height: '100vh', background: 'black' }}>
         <Row align={"middle"} justify={"center"} >
           <Col xs={16} lg={8}>
-            <Divider style={{ color: '#fff', fontSize: '5vh' }}>Mi cuenta</Divider>
+            <Divider style={{ color: '#fff', fontSize: '3vh' }}>Mi cuenta</Divider>
             <Form
               layout="vertical"
               name="normal_login"
