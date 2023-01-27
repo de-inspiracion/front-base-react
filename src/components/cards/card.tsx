@@ -31,9 +31,9 @@ const CardV: any = ({ itemData,Image, key, index }: any) => {
   // console.log(courseData)
 
   return (
-    <div key={key} className="movieRow--item">
+    <div key={key} className="movieRow--item" style={{overflow: 'auto', height: '300px'}}>
       {open && <ModalCard index={index} data={courseData} score={itemData.score} Abierto={open} Cerrar={handleClose} />}
-      <img src={ Image ? Image : 'https://image.tmdb.org/t/p/w300/20mOwAAPwZ1vLQkw0fvuQHiG7bO.jpg'} onClick={() => {
+      <img style={{height: '100%'}} src={ Image ? Image : 'https://image.tmdb.org/t/p/w300/20mOwAAPwZ1vLQkw0fvuQHiG7bO.jpg'} onClick={() => {
         showModal()
       }} />
     </div>
