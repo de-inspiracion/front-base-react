@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, HtmlHTMLAttributes } from 'react'
 import { CloseOutlined } from '@ant-design/icons'
-import { Rate, Modal, Button, Layout, Divider, Card, Row } from 'antd';
+import { Rate, Modal, Button, Layout, Divider, Card, Row,Space, Tag } from 'antd';
 import services from '../../services/http'
 import { ReactNetflixPlayer } from 'react-netflix-player';
 import './card.css'
@@ -10,7 +10,7 @@ const { Content } = Layout;
 
 
 
-const CardV: any = ({ itemData, key, index }: any) => {
+const CardV: any = ({ itemData,Image, key, index }: any) => {
   const [open, setOpen] = useState(false)
   const [courseData, setCourseData] = useState([])
   const showModal = () => {
@@ -23,17 +23,17 @@ const CardV: any = ({ itemData, key, index }: any) => {
   useEffect(() => {
     const getData = async () => {
       // setIems(await services.getCourseVideos(courseData[0].id).payload)
-      let res = await services.getCourseVideos(itemData.id)
+      let res = await services.getCourseVideos(itemData._id)
       setCourseData(res.payload)
     }
     getData()
   }, [])
-
+  // console.log(courseData)
 
   return (
     <div key={key} className="movieRow--item">
       {open && <ModalCard index={index} data={courseData} score={itemData.score} Abierto={open} Cerrar={handleClose} />}
-      <img src={'https://image.tmdb.org/t/p/w300/20mOwAAPwZ1vLQkw0fvuQHiG7bO.jpg'} onClick={() => {
+      <img src={ Image ? Image : 'https://image.tmdb.org/t/p/w300/20mOwAAPwZ1vLQkw0fvuQHiG7bO.jpg'} onClick={() => {
         showModal()
       }} />
     </div>
@@ -68,59 +68,9 @@ const ModalCard = ({ data, score, Abierto, Cerrar }: any) => {
   const modalRef = useRef(null);
   const { Meta } = Card;
 
-  const cuourse_tags = ['tag1', 'tag2', 'tag3', 'tag4', 'tag5', 'tag6', 'tag7']
-  const course_videos = [
-    {
-      'name': 'Nombre Video 1',
-      'decription': 'Descripción del video 1',
-      'url': 'https://www.youtube.com/embed/-AgrqLgXUGo',
-      'duration': '10 min'
-    },
-    {
-      'name': 'Nombre Video 2',
-      'decription': 'Descripción del video 2',
-      'url': 'https://www.youtube.com/embed/-AgrqLgXUGo',
-      'duration': '10 min'
-    },
-    {
-      'name': 'Nombre Video 3',
-      'decription': 'Descripción del video 3',
-      'url': 'https://www.youtube.com/embed/-AgrqLgXUGo',
-      'duration': '10 min'
-    },
-    {
-      'name': 'Nombre Video 3',
-      'decription': 'Descripción del video 3',
-      'url': 'https://www.youtube.com/embed/-AgrqLgXUGo',
-      'duration': '10 min'
-    },
-    {
-      'name': 'Nombre Video 4',
-      'decription': 'Descripción del video 4',
-      'url': 'https://www.youtube.com/embed/-AgrqLgXUGo',
-      'duration': '10 min'
-    },
-    {
-      'name': 'Nombre Video 5',
-      'decription': 'Descripción del video 5',
-      'url': 'https://www.youtube.com/embed/-AgrqLgXUGo',
-      'duration': '10 min'
-    },
-
-    {
-      'name': 'Nombre Video 6',
-      'decription': 'Descripción del video 6',
-      'url': 'https://www.youtube.com/embed/-AgrqLgXUGo',
-      'duration': '10 min'
-    }
-  ]
-  const container_height: any = {
-    'none': '100 vh',
-    'dual': '255 vh',
-    'one': '155 vh'
-  }
-
-
+  const cuourse_tags = data.tags
+  const course_videos = data.videos
+  const course_routes = data.route
   const cerrarModal = () => {
     Cerrar(false)
     setOpen(false)
@@ -201,14 +151,9 @@ const ModalCard = ({ data, score, Abierto, Cerrar }: any) => {
               <div style={{ display: 'flex', flexDirection: 'column', width: '100%', flexWrap: 'wrap', justifyContent: 'center' }}>
                 <div style={{ color: 'grey' }}>Etiquetas</div>
                 <div style={{ color: 'white', display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
-                  {cuourse_tags.length > 0 && cuourse_tags.map((item, index) => {
-                    if (index === cuourse_tags.length - 1) {
-                      return <div style={{ marginRight: '1%', marginBottom: '0' }}>{item}</div>
-                    }
-                    else {
-                      return <div style={{ marginRight: '1%', marginBottom: '0' }}>{item}, </div>
-                    }
-                  })}
+                  {cuourse_tags.length > 0 && cuourse_tags.map((item:any, index:any) => {
+                      return <Tag style={{color:'white'}}>{item}</Tag>
+                   })}
                 </div>
               </div>
             </div>
@@ -238,7 +183,7 @@ const ModalCard = ({ data, score, Abierto, Cerrar }: any) => {
             })}
           </div>
           <div style={{ flexWrap: 'wrap', gap: '15px', width: '90%', height: '50vh', overflow: 'scroll', justifyContent: 'center', display: 'flex', marginTop: '10%' }}>
-            {course_videos.map((item, index) => {
+            {course_routes.map((item, index) => {
               return <Card
                 //  style={{ display: 'flex', flexDirection: 'row', width: '100%', height: '100px', border: '1px solid green', marginTop: '2%', color: 'white' }}
                 hoverable
@@ -247,7 +192,7 @@ const ModalCard = ({ data, score, Abierto, Cerrar }: any) => {
               >
                 <Meta
                   style={{ color: 'white' }}
-                  title={`Ruta de aprendizaje {index + 1}`}
+                  title={item.name}
                 />
               </Card>
             })}

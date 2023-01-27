@@ -5,22 +5,18 @@ import CardV from "../cards/card";
 // import { newDataUser } from '../../../../store/user/userData'
 import { useSwipeable } from 'react-swipeable';
 
-import services from '../../services/http'
+import services from './services/http'
 
 
-function CardSlide({ title }: any) {
-
+function CardSlide({ title,id,description }: any) {
   const [items, setIems] = useState([])
-  useEffect(() => {
-    const getData = async () => {
-      const res = await services.getCourses()
-      setIems(res.data.payload)
+  useEffect(()=>{
+    const getData = async ()=>{
+      const res:any = await services.getCoursesById(id)
+      setIems(res.data)
     }
     getData()
-  }, [])
-
-
-
+  },[])  
 
   const [scrollX, setScrollX] = useState(0);
 
@@ -69,7 +65,7 @@ function CardSlide({ title }: any) {
             marginLeft: scrollX,
           }}>
             {items?.length > 0 && items.map((item, key) => (
-              <CardV key={key} itemData={item} index={key} ></CardV>
+              <CardV key={key} itemData={item} Image={item.cover} index={key} ></CardV>
               // <div key={key} className="movieRow--item">
               //     <img src={`https://image.tmdb.org/t/p/w300${item.poster_path}`}/>
               // </div>
