@@ -4,6 +4,8 @@ import { Rate, Modal, Button, Layout, Divider, Card, Row, Space, Tag } from 'ant
 import services from '../../services/http'
 import { ReactNetflixPlayer } from 'react-netflix-player';
 import './card.css'
+import { useAuth0 } from '@auth0/auth0-react';
+import axios from 'axios';
 //estilos del modal
 
 const { Content } = Layout;
@@ -42,10 +44,13 @@ const CardV: any = ({ itemData, Image, key, index }: any) => {
 
 
 const ModalCard = ({ data, score, Abierto, Cerrar }: any) => {
+  const { user } = useAuth0();
   const [open, setOpen] = useState(Abierto)
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [videoIndex, setVideoIndex] = useState(0)
   const [rate, setRate] = useState(0)
+  const [userInfo, setUserInfo] = useState({});
+  let isScored = false;
 
 
 
@@ -84,6 +89,79 @@ const ModalCard = ({ data, score, Abierto, Cerrar }: any) => {
       setConfirmLoading(false);
     }, 2000);
   };
+
+
+  useEffect(() => {
+    (async () => {
+      let res = await services.getUserInfo(String(user?.email));
+      setUserInfo(res);
+    })();
+  }, []);
+
+
+  useEffect(() => {
+    const idVideo = data.videos[videoIndex - 1]?.id;
+    const user: any = userInfo;
+    //aqui usamos el ID del usuario
+    const headers = {
+      userId: userInfo.id, //id del usuario
+    };
+
+    const userScore = {
+      score: rate,
+    };
+
+    if (rate > 0 && videoIndex > 0) {
+      axios
+        .post(
+          `https://nestjs-virgo-production.up.railway.app/videos/${idVideo}/score`,
+          userScore,
+          { headers: headers }
+        )
+        .then((res) => {
+          console.log(res, "se envio a la base de datos");
+          user.scored.push({ video: idVideo })
+          isScored = true
+          setRate(0)
+        })
+        .catch((error) => {
+          console.log(error, "error al enviar la calificacion");
+          isScored = true
+        })
+    } else {
+      console.log("no se envio nada");
+    }
+  }, [rate || videoIndex]);
+
+  console.log(userInfo, "info del usuario");
+
+  const GetRateComponent = () => {
+    const user: any = userInfo;
+    const currentVideo = data.videos[videoIndex - 1]
+    if (!user?.scored || !currentVideo) {
+      return;
+    }
+
+
+    user.scored.forEach((score: any) => {
+      // scored.video es el  id del video del user
+      // currentVideo.id es el id del video del curso
+      if (score.video == currentVideo.id) {
+        isScored = true
+        console.log('el score es true')
+      }
+
+    });
+    return (
+      <Rate
+        allowHalf
+        disabled={isScored}
+        defaultValue={0}
+        value={data.videos[videoIndex - 1]?.score.averageScore}
+        onChange={(value) => setRate(value)}
+      />
+    );
+  };
   return (
     <Modal
 
@@ -118,15 +196,30 @@ const ModalCard = ({ data, score, Abierto, Cerrar }: any) => {
             <div style={{ background: '#101012e3', marginTop: '3%', padding: '0 25px', display: 'flex', flexDirection: 'column', width: '100%', height: '100%' }}>
               <div style={{ display: 'flex', alignItems: 'center', }}>
                 {
-                  rate === 0 ?
-                    <Rate onChange={setRate} defaultValue={rate} />
-                    :
-                    <Rate disabled defaultValue={2} />
+                  GetRateComponent()
                 }
-
-                <p style={{ color: 'white', fontSize: '18px', paddingLeft: '15px' }}>
-                  {rate} / 5
-                </p>
+                {
+                  isScored ? (
+                    <p
+                      style={{
+                        color: "white",
+                        fontSize: "15px",
+                        paddingLeft: "15px",
+                      }}
+                    >
+                      Puntuación enviada
+                    </p>
+                  ) : (
+                    <p
+                      style={{
+                        color: "white",
+                        fontSize: "15px",
+                        paddingLeft: "15px",
+                      }}
+                    >
+                      Califícanos
+                    </p>
+                  )}
               </div>
               {
                 videoIndex === 0 ?
