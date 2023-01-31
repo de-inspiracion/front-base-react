@@ -35,15 +35,20 @@ const postScore = async (id: string, score: number) => {
 
 
 const getCourseVideos = async (courseId: String) => {
-  const res = await axios.get(
-    `https://nestjs-virgo-production.up.railway.app/courses/${courseId}`,
-    {
-      headers: {
-        "Access-Control-Allow-Origin": true
+  try {
+    const res = await axios.get(
+      `https://nestjs-virgo-production.up.railway.app/courses/${courseId}`,
+      {
+        headers: {
+          "Access-Control-Allow-Origin": true
+        }
       }
-    }
-  )
-  return res.data
+    )
+    return res.data
+  } catch (error) {
+    // console.log(error)
+    return 'ERROR AL TRAER VIDEOS PARA LAS CARDS'
+  }
 }
 
 const getUserInfo = async (email: String) => {

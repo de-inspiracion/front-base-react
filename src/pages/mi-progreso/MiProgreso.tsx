@@ -1,93 +1,287 @@
-import { Card, Col, Layout, Row, Typography } from "antd"
-import { StarFilled, TrophyFilled } from '@ant-design/icons';
+import {
+  Card,
+  Col,
+  ConfigProvider,
+  Divider,
+  Layout,
+  Row,
+  Space,
+  Statistic,
+  theme,
+  Typography,
+} from "antd";
+import {
+  ClockCircleOutlined,
+  CompressOutlined,
+  DollarCircleOutlined,
+  DownloadOutlined,
+  FieldTimeOutlined,
+  GatewayOutlined,
+  ShoppingCartOutlined,
+  ShoppingOutlined,
+  StarFilled,
+  TrophyFilled,
+  UserOutlined,
+} from "@ant-design/icons";
+import Table, { ColumnsType } from "antd/es/table";
 
-const { Content } = Layout
-const { Title, Paragraph, Text } = Typography
+const { Content } = Layout;
+const { Title, Paragraph, Text } = Typography;
 
-const gridStyle: React.CSSProperties = {
-    minWidth: '160px',
-    textAlign: 'center',
-    height: '100px',
-};
-
-const numberStadistic: React.CSSProperties = {
-    minWidth: '160px',
-    textAlign: 'center',
-    fontSize: '40px',
-    height: '100px',
+interface DataType {
+  key: React.Key;
+  name: string;
+  age: number;
+  cursos: string;
+  description: string;
 }
+
+const columns: ColumnsType<DataType> = [
+  { title: "Nro", dataIndex: "key", key: "key" },
+  { title: "Cursos Completados", dataIndex: "cursos", key: "cursos" },
+  {
+    title: "Descargar Certificado",
+    dataIndex: "",
+    key: "x",
+    render: () => (
+      <a>
+        Descargar
+        <DownloadOutlined style={{ cursor: "pointer" }} />
+      </a>
+    ),
+  },
+];
+
+const data: DataType[] = [
+  {
+    key: 1,
+    name: "John Brown",
+    age: 32,
+    cursos: "New York No. 1 Lake Park",
+    description: "This not expandable",
+  },
+  {
+    key: 2,
+    name: "Jim Green",
+    age: 42,
+    cursos: "London No. 1 Lake Park",
+    description: "This not expandable.",
+  },
+  {
+    key: 3,
+    name: "Not Expandable",
+    age: 29,
+    cursos: "Jiangsu No. 1 Lake Park",
+    description: "This not expandable",
+  },
+  {
+    key: 4,
+    name: "Joe Black",
+    age: 32,
+    cursos: "Sidney No. 1 Lake Park",
+    description: "This not expandable.",
+  },
+];
 
 const MiProgreso = () => {
-    return (
-        <Layout style={{ padding: '30px 30px', background: 'black' }}>
-            <Content>
+  return (
+    <ConfigProvider theme={{ algorithm: theme.darkAlgorithm }}>
+      <Layout style={{ padding: "30px 30px" }}>
+        <Content style={{ flexDirection: "column" }}>
+          <Typography.Text style={{ fontSize: "18px" }} strong>
+            Bienvenido:
+          </Typography.Text>
+          <Typography.Text style={{ fontSize: "18px" }} type="secondary">
+            TOMÁS DESPOUY ZULUETA
+          </Typography.Text>
+        </Content>
 
-                <Text style={{ fontSize: '18px', color: 'white' }} strong>Bienvenido:</Text><Text style={{ fontSize: '18px' }} type="secondary"> TOMÁS DESPOUY ZULUETA</Text>
+        <Row justify={"space-between"} align={"middle"} wrap={true}>
+          <Space direction="vertical">
+            <Typography.Title level={3}>Mi Resumen</Typography.Title>
+            <Space wrap={true}>
+              <Card
+                style={{
+                  borderBottom: "8px #c2c2c2 solid",
+                  width: "310px",
+                  textAlign: "center",
+                }}
+              >
+                <Space direction="horizontal">
+                  <TrophyFilled
+                    style={{
+                      fontSize: "60px",
+                      color: "#c2c2c2",
+                      border: "1px solid #c2c2c2",
+                      borderRadius: "50%",
+                      padding: "10px",
+                    }}
+                  />
+                  <Statistic
+                    style={{ padding: "0 10px" }}
+                    valueStyle={{
+                      fontWeight: 700,
+                      fontSize: 45,
+                      color: "#c2c2c2",
+                    }}
+                    title={"Categoria:"}
+                    value={"SILVER"}
+                  />
+                </Space>
+              </Card>
+              <Card
+                style={{
+                  borderBottom: "8px #fada17 solid",
+                  width: "310px",
+                  textAlign: "center",
+                }}
+              >
+                <Space direction="horizontal">
+                  <StarFilled
+                    style={{
+                      fontSize: "70px",
+                      color: "#fada17",
+                    }}
+                  />
+                  <Statistic
+                    style={{ padding: "0 10px" }}
+                    valueStyle={{
+                      fontSize: 45,
+                      fontWeight: 900,
+                      color: "#fada17",
+                    }}
+                    title={"Estrellas Virgo:"}
+                    value={25}
+                  />
+                </Space>
+              </Card>
+            </Space>
+          </Space>
 
-            </Content>
-            <Content>
-                <Title style={{ color: 'white' }}>Resumen</Title>
-                <Row gutter={8}>
-                    <Col span={12}>
-                        <Card>
-                            <Card.Grid hoverable={false} style={numberStadistic}><TrophyFilled /></Card.Grid>
-                            <Card.Grid hoverable={false} style={gridStyle}>
-                                <Paragraph>
-                                    <Typography>Categoria:</Typography>
-                                    <Typography.Title level={4} style={{ margin: 0 }}>
-                                        SILVER
-                                    </Typography.Title>
-                                </Paragraph>
-                            </Card.Grid>
-                        </Card>
-                    </Col>
-                    <Col span={12}>
-                        <Card>
-                            <Card.Grid hoverable={false} style={{ textAlign: 'center', fontSize: '40px', height: '100px', minWidth: '160px' }}>
-                                <StarFilled style={{ color: '#ecc538' }} />
-                            </Card.Grid>
-                            <Card.Grid hoverable={false} style={{ textAlign: 'center', fontSize: '40px', height: '100px', minWidth: '160px' }}>25</Card.Grid>
-                            <Card.Grid hoverable={false} style={{ textAlign: 'center', height: '100px', minWidth: '160px' }}>Estrellas virgo para canjear</Card.Grid>
-                        </Card>
-                    </Col>
-                </Row>
-            </Content>
-            <Content >
-                <Title style={{ color: 'white' }}>Mi aprendizaje</Title>
-                <Row gutter={8}>
-                    <Col span={12}>
-                        <Card>
-                            <Card.Grid hoverable={false} style={numberStadistic}>25</Card.Grid>
-                            <Card.Grid hoverable={false} style={gridStyle}>Total de horas de estudio</Card.Grid>
-                        </Card>
-                    </Col>
-                    <Col span={12}>
-                        <Card>
-                            <Card.Grid hoverable={false} style={numberStadistic}>8</Card.Grid>
-                            <Card.Grid hoverable={false} style={gridStyle}>Horas de Estudio del último mes</Card.Grid>
-                        </Card>
-                    </Col>
-                </Row>
-                <Row gutter={8}>
-                    <Col span={12}>
-                        <Card style={{ marginTop: 16 }}>
-                            <Card.Grid hoverable={false} style={numberStadistic}>25</Card.Grid>
-                            <Card.Grid hoverable={false} style={gridStyle}>Cursos Completados</Card.Grid>
-                        </Card>
-                    </Col>
-                    <Col span={12}>
-                        <Card style={{ marginTop: 16 }}>
-                            <Card.Grid hoverable={false} style={numberStadistic}>5</Card.Grid>
-                            <Card.Grid hoverable={false} style={gridStyle}>Rutas de aprendizaje</Card.Grid>
-                        </Card>
-                    </Col>
-                </Row>
-            </Content>
-            <Content>
-                <Title style={{ color: 'white' }}>Mis Cursos</Title>
-            </Content>
-        </Layout>
-    )
+          <Space direction="vertical">
+            <Typography.Title level={3}>...</Typography.Title>
+            <Space wrap={true}>
+              <Card
+                style={{
+                  borderBottom: "8px #59bd27 solid",
+                  width: "310px",
+                  textAlign: "center",
+                }}
+              >
+                <Space direction="horizontal">
+                  <ClockCircleOutlined
+                    style={{
+                      fontSize: "60px",
+                      color: "#59bd27",
+                    }}
+                  />
+                  <Statistic
+                    style={{ padding: "0 10px" }}
+                    valueStyle={{
+                      fontSize: 45,
+                      fontWeight: 500,
+                    }}
+                    title={"Horas de Estudio"}
+                    value={152}
+                  />
+                </Space>
+              </Card>
+              <Card
+                style={{
+                  borderBottom: "8px #d10b0e solid",
+                  width: "310px",
+                  textAlign: "center",
+                }}
+              >
+                <Space direction="horizontal">
+                  <CompressOutlined
+                    style={{
+                      fontSize: "60px",
+                      color: "#d10b0e",
+                    }}
+                  />
+                  <Statistic
+                    style={{ padding: "0 10px" }}
+                    valueStyle={{
+                      fontSize: 45,
+                      fontWeight: 500,
+                    }}
+                    title={"Rutas de Aprendizaje"}
+                    value={12}
+                  />
+                </Space>
+              </Card>
+            </Space>
+          </Space>
+        </Row>
+
+        <Space direction="vertical">
+          <Typography.Title level={3}>Mi Progreso</Typography.Title>
+          <Space wrap={true}>
+            <DashboardCard
+              icon={
+                <FieldTimeOutlined
+                  style={{
+                    fontSize: "60px",
+                    color: "#7a00c2",
+                  }}
+                />
+              }
+              otherPart={"35"}
+              text={"Horas de Estudio del Mes"}
+              styles={{
+                borderBottom: "solid 8px #7a00c2",
+              }}
+            />
+            <DashboardCard
+              icon={
+                <GatewayOutlined
+                  style={{
+                    fontSize: "60px",
+                    color: "#7a00c2",
+                  }}
+                />
+              }
+              otherPart={"05"}
+              text={"Todas tus Rutas de aprendizaje"}
+              styles={{ borderBottom: "solid 8px #7a00c2" }}
+            />
+          </Space>
+        </Space>
+
+        <Space direction="vertical">
+          <Typography.Title level={3}>Certificados</Typography.Title>
+          <Table columns={columns} dataSource={data} />
+        </Space>
+      </Layout>
+    </ConfigProvider>
+  );
+};
+
+function DashboardCard({ icon, otherPart, text, styles }: any) {
+  return (
+    <Card style={styles}>
+      <Space align={"center"} direction="horizontal">
+        {icon}
+        <Typography.Text style={{ fontSize: 50, padding: "0 10px" }}>
+          {otherPart}
+        </Typography.Text>
+        <div
+          className="dashboard-card-text"
+          style={{
+            padding: "0 10px",
+            fontSize: 16.23,
+            fontWeight: "bold",
+            textAlign: "center",
+            maxWidth: "110px",
+            height: 81,
+          }}
+        >
+          {text}
+        </div>
+      </Space>
+    </Card>
+  );
 }
 
-export default MiProgreso
+export default MiProgreso;
