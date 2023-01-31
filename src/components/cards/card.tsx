@@ -52,7 +52,7 @@ const ModalCard = ({ data, score, Abierto, Cerrar }: any) => {
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [videoIndex, setVideoIndex] = useState(0)
   const [rate, setRate] = useState(0)
-  const [userInfo, setUserInfo] = useState({});
+  const [userInfo, setUserInfo]: any = useState({});
   let isScored = false;
 
 
@@ -73,7 +73,7 @@ const ModalCard = ({ data, score, Abierto, Cerrar }: any) => {
   }, [rate])
 
 
-  const modalRef = useRef(null);
+  const modalRef: any = useRef(null);
   const { Meta } = Card;
 
   const cuourse_tags = data.tags
@@ -262,7 +262,7 @@ const ModalCard = ({ data, score, Abierto, Cerrar }: any) => {
             {data.videos.map((item: any) => {
               return <div className='videoInfo' onClick={() => {
                 setVideoIndex(item.position)
-                modalRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                modalRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
               }} style={{ cursor: 'pointer', display: 'flex', flexDirection: 'row', width: '100%', height: '80px', color: 'white' }}>
                 <div style={{ width: '10%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', color: 'white' }}>{item.position}</div>
                 {/* <iframe width="40%" height="90%" src="https://iframe.mediadelivery.net/embed/759/eb1c4f77-0cda-46be-b47d-1118ad7c2ffe?autoplay=false" style={{borderStyle:'none'}}  loading="lazy" allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" allowFullScreen={true}/> */}
@@ -285,7 +285,7 @@ const ModalCard = ({ data, score, Abierto, Cerrar }: any) => {
             <div style={{ padding: '0 25px', background: '#101012e3', display: 'flex', flexDirection: 'row', width: '100%', justifyContent: 'space-between', alignItems: 'center' }} >
               <p style={{ color: 'white', fontSize: '13px', fontWeight: 'bold', margin: '5px' }}>Rutas de aprendizaje</p>
             </div>
-            {course_routes.map((item, index) => {
+            {course_routes.map((item: any) => {
               return <Card
                 //  style={{ display: 'flex', flexDirection: 'row', width: '100%', height: '100px', border: '1px solid green', marginTop: '2%', color: 'white' }}
                 hoverable

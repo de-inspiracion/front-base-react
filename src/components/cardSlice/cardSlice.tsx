@@ -67,7 +67,7 @@ function CardSlide({ title,id,description,courses,source }: any) {
           <div className="movieRow--list" style={{
             marginLeft: scrollX,
           }}>
-            {items?.length > 0 && items.map((item, key) => (
+            {items?.length > 0 && items.map((item: any, key) => (
               <CardV key={key} itemData={item} Image={item.cover} index={key} ></CardV>
               // <div key={key} className="movieRow--item">
               //     <img src={`https://image.tmdb.org/t/p/w300${item.poster_path}`}/>
