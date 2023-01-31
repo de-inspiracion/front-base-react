@@ -15,6 +15,10 @@ const { Content } = Layout;
 const CardV: any = ({ itemData, Image, key, index }: any) => {
   const [open, setOpen] = useState(false)
   const [courseData, setCourseData] = useState([])
+  if(Object.keys(itemData).includes('_id')){
+    itemData['id'] = itemData['_id']
+    delete itemData['_id']
+  }
   const showModal = () => {
     setOpen(true)
   }
@@ -25,13 +29,12 @@ const CardV: any = ({ itemData, Image, key, index }: any) => {
   useEffect(() => {
     const getData = async () => {
       // setIems(await services.getCourseVideos(courseData[0].id).payload)
-      let res = await services.getCourseVideos(itemData._id)
+      let res = await services.getCourseVideos(itemData.id)
       setCourseData(res.payload)
     }
     getData()
   }, [])
   // console.log(courseData)
-
   return (
     <div key={key} className="movieRow--item" style={{ overflow: 'auto', height: '300px' }}>
       {open && <ModalCard index={index} data={courseData} score={itemData.score} Abierto={open} Cerrar={handleClose} />}
@@ -133,7 +136,7 @@ const ModalCard = ({ data, score, Abierto, Cerrar }: any) => {
     }
   }, [rate || videoIndex]);
 
-  console.log(userInfo, "info del usuario");
+  // console.log(userInfo, "info del usuario");
 
   const GetRateComponent = () => {
     const user: any = userInfo;
@@ -183,7 +186,7 @@ const ModalCard = ({ data, score, Abierto, Cerrar }: any) => {
         <Row style={{ width: '100%', maxWidth: '750px', height: '45vh', maxHeight: '550px' }}>
           {
             videoIndex === 0 ?
-              <img src="https://i.ytimg.com/vi/Dc6likh5aWk/maxresdefault.jpg" alt="foto curso" style={{ width: '100%', height: '100%' }} />
+              <img src={data ? data.cover : 'https://image.tmdb.org/t/p/w300/20mOwAAPwZ1vLQkw0fvuQHiG7bO.jpg'} alt="foto curso" style={{ width: '100%', height: '100%' }} />
               :
               <div style={{ width: '100%', height: '100%' }}>
                 <ReactNetflixPlayer src="https://virgostore.blob.core.windows.net/files/3.%20clase%203.mp4" autoPlay={true} fullPlayer={false} onEnded={() => { console.log('termino') }} />

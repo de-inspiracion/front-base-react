@@ -1,28 +1,12 @@
 import { useState, useEffect } from "react";
 import "./cardSlice.css";
-import CardV from "../cards/card";
+
 import { useSwipeable } from 'react-swipeable';
 
-import services from './services/http'
 
-
-function CardSlide({ title,id,description,courses,source }: any) {
-  const [items, setIems] = useState([])
-  useEffect(()=>{
-    const getData = async ()=>{
-      const res:any = await services.getCoursesById(id)
-      setIems(res.data)
-    }
-    if(source == 'Ruta'){
-      setIems(courses)
-    }
-    else{
-      getData()
-    }
-  },[])  
-
+function CardSlide({ title,id,courses }: any) {
+  const items = courses
   const [scrollX, setScrollX] = useState(0);
-
   const handleLeftArrow = () => {
     let x = scrollX + Math.round(window.innerWidth / 2);
     if (x > 0) {
@@ -68,10 +52,12 @@ function CardSlide({ title,id,description,courses,source }: any) {
             marginLeft: scrollX,
           }}>
             {items?.length > 0 && items.map((item, key) => (
-              <CardV key={key} itemData={item} Image={item.cover} index={key} ></CardV>
-              // <div key={key} className="movieRow--item">
-              //     <img src={`https://image.tmdb.org/t/p/w300${item.poster_path}`}/>
-              // </div>
+              
+              <div key={key} className="movieRow--item" onClick={()=>{
+                console.log(item.position)
+              }}>
+                  <img src="https://image.tmdb.org/t/p/w300/20mOwAAPwZ1vLQkw0fvuQHiG7bO.jpg" style={{width:'100%',height:'100%'}} alt='hol'/>
+              </div>
             ))}
           </div>
         </div>
