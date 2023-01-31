@@ -9,22 +9,8 @@ const { Text, Link } = Typography;
 import "./viewCourses.css";
 import axios from "axios";
 
-// interface DataType {
-//   gender?: string;
-//   name: {
-//     title?: string;
-//     first?: string;
-//     last?: string;
-//   };
-//   email?: string;
-//   picture: {
-//     large?: string;
-//     medium?: string;
-//     thumbnail?: string;
-//   };
-//   nat?: string;
-//   loading: boolean;
-// }
+import NewCourse from "./NewCourse";
+
 
 interface courseData {
   name: string;
@@ -43,21 +29,12 @@ export const ViewCourses = () => {
   const fakeDataUrl = `https://randomuser.me/api/?results=${count}&inc=name,gender,email,nat,picture&noinfo`;
   const [initLoading, setInitLoading] = useState(true);
   const [loading, setLoading] = useState(false);
-  // const [list, setList] = useState<DataType[]>([]);
-  const [editableStrWithSuffix, setEditableStrWithSuffix] = useState(
-    'This is a loooooooooooooooooooooooooooooooong editable text with suffix.',
-  );
+
+
   const [courses,setCourses] = useState<courseData[]>([])
 
   const navigate = useNavigate();
-  // useEffect(() => {
-  //   fetch(fakeDataUrl)
-  //     .then((res) => res.json())
-  //     .then((res) => {
-  //       setInitLoading(false);
-  //       setList(res.results);
-  //     });
-  // }, []);
+ 
 
   useEffect(() => {
     setLoading(true)
@@ -112,6 +89,7 @@ export const ViewCourses = () => {
           />
           
         </div>
+        <NewCourse />
       </div>
       </ConfigProvider>
     

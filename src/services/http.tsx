@@ -110,6 +110,14 @@ const editCourseCover = async (id:string,body:any) => {
   window.location.reload()
 }
 
+const newCourse = async (name:string) => {
+  const res =  await axios.post(`https://nestjs-virgo-production.up.railway.app/courses`,{
+    "name": name
+  })
+  return res.data
+}
+
+
 export default {
   post,
   getCourses,
@@ -119,7 +127,8 @@ export default {
   getInfo,
   editVideoInfo,
   postScore,
-  editCourseCover
+  editCourseCover,
+  newCourse
 }
 
 
