@@ -1,21 +1,27 @@
 import { useState, useEffect, useRef, HtmlHTMLAttributes } from 'react'
 import { CloseOutlined } from '@ant-design/icons'
-import { Rate, Modal, Button, Layout, Divider, Card, Row } from 'antd';
+import { Rate, Modal, Button, Layout, Divider, Card, Row, Space, Tag } from 'antd';
 import services from '../../services/http'
+import { ReactNetflixPlayer } from 'react-netflix-player';
 import './card.css'
-
+import { useAuth0 } from '@auth0/auth0-react';
+import axios from 'axios';
 //estilos del modal
+
 const { Content } = Layout;
 
 
 
-const CardV: any = ({ itemData, key, index }: any) => {
+const CardV: any = ({ itemData, Image, key, index }: any) => {
   const [open, setOpen] = useState(false)
   const [courseData, setCourseData] = useState([])
+  if(Object.keys(itemData).includes('_id')){
+    itemData['id'] = itemData['_id']
+    delete itemData['_id']
+  }
   const showModal = () => {
     setOpen(true)
   }
-  console.log('data curso: ', courseData)
   const handleClose = () => {
     setOpen(false)
   }
@@ -28,13 +34,11 @@ const CardV: any = ({ itemData, key, index }: any) => {
     }
     getData()
   }, [])
-
-  // console.log(`INDEX: ${index} `,courseData)
-
+  // console.log(courseData)
   return (
-    <div key={key} className="movieRow--item">
+    <div key={key} className="movieRow--item" style={{ overflow: 'auto', height: '300px' }}>
       {open && <ModalCard index={index} data={courseData} score={itemData.score} Abierto={open} Cerrar={handleClose} />}
-      <img src={'https://image.tmdb.org/t/p/w300/20mOwAAPwZ1vLQkw0fvuQHiG7bO.jpg'} onClick={() => {
+      <img style={{ height: '100%' }} src={Image ? Image : 'https://image.tmdb.org/t/p/w300/20mOwAAPwZ1vLQkw0fvuQHiG7bO.jpg'} onClick={() => {
         showModal()
       }} />
     </div>
@@ -43,10 +47,13 @@ const CardV: any = ({ itemData, key, index }: any) => {
 
 
 const ModalCard = ({ data, score, Abierto, Cerrar }: any) => {
+  const { user } = useAuth0();
   const [open, setOpen] = useState(Abierto)
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [videoIndex, setVideoIndex] = useState(0)
   const [rate, setRate] = useState(0)
+  const [userInfo, setUserInfo] = useState({});
+  let isScored = false;
 
 
 
@@ -66,74 +73,12 @@ const ModalCard = ({ data, score, Abierto, Cerrar }: any) => {
   }, [rate])
 
 
-  console.log('data videos', data.videos)
-  // console.log('data videos', data.videos)
-  // console.log('datos de id', data.videos[(data.video[1].position)-1].id)
-  // const data_videos = data.map((item:any) => {
-  //   let data_object = {
-  //     "name":item.name,
-  //     "duration":item.duration,
-
-  //   }
-  //   return data_object 
-  // })
-
   const modalRef = useRef(null);
   const { Meta } = Card;
 
-  const cuourse_tags = ['tag1', 'tag2', 'tag3', 'tag4', 'tag5', 'tag6', 'tag7']
-  const course_videos = [
-    {
-      'name': 'Nombre Video 1',
-      'decription': 'Descripción del video 1',
-      'url': 'https://www.youtube.com/embed/-AgrqLgXUGo',
-      'duration': '10 min'
-    },
-    {
-      'name': 'Nombre Video 2',
-      'decription': 'Descripción del video 2',
-      'url': 'https://www.youtube.com/embed/-AgrqLgXUGo',
-      'duration': '10 min'
-    },
-    {
-      'name': 'Nombre Video 3',
-      'decription': 'Descripción del video 3',
-      'url': 'https://www.youtube.com/embed/-AgrqLgXUGo',
-      'duration': '10 min'
-    },
-    {
-      'name': 'Nombre Video 3',
-      'decription': 'Descripción del video 3',
-      'url': 'https://www.youtube.com/embed/-AgrqLgXUGo',
-      'duration': '10 min'
-    },
-    {
-      'name': 'Nombre Video 4',
-      'decription': 'Descripción del video 4',
-      'url': 'https://www.youtube.com/embed/-AgrqLgXUGo',
-      'duration': '10 min'
-    },
-    {
-      'name': 'Nombre Video 5',
-      'decription': 'Descripción del video 5',
-      'url': 'https://www.youtube.com/embed/-AgrqLgXUGo',
-      'duration': '10 min'
-    },
-
-    {
-      'name': 'Nombre Video 6',
-      'decription': 'Descripción del video 6',
-      'url': 'https://www.youtube.com/embed/-AgrqLgXUGo',
-      'duration': '10 min'
-    }
-  ]
-  const container_height: any = {
-    'none': '100 vh',
-    'dual': '255 vh',
-    'one': '155 vh'
-  }
-
-
+  const cuourse_tags = data.tags
+  const course_videos = data.videos
+  const course_routes = data.route
   const cerrarModal = () => {
     Cerrar(false)
     setOpen(false)
@@ -146,6 +91,79 @@ const ModalCard = ({ data, score, Abierto, Cerrar }: any) => {
       cerrarModal()
       setConfirmLoading(false);
     }, 2000);
+  };
+
+
+  useEffect(() => {
+    (async () => {
+      let res = await services.getUserInfo(String(user?.email));
+      setUserInfo(res);
+    })();
+  }, []);
+
+
+  useEffect(() => {
+    const idVideo = data.videos[videoIndex - 1]?.id;
+    const user: any = userInfo;
+    //aqui usamos el ID del usuario
+    const headers = {
+      userId: userInfo.id, //id del usuario
+    };
+
+    const userScore = {
+      score: rate,
+    };
+
+    if (rate > 0 && videoIndex > 0) {
+      axios
+        .post(
+          `https://nestjs-virgo-production.up.railway.app/videos/${idVideo}/score`,
+          userScore,
+          { headers: headers }
+        )
+        .then((res) => {
+          console.log(res, "se envio a la base de datos");
+          user.scored.push({ video: idVideo })
+          isScored = true
+          setRate(0)
+        })
+        .catch((error) => {
+          console.log(error, "error al enviar la calificacion");
+          isScored = true
+        })
+    } else {
+      console.log("no se envio nada");
+    }
+  }, [rate || videoIndex]);
+
+  // console.log(userInfo, "info del usuario");
+
+  const GetRateComponent = () => {
+    const user: any = userInfo;
+    const currentVideo = data.videos[videoIndex - 1]
+    if (!user?.scored || !currentVideo) {
+      return;
+    }
+
+
+    user.scored.forEach((score: any) => {
+      // scored.video es el  id del video del user
+      // currentVideo.id es el id del video del curso
+      if (score.video == currentVideo.id) {
+        isScored = true
+        console.log('el score es true')
+      }
+
+    });
+    return (
+      <Rate
+        allowHalf
+        disabled={isScored}
+        defaultValue={0}
+        value={data.videos[videoIndex - 1]?.score.averageScore}
+        onChange={(value) => setRate(value)}
+      />
+    );
   };
   return (
     <Modal
@@ -166,18 +184,13 @@ const ModalCard = ({ data, score, Abierto, Cerrar }: any) => {
 
 
         <Row style={{ width: '100%', maxWidth: '750px', height: '45vh', maxHeight: '550px' }}>
-          {/* <iframe src="https://iframe.mediadelivery.net/embed/759/eb1c4f77-0cda-46be-b47d-1118ad7c2ffe?autoplay=true" 
-                loading="lazy"  style={{width:'100%'}}
-                allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" allowFullScreen={true}>
-            </iframe> */}
           {
             videoIndex === 0 ?
-              <img src="https://i.ytimg.com/vi/Dc6likh5aWk/maxresdefault.jpg" alt="foto curso" style={{ width: '100%', height: '100%' }} />
+              <img src={data ? data.cover : 'https://image.tmdb.org/t/p/w300/20mOwAAPwZ1vLQkw0fvuQHiG7bO.jpg'} alt="foto curso" style={{ width: '100%', height: '100%' }} />
               :
-              <iframe src={`${data.videos[videoIndex - 1].urlEmbed}?autoplay=true`}
-                loading="lazy" style={{ width: '100%', height: '100%' }}
-                allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" allowFullScreen={true}>
-              </iframe>
+              <div style={{ width: '100%', height: '100%' }}>
+                <ReactNetflixPlayer src="https://virgostore.blob.core.windows.net/files/3.%20clase%203.mp4" autoPlay={true} fullPlayer={false} onEnded={() => { console.log('termino') }} />
+              </div>
           }
         </Row>
 
@@ -186,15 +199,30 @@ const ModalCard = ({ data, score, Abierto, Cerrar }: any) => {
             <div style={{ background: '#101012e3', marginTop: '3%', padding: '0 25px', display: 'flex', flexDirection: 'column', width: '100%', height: '100%' }}>
               <div style={{ display: 'flex', alignItems: 'center', }}>
                 {
-                  rate === 0 ?
-                    <Rate onChange={setRate} defaultValue={rate} />
-                    :
-                    <Rate disabled defaultValue={2} />
+                  GetRateComponent()
                 }
-
-                <p style={{ color: 'white', fontSize: '18px', paddingLeft: '15px' }}>
-                  {rate} / 5
-                </p>
+                {
+                  isScored ? (
+                    <p
+                      style={{
+                        color: "white",
+                        fontSize: "15px",
+                        paddingLeft: "15px",
+                      }}
+                    >
+                      Puntuación enviada
+                    </p>
+                  ) : (
+                    <p
+                      style={{
+                        color: "white",
+                        fontSize: "15px",
+                        paddingLeft: "15px",
+                      }}
+                    >
+                      Califícanos
+                    </p>
+                  )}
               </div>
               {
                 videoIndex === 0 ?
@@ -211,21 +239,16 @@ const ModalCard = ({ data, score, Abierto, Cerrar }: any) => {
                   <p style={{ color: 'white', overflowY: 'auto', width: '100%' }}>{data.videos[videoIndex - 1].description}</p>
               }
             </div>
-            <div style={{ background: '#101012e3', marginTop: '3%', padding: '0 25px', display: 'flex', width: '100%', maxWidth: '750px', height: '100%', alignItems: 'center' }}>
+            <div style={{ background: '#101012e3', marginTop: '3%', padding: '0 25px', display: 'flex', width: '100%', maxWidth: '750px', height: '200px', alignItems: 'center' }}>
               <div style={{ display: 'flex', flexDirection: 'column', width: '100%', flexWrap: 'wrap', justifyContent: 'center' }}>
-                <div style={{ color: 'grey' }}>Experto</div>
+                <div style={{ color: 'grey', fontSize: '2.3vh' }}>Experto</div>
                 <div style={{ color: 'white' }}>Nombre Completo Experto</div>
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', width: '100%', flexWrap: 'wrap', justifyContent: 'center' }}>
-                <div style={{ color: 'grey' }}>Etiquetas</div>
+                <div style={{ color: 'grey', fontSize: '2.3vh' }}>Etiquetas</div>
                 <div style={{ color: 'white', display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
-                  {cuourse_tags.length > 0 && cuourse_tags.map((item, index) => {
-                    if (index === cuourse_tags.length - 1) {
-                      return <div style={{ marginRight: '1%', marginBottom: '0' }}>{item}</div>
-                    }
-                    else {
-                      return <div style={{ marginRight: '1%', marginBottom: '0' }}>{item}, </div>
-                    }
+                  {cuourse_tags.length > 0 && cuourse_tags.map((item: any, index: any) => {
+                    return <Tag style={{ color: 'white' }}>{item}</Tag>
                   })}
                 </div>
               </div>
@@ -233,11 +256,14 @@ const ModalCard = ({ data, score, Abierto, Cerrar }: any) => {
           </div>
 
           <div style={{ width: '100%', height: '50vh', overflow: 'scroll', display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '2.5%' }}>
+            <div style={{ padding: '0 25px', background: '#101012e3', display: 'flex', flexDirection: 'row', width: '100%', justifyContent: 'space-between', alignItems: 'center' }} >
+              <p style={{ color: 'white', fontSize: '13px', fontWeight: 'bold', margin: '5px' }}>Cápsulas de video</p>
+            </div>
             {data.videos.map((item: any) => {
               return <div className='videoInfo' onClick={() => {
                 setVideoIndex(item.position)
                 modalRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
-              }} style={{ cursor: 'pointer', display: 'flex', flexDirection: 'row', width: '95%', height: '150px', marginTop: '2%', color: 'white' }}>
+              }} style={{ cursor: 'pointer', display: 'flex', flexDirection: 'row', width: '100%', height: '80px', color: 'white' }}>
                 <div style={{ width: '10%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', color: 'white' }}>{item.position}</div>
                 {/* <iframe width="40%" height="90%" src="https://iframe.mediadelivery.net/embed/759/eb1c4f77-0cda-46be-b47d-1118ad7c2ffe?autoplay=false" style={{borderStyle:'none'}}  loading="lazy" allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" allowFullScreen={true}/> */}
                 {/* <iframe src={item.urlEmbed+'?autoplay=false'} 
@@ -255,8 +281,11 @@ const ModalCard = ({ data, score, Abierto, Cerrar }: any) => {
               </div>
             })}
           </div>
-          <div style={{ flexWrap: 'wrap', gap: '15px', width: '90%', height: '50vh', overflow: 'scroll', justifyContent: 'center', display: 'flex', marginTop: '10%' }}>
-            {course_videos.map((item, index) => {
+          <div style={{ flexWrap: 'wrap', gap: '15px', width: '100%', overflow: 'scroll', justifyContent: 'center', display: 'flex' }}>
+            <div style={{ padding: '0 25px', background: '#101012e3', display: 'flex', flexDirection: 'row', width: '100%', justifyContent: 'space-between', alignItems: 'center' }} >
+              <p style={{ color: 'white', fontSize: '13px', fontWeight: 'bold', margin: '5px' }}>Rutas de aprendizaje</p>
+            </div>
+            {course_routes.map((item, index) => {
               return <Card
                 //  style={{ display: 'flex', flexDirection: 'row', width: '100%', height: '100px', border: '1px solid green', marginTop: '2%', color: 'white' }}
                 hoverable
@@ -265,7 +294,7 @@ const ModalCard = ({ data, score, Abierto, Cerrar }: any) => {
               >
                 <Meta
                   style={{ color: 'white' }}
-                  title={`Ruta de aprendizaje {index + 1}`}
+                  title={item.name}
                 />
               </Card>
             })}

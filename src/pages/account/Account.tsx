@@ -1,24 +1,67 @@
-import { Button, Col, Divider, Input, Row, Upload, UploadProps } from "antd";
+import { Button, Col, Divider, Input, Row, Form, UploadProps, Checkbox, Layout } from "antd";
+import { LockOutlined, UserOutlined } from '@ant-design/icons'
 import "./account.css";
 
 export const AccountPage = () => {
+
+  const onFinish = (values: any) => {
+    console.log('Received values of form: ', values);
+  }
   return (
     <>
-    <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} className="accountPage">
-      <Divider style={{ color: '#fff'}}>Mi cuenta</Divider>
-      <Col span={12} offset={6}>
-        <p>datos del usuario</p>
-        <div>
-          <p>Nombre</p>
-          <Input placeholder="Alejandro" disabled/>
-        </div>
+      <Layout style={{ padding: '80px 20px', width: '100%', height: '100vh', background: 'black' }}>
+        <Row align={"middle"} justify={"center"} >
+          <Col xs={16} lg={8}>
+            <Divider style={{ color: '#fff', fontSize: '3vh' }}>Mi cuenta</Divider>
+            <Form
+              layout="vertical"
+              name="normal_login"
+              className="login-form"
+              initialValues={{ remember: true }}
+              onFinish={onFinish}
+            >
+              <Form.Item
 
-        <div>
-          <p>Email</p>
-          <Input placeholder="a@ac." disabled/>
-        </div>
-      </Col>
-    </Row>
+                label="Username"
+                name="username"
+                rules={[{ required: true, message: 'Necesitas poner un nombre de usuario' }]}
+              >
+                <Input prefix={<UserOutlined className="site-form-item-icon" />}
+                  placeholder="Nombre de usuario" />
+              </Form.Item>
+              <Form.Item
+                label="Password"
+                name="password"
+                rules={[{ required: true, message: 'Necesitas poner una contraseña' }]}
+              >
+                <Input.Password
+                  name="password"
+                  prefix={<LockOutlined className="site-form-item-icon" />}
+                  type="password"
+                  placeholder="Password"
+                />
+              </Form.Item>
+
+              <Form.Item>
+                <Form.Item name="remember" valuePropName="checked" noStyle>
+                  <Checkbox>Recordar</Checkbox>
+                </Form.Item>
+
+
+              </Form.Item>
+
+              <Form.Item>
+                <Button style={{
+                  width: '100%',
+                }} type="primary" htmlType="submit" className="login-form-button">
+                  Ingresar
+                </Button>
+              </Form.Item>
+            </Form>
+          </Col>
+        </Row>
+      </Layout>
     </>
   );
+
 };

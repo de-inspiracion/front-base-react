@@ -1,0 +1,12 @@
+.dashboard-card-text{
+    padding: 0 10px;
+    font-size: 16.23px;
+    font-weight: bold;
+    text-align: center;
+    width: 100px;
+    height: 81px;
+}
+
+.ant-space-align-center{
+    justify-content: space-between !important;
+}
