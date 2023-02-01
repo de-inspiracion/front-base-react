@@ -6,11 +6,18 @@ import { Card, Space, Grid, Row, Col } from 'antd';
 import { Divider, Radio, Typography, Popover, Modal } from "antd";
 import { PlusCircleOutlined, DeleteOutlined } from '@ant-design/icons';
 import services from '../../../../../../services/http'
+import NewVideo from "./NewVideo";
 
-export const VideoEditor = ({ videos }: any) => {
+interface customProps{
+  videos:any,
+  id:any
+}
+
+export const VideoEditor = (props:customProps) => {
 
   const { defaultAlgorithm, darkAlgorithm } = theme;
   const [open, setOpen] = useState(false)
+
 
   const editVideoInfo = async (id: any, body: any) => {
     await services.editVideoInfo(id, body)
@@ -42,7 +49,7 @@ export const VideoEditor = ({ videos }: any) => {
       >
         <Space style={{ display: 'flex', flexWrap: "wrap", maxWidth: '1000px', gap: '20px', marginTop: '30px' }}>
           {
-            videos.map((value: any, index: any) => {
+            props.videos.map((value: any, index: any) => {
               return (
                 <Card
                   key={index}
@@ -79,7 +86,7 @@ export const VideoEditor = ({ videos }: any) => {
           }
         </Space>
 
-
+          <NewVideo id = {props.id} numberofVideos = {props.videos.length || 0} />
 
         <Modal width="80vw" title="Preguntas" open={open} onOk={() => { setOpen(false) }} >
           <div style={{ cursor: 'pointer' }}>

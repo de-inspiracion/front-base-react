@@ -117,6 +117,11 @@ const newCourse = async (name:string) => {
   return res.data
 }
 
+const newVideo = async (id:string,body:any) => {
+  const res =  await axios.post(`https://nestjs-virgo-production.up.railway.app/courses/${id}/uploadVideo`,body,{timeout:1800000})
+  return res.data
+}
+
 
 export default {
   post,
@@ -128,7 +133,8 @@ export default {
   editVideoInfo,
   postScore,
   editCourseCover,
-  newCourse
+  newCourse,
+  newVideo
 }
 
 

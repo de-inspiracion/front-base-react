@@ -259,7 +259,7 @@ export const CourseEditor = (state: any) => {
           justify="center"
           align="middle"
         >
-          <VideoEditor videos={videos} />
+          <VideoEditor videos={videos} id={idCourse}  />
         </Row>
       </ConfigProvider>
     </div>
