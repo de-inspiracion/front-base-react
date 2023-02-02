@@ -1,22 +1,19 @@
 import { useState, useEffect } from "react";
 import "./cardSlice.css";
-// import { getListInProgress } from "../../services/home.service";
 import CardV from "../cards/card";
-// import { newDataUser } from '../../../../store/user/userData'
-import { useSwipeable } from 'react-swipeable';
+import { useSwipeable } from "react-swipeable";
 
-import services from './services/http'
+import services from "./services/http";
 
-
-function CardSlide({ title,id,description }: any) {
-  const [items, setIems] = useState([])
-  useEffect(()=>{
-    const getData = async ()=>{
-      const res:any = await services.getCoursesById(id)
-      setIems(res.data)
-    }
-    getData()
-  },[])  
+function CardSlide({ title, id, description }: any) {
+  const [items, setIems] = useState([]);
+  useEffect(() => {
+    const getData = async () => {
+      const res: any = await services.getCoursesById(id);
+      setIems(res.data);
+    };
+    getData();
+  }, []);
 
   const [scrollX, setScrollX] = useState(0);
 
@@ -31,28 +28,27 @@ function CardSlide({ title,id,description }: any) {
   const handleRightArrow = () => {
     let x = scrollX - Math.round(window.innerWidth / 2);
     let listW = items?.length * 200;
-    if ((window.innerWidth - listW) > x) {
-      x = (window.innerWidth - listW) - 70
+    if (window.innerWidth - listW > x) {
+      x = window.innerWidth - listW - 70;
     }
     setScrollX(x);
   };
 
   const handlers = useSwipeable({
     onSwiped: (eventData) => {
-      console.log("User Swiped!", eventData)
-      if (eventData.dir === 'Right') {
-        handleLeftArrow()
+      console.log("User Swiped!", eventData);
+      if (eventData.dir === "Right") {
+        handleLeftArrow();
       } else {
-        handleRightArrow()
+        handleRightArrow();
       }
     },
   });
 
-
   return (
     <>
       <div className="movieRow" {...handlers}>
-        <h2 style={{ color: '#fff' }}> {title} </h2>
+        <h2> {title} </h2>
         <div className="movieRow--left" onClick={handleLeftArrow}>
           <img src="https://img.icons8.com/ios-glyphs/50/FFFFFF/chevron-left.png" />
         </div>
@@ -61,22 +57,26 @@ function CardSlide({ title,id,description }: any) {
         </div>
 
         <div className="movieRow--listarea">
-          <div className="movieRow--list" style={{
-            marginLeft: scrollX,
-          }}>
-            {items?.length > 0 && items.map((item, key) => (
-              <CardV key={key} itemData={item} Image={item.cover} index={key} ></CardV>
-              // <div key={key} className="movieRow--item">
-              //     <img src={`https://image.tmdb.org/t/p/w300${item.poster_path}`}/>
-              // </div>
-            ))}
+          <div
+            className="movieRow--list"
+            style={{
+              marginLeft: scrollX,
+            }}
+          >
+            {items?.length > 0 &&
+              items.map(({ item, key }: any) => (
+                <CardV
+                  key={key}
+                  itemData={item}
+                  Image={item?.cover}
+                  index={key}
+                ></CardV>
+              ))}
           </div>
         </div>
       </div>
     </>
-
   );
-};
-
+}
 
 export default CardSlide;
