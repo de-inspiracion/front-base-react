@@ -12,6 +12,7 @@ import { VideoEditor } from "../videoEditor/videoEditor";
 import { UploadOutlined, FileImageOutlined } from "@ant-design/icons";
 import type { UploadProps } from "antd";
 import { message, Upload } from "antd";
+import { Space } from 'antd';
 
 export const CourseEditor = (state: any) => {
   const [loading, setLoading] = useState(false);
@@ -29,6 +30,9 @@ export const CourseEditor = (state: any) => {
   const [r_, setR_] = useState<any>([]);
   const [videos, setVideos] = useState([]);
   const [img, setImg] = useState<any>([]);
+  const [messageApi, contextHolder] = message.useMessage();
+  
+
   useEffect(() => {
     (async () => {
       let res = await services.getInfo(idCourse);
@@ -53,15 +57,22 @@ export const CourseEditor = (state: any) => {
 
   const editCourseData = async (id: string, field: string, data: any) => {
     let res = await services.updateCourse(id, field, data);
+    messageApi.open({
+      type: 'success',
+      content: 'Se realizó la acción de forma correcta.',
+    });
   };
 
   return (
+    
     <div style={{ backgroundColor: "black", color: "white" }}>
+      
       <ConfigProvider
         theme={{
           algorithm: darkAlgorithm,
         }}
       >
+        {contextHolder}
         <Row justify="center" align="middle">
           <Col span={5}>
             <img src={currentState["cover"]} style={{ width: 150 }} />
