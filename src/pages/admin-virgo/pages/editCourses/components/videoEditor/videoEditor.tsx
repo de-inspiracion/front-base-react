@@ -7,7 +7,7 @@ import { Divider, Radio, Typography, Popover, Modal } from "antd";
 import { PlusCircleOutlined, DeleteOutlined } from '@ant-design/icons';
 import services from '../../../../../../services/http'
 import NewVideo from "./NewVideo";
-
+import { message } from "antd";
 interface customProps{
   videos:any,
   id:any
@@ -17,7 +17,7 @@ export const VideoEditor = (props:customProps) => {
 
   const { defaultAlgorithm, darkAlgorithm } = theme;
   const [open, setOpen] = useState(false)
-
+  const [messageApi, contextHolder] = message.useMessage();
 
   const editVideoInfo = async (id: any, body: any) => {
     await services.editVideoInfo(id, body)
@@ -29,7 +29,10 @@ export const VideoEditor = (props:customProps) => {
         editable={{
           onChange: async (value) => {
             await func(value)
-            // window.location.reload()
+            messageApi.open({
+              type: 'success',
+              content: 'Se realizó la acción de forma correcta.',
+            });
           }
         }}
         level={4}
@@ -47,6 +50,7 @@ export const VideoEditor = (props:customProps) => {
           algorithm: darkAlgorithm
         }}
       >
+        {contextHolder}
         <Space style={{ display: 'flex', flexWrap: "wrap", maxWidth: '1000px', gap: '20px', marginTop: '30px' }}>
           {
             props.videos.map((value: any, index: any) => {

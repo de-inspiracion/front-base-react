@@ -118,7 +118,7 @@ const newCourse = async (name:string) => {
 }
 
 const newVideo = async (id:string,body:any) => {
-  const res =  await axios.post(`https://nestjs-virgo-production.up.railway.app/courses/${id}/uploadVideo`,body,{timeout:1800000})
+  const res =  await axios.post(`https://nestjs-virgo-production.up.railway.app/courses/${id}/uploadVideo`,body,{timeout:1800000,headers:{ 'Access-Control-Allow-Origin': '*'}})
   return res.data
 }
 
