@@ -17,8 +17,6 @@ import {
 import { UserOutlined } from "@ant-design/icons";
 import { Input } from "antd";
 import "./navbar.css";
-import { UserOutlined } from "@ant-design/icons";
-import { Input } from "antd";
 import "./navbar.css";
 
 import { useAuth0 } from "@auth0/auth0-react";
