@@ -35,15 +35,20 @@ const postScore = async (id: string, score: number) => {
 
 
 const getCourseVideos = async (courseId: String) => {
-  const res = await axios.get(
-    `https://nestjs-virgo-production.up.railway.app/courses/${courseId}`,
-    {
-      headers: {
-        "Access-Control-Allow-Origin": true
+  try {
+    const res = await axios.get(
+      `https://nestjs-virgo-production.up.railway.app/courses/${courseId}`,
+      {
+        headers: {
+          "Access-Control-Allow-Origin": true
+        }
       }
-    }
-  )
-  return res.data
+    )
+    return res.data
+  } catch (error) {
+    // console.log(error)
+    return 'ERROR AL TRAER VIDEOS PARA LAS CARDS'
+  }
 }
 
 const getUserInfo = async (email: String) => {
@@ -105,6 +110,19 @@ const editCourseCover = async (id:string,body:any) => {
   window.location.reload()
 }
 
+const newCourse = async (name:string) => {
+  const res =  await axios.post(`https://nestjs-virgo-production.up.railway.app/courses`,{
+    "name": name
+  })
+  return res.data
+}
+
+const newVideo = async (id:string,body:any) => {
+  const res =  await axios.post(`https://nestjs-virgo-production.up.railway.app/courses/${id}/uploadVideo`,body,{timeout:1800000,headers:{ 'Access-Control-Allow-Origin': '*'}})
+  return res.data
+}
+
+
 export default {
   post,
   getCourses,
@@ -114,7 +132,9 @@ export default {
   getInfo,
   editVideoInfo,
   postScore,
-  editCourseCover
+  editCourseCover,
+  newCourse,
+  newVideo
 }
 
 

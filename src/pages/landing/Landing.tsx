@@ -1,6 +1,6 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { Button, Layout, Typography } from "antd";
-import imgBackground from "../../assets/peliculas-banner.png";
+import landing from "../../assets/landing.jpg";
 
 // const App = () => (
 const Landing = () => {
@@ -11,7 +11,7 @@ const Landing = () => {
     <>
       <Layout
         style={{
-          background: `url(${imgBackground}) no-repeat center / cover`,
+          background: `url(${landing}) no-repeat center / cover`,
           height: "100vh",
         }}
       >
@@ -21,7 +21,7 @@ const Landing = () => {
             top: 0,
             zIndex: 1,
             width: "100%",
-            padding: 5,
+            padding: "35px",
             background: "transparent",
           }}
         >
@@ -34,8 +34,8 @@ const Landing = () => {
             }}
           >
             <svg
-              width="43"
-              height="48"
+              width="72"
+              height="66"
               viewBox="0 0 260 240"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -62,27 +62,35 @@ const Landing = () => {
               level={1}
               style={{ margin: 0, color: "white", textAlign: "center" }}
             >
-              Unlimited Movies, TV
+              Formando a los Educadores
             </Typography.Title>
             <Typography.Title
               level={1}
               style={{ margin: 0, color: "white", textAlign: "center" }}
             >
-              Shows and more.
+              Para el Siglo XXI
             </Typography.Title>
           </Paragraph>
           <Paragraph
             style={{ color: "white", textAlign: "center", fontSize: "20px" }}
           >
-            Whatch anywhere, Cancel anytime
+            Aprende lo que quieras, cuando quieras
           </Paragraph>
 
           <Paragraph style={{ color: "white", textAlign: "center" }}>
-            Ready to Watch? Enter your email to create or restart your
-            membership.
+            Listo para aprender? Ingresa tu correo para iniciar sesión
           </Paragraph>
 
-          <Button type="primary" onClick={() => loginWithRedirect()}>
+          <Button
+            style={{
+              width: "200px",
+              height: "50px",
+              borderRadius: "10px",
+              fontSize: "20px",
+            }}
+            type="primary"
+            onClick={() => loginWithRedirect()}
+          >
             Iniciar Sesión
           </Button>
         </Content>

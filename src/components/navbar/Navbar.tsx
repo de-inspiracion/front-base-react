@@ -17,6 +17,9 @@ import {
 import { UserOutlined } from "@ant-design/icons";
 import { Input } from "antd";
 import "./navbar.css";
+import { UserOutlined } from "@ant-design/icons";
+import { Input } from "antd";
+import "./navbar.css";
 
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
@@ -150,7 +153,7 @@ const NavBarComponent: React.FC = () => {
               <Avatar
                 size="small"
                 icon={<UserOutlined />}
-                style={{ backgroundColor: "#87d068", margin: "0 30px" }}
+                style={{ backgroundColor: "#87d068", margin: "0 10px" }}
               />
             </Dropdown>
           </Col>

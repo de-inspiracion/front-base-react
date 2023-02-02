@@ -5,14 +5,18 @@ import { useSwipeable } from "react-swipeable";
 
 import services from "./services/http";
 
-function CardSlide({ title, id, description }: any) {
+function CardSlide({ title, id, description, courses, source }: any) {
   const [items, setIems] = useState([]);
   useEffect(() => {
     const getData = async () => {
       const res: any = await services.getCoursesById(id);
       setIems(res.data);
     };
-    getData();
+    if (source == "Ruta") {
+      setIems(courses);
+    } else {
+      getData();
+    }
   }, []);
 
   const [scrollX, setScrollX] = useState(0);

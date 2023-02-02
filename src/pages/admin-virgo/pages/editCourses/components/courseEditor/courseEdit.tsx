@@ -4,47 +4,49 @@ import { Divider, Radio, Typography } from "antd";
 import { useState, useEffect } from "react";
 import { ConfigProvider, theme, Card } from "antd";
 import UploadImage from "../upload/uploadImage";
-import services from '../../../../../../services/http'
+import services from "../../../../../../services/http";
 const { Paragraph } = Typography;
 import { useParams } from "react-router-dom";
 import { VideoEditor } from "../videoEditor/videoEditor";
 
-import { UploadOutlined, FileImageOutlined } from '@ant-design/icons';
-import type { UploadProps } from 'antd';
-import { message, Upload } from 'antd';
+import { UploadOutlined, FileImageOutlined } from "@ant-design/icons";
+import type { UploadProps } from "antd";
+import { message, Upload } from "antd";
+import { Space } from 'antd';
 
 export const CourseEditor = (state: any) => {
-  const [loading, setLoading] = useState(false)
-  let idCourse: string | undefined = useParams()['idCourse']
+  const [loading, setLoading] = useState(false);
+  let idCourse: string | undefined = useParams()["idCourse"];
   const { defaultAlgorithm, darkAlgorithm } = theme;
-  const [currentState, setCurrentState] = useState<any>({})
-  const [titleCourse, setTitleCourse] = useState('');
-  const [descriptionCourse, setDescriptionCourse] = useState('');
+  const [currentState, setCurrentState] = useState<any>({});
+  const [titleCourse, setTitleCourse] = useState("");
+  const [descriptionCourse, setDescriptionCourse] = useState("");
   const options: SelectProps["options"] = [];
-  const [tags, setTags] = useState<any>(currentState.tags)
-  const [routes, setRoutes] = useState<any>([])
-  const [category, setCategory] = useState<any>([])
+  const [tags, setTags] = useState<any>(currentState.tags);
+  const [routes, setRoutes] = useState<any>([]);
+  const [category, setCategory] = useState<any>([]);
   const [value, setValue] = useState(0); // integer state
-  const [c_, setC_] = useState<any>([])
-  const [r_, setR_] = useState<any>([])
-  const [videos, setVideos] = useState([])
-  const [img, setImg] = useState<any>([])
+  const [c_, setC_] = useState<any>([]);
+  const [r_, setR_] = useState<any>([]);
+  const [videos, setVideos] = useState([]);
+  const [img, setImg] = useState<any>([]);
+  const [messageApi, contextHolder] = message.useMessage();
+  
+
   useEffect(() => {
     (async () => {
-      let res = await services.getInfo(idCourse)
-      setC_(res[0])
-      setR_(res[1])
-      setCurrentState(res[2])
-      setTitleCourse(res[2]['name'])
-      setDescriptionCourse(res[2]['description'])
-      setTags(res[2]['tags'])
-      setRoutes(res[2]['route'])
-      setCategory(res[2]['category'])
-      setVideos(res[2]['videos'])
-    })()
-
-  }, [])
-
+      let res = await services.getInfo(idCourse);
+      setC_(res[0]);
+      setR_(res[1]);
+      setCurrentState(res[2]);
+      setTitleCourse(res[2]["name"]);
+      setDescriptionCourse(res[2]["description"]);
+      setTags(res[2]["tags"]);
+      setRoutes(res[2]["route"]);
+      setCategory(res[2]["category"]);
+      setVideos(res[2]["videos"]);
+    })();
+  }, []);
 
   for (let i = 10; i < 36; i++) {
     options.push({
@@ -53,21 +55,28 @@ export const CourseEditor = (state: any) => {
     });
   }
 
-
   const editCourseData = async (id: string, field: string, data: any) => {
-    let res = await services.updateCourse(id, field, data)
-  }
+    let res = await services.updateCourse(id, field, data);
+    messageApi.open({
+      type: 'success',
+      content: 'Se realizó la acción de forma correcta.',
+    });
+  };
 
   return (
-    <div style={{ backgroundColor: 'black', color: 'white' }}>
+    
+    <div style={{ backgroundColor: "black", color: "white" }}>
+      
       <ConfigProvider
         theme={{
-          algorithm: darkAlgorithm
+          algorithm: darkAlgorithm,
         }}
       >
-
+        {contextHolder}
         <Row justify="center" align="middle">
-          <Col span={5}><img src={currentState['cover']} style={{ width: 150 }} /></Col>
+          <Col span={5}>
+            <img src={currentState["cover"]} style={{ width: 150 }} />
+          </Col>
           <Col span={4}>
             {/* <input 
             type='file'
@@ -86,23 +95,25 @@ export const CourseEditor = (state: any) => {
               showUploadList={false}
               multiple={false}
               accept="image/*"
-
               // action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
               onChange={(e) => {
-                console.log(e.fileList[0]['originFileObj'])
-                setImg(e.fileList[0]['originFileObj'])
+                console.log(e.fileList[0]["originFileObj"]);
+                setImg(e.fileList[0]["originFileObj"]);
               }}
             >
-              < FileImageOutlined style={{ fontSize: 30 }} />
-
+              <FileImageOutlined style={{ fontSize: 30 }} />
             </Upload>
           </Col>
           <Col>
-            <Button onClick={async () => {
-              const formData = new FormData();
-              formData.append("cover", img)
-              await services.editCourseCover(currentState.id, formData)
-            }}>Subir Imagen</Button>
+            <Button
+              onClick={async () => {
+                const formData = new FormData();
+                formData.append("cover", img);
+                await services.editCourseCover(currentState.id, formData);
+              }}
+            >
+              Subir Imagen
+            </Button>
           </Col>
         </Row>
 
@@ -111,17 +122,17 @@ export const CourseEditor = (state: any) => {
           justify="center"
           align="middle"
         >
-          <Col span={6} >
-            <Typography.Title level={5} >Nombre del curso</Typography.Title>
+          <Col span={6}>
+            <Typography.Title level={5}>Nombre del curso</Typography.Title>
           </Col>
 
           <Col span={6}>
             <Typography.Title
               editable={{
                 onChange: (value) => {
-                  setTitleCourse(value)
-                  editCourseData(currentState.id, 'name', value)
-                }
+                  setTitleCourse(value);
+                  editCourseData(currentState.id, "name", value);
+                },
               }}
               level={5}
             >
@@ -142,10 +153,10 @@ export const CourseEditor = (state: any) => {
             <Typography.Title
               editable={{
                 onChange: (value) => {
-                  console.log(value)
-                  setDescriptionCourse(value)
-                  editCourseData(currentState.id, 'description', value)
-                }
+                  console.log(value);
+                  setDescriptionCourse(value);
+                  editCourseData(currentState.id, "description", value);
+                },
               }}
               onChange={(data) => console.log(data)}
               level={5}
@@ -171,18 +182,21 @@ export const CourseEditor = (state: any) => {
               placeholder="Tags"
               value={tags}
               onChange={(value: string) => {
-                setTags(value)
+                setTags(value);
               }}
               options={options}
             />
           </Col>
 
           <Col>
-            <Button shape="round"
+            <Button
+              shape="round"
               onClick={() => {
-                editCourseData(currentState.id, 'tags', tags || [])
+                editCourseData(currentState.id, "tags", tags || []);
               }}
-            >Actualizar</Button>
+            >
+              Actualizar
+            </Button>
           </Col>
         </Row>
 
@@ -200,18 +214,21 @@ export const CourseEditor = (state: any) => {
               value={routes}
               style={{ width: "100%" }}
               onChange={(value: string) => {
-                setRoutes(value)
+                setRoutes(value);
               }}
               options={r_}
             />
           </Col>
 
           <Col>
-            <Button shape="round"
+            <Button
+              shape="round"
               onClick={() => {
-                editCourseData(currentState.id, 'routes', routes || [])
+                editCourseData(currentState.id, "routes", routes || []);
               }}
-            >Actualizar</Button>
+            >
+              Actualizar
+            </Button>
           </Col>
         </Row>
 
@@ -230,27 +247,32 @@ export const CourseEditor = (state: any) => {
               style={{ width: "100%" }}
               // onChange={handleChangeRoute}
               onChange={(value: string) => {
-                setCategory(value)
+                setCategory(value);
               }}
               options={c_}
             />
           </Col>
 
           <Col>
-            <Button shape="round"
+            <Button
+              shape="round"
               onClick={() => {
-                editCourseData(currentState.id, 'category', category || [])
+                editCourseData(currentState.id, "category", category || []);
               }}
-            >Actualizar</Button>
+            >
+              Actualizar
+            </Button>
           </Col>
-
-          <VideoEditor videos={videos} />
-
         </Row>
 
-
+        <Row
+          gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+          justify="center"
+          align="middle"
+        >
+          <VideoEditor videos={videos} id={idCourse}  />
+        </Row>
       </ConfigProvider>
-    </ div>
-
+    </div>
   );
 };
