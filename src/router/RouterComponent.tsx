@@ -1,44 +1,60 @@
-import React from 'react'
-import {
-  createBrowserRouter,
-  RouterProvider
-} from "react-router-dom";
+import React from "react";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { AccountPage } from "../pages/account/Account";
 import PublicRoute from "./PublicRoute";
 import PrivateRoute from "./PrivateRoute";
 import { HomePage } from "../pages/home/HomePage";
 import { Main } from "../pages/main/main";
-import { Login } from "../pages/login/Login"
-import { useAuth0 } from '@auth0/auth0-react'
+import { Login } from "../pages/login/Login";
+import { useAuth0 } from "@auth0/auth0-react";
 import { AdminCourses } from "../pages/admin-virgo/pages/editCourses/AdminCourses";
 import { ViewCourses } from "../pages/admin-virgo/pages/editCourses/ViewCourses";
-import MiProgreso from '../pages/mi-progreso/MiProgreso';
-import RutasDeAprendizaje from '../pages/rutas-aprendizaje/RutasDeAprendizaje';
+import MiProgreso from "../pages/mi-progreso/MiProgreso";
+import RutasDeAprendizaje from "../pages/rutas-aprendizaje/RutasDeAprendizaje";
+import { ConfigProvider, theme } from "antd";
 
 export default function RouterComponent() {
-  const { user, isAuthenticated, isLoading } = useAuth0()
+  const { user, isAuthenticated, isLoading } = useAuth0();
   // console.log('EN ROUTER 2', isAuthenticated,user,isLoading)
   const router = createBrowserRouter([
     {
-      path: '/',
-      element: <PublicRoute isAuthenticated={isAuthenticated} component={<Login />} />
+      path: "/",
+      element: (
+        <PublicRoute isAuthenticated={isAuthenticated} component={<Login />} />
+      ),
     },
     {
       path: "/home",
-      element: <PrivateRoute isAuthenticated={isAuthenticated} component={<Main />} />,
+      element: (
+        <PrivateRoute isAuthenticated={isAuthenticated} component={<Main />} />
+      ),
       children: [
-
         {
           path: "/home",
-          element: <PrivateRoute isAuthenticated={isAuthenticated} component={<HomePage />} />,
+          element: (
+            <PrivateRoute
+              isAuthenticated={isAuthenticated}
+              component={<HomePage />}
+            />
+          ),
         },
         {
           path: "/home/rutas-de-aprendizaje",
-          element: <PrivateRoute isAuthenticated={isAuthenticated} component={<RutasDeAprendizaje />} />
+          element: (
+            <PrivateRoute
+              isAuthenticated={isAuthenticated}
+              component={<RutasDeAprendizaje />}
+            />
+          ),
         },
         {
           path: "/home/mi-progreso",
-          element: <PrivateRoute isAuthenticated={isAuthenticated} component={<MiProgreso />} />
+          element: (
+            <PrivateRoute
+              isAuthenticated={isAuthenticated}
+              component={<MiProgreso />}
+            />
+          ),
         },
         // {
         //   path: "/account",
@@ -62,6 +78,15 @@ export default function RouterComponent() {
   ]);
 
   return (
-    <RouterProvider router={router} />
-  )
+    <ConfigProvider
+      theme={{
+        algorithm: theme.darkAlgorithm,
+        token: {
+          colorPrimary: "#722ED1",
+        },
+      }}
+    >
+      <RouterProvider router={router} />
+    </ConfigProvider>
+  );
 }
