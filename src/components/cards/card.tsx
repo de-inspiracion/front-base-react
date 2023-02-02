@@ -21,11 +21,11 @@ import axios from "axios";
 const { Content } = Layout;
 
 const CardV: any = ({ itemData, Image, key, index }: any) => {
-  const [open, setOpen] = useState(false)
-  const [courseData, setCourseData] = useState([])
-  if(Object.keys(itemData).includes('_id')){
-    itemData['id'] = itemData['_id']
-    delete itemData['_id']
+  const [open, setOpen] = useState(false);
+  const [courseData, setCourseData] = useState([]);
+  if (Object.keys(itemData).includes("_id")) {
+    itemData["id"] = itemData["_id"];
+    delete itemData["_id"];
   }
   const showModal = () => {
     setOpen(true);
@@ -37,11 +37,11 @@ const CardV: any = ({ itemData, Image, key, index }: any) => {
   useEffect(() => {
     const getData = async () => {
       // setIems(await services.getCourseVideos(courseData[0].id).payload)
-      let res = await services.getCourseVideos(itemData.id)
-      setCourseData(res.payload)
-    }
-    getData()
-  }, [])
+      let res = await services.getCourseVideos(itemData.id);
+      setCourseData(res.payload);
+    };
+    getData();
+  }, []);
   // console.log(courseData)
   return (
     <div
@@ -76,8 +76,8 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
   const { user } = useAuth0();
   const [open, setOpen] = useState(Abierto);
   const [confirmLoading, setConfirmLoading] = useState(false);
-  const [videoIndex, setVideoIndex] = useState(0)
-  const [rate, setRate] = useState(0)
+  const [videoIndex, setVideoIndex] = useState(0);
+  const [rate, setRate] = useState(0);
   const [userInfo, setUserInfo]: any = useState({});
   let isScored = false;
 
@@ -98,7 +98,6 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
       handleSubmitScore;
     }
   }, [rate]);
-
 
   const modalRef: any = useRef(null);
   const { Meta } = Card;
@@ -126,7 +125,6 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
     })();
   }, []);
 
-
   useEffect(() => {
     const idVideo = data.videos[videoIndex - 1]?.id;
     const user: any = userInfo;
@@ -148,14 +146,14 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
         )
         .then((res) => {
           console.log(res, "se envio a la base de datos");
-          user.scored.push({ video: idVideo })
-          isScored = true
-          setRate(0)
+          user.scored.push({ video: idVideo });
+          isScored = true;
+          setRate(0);
         })
         .catch((error) => {
           console.log(error, "error al enviar la calificacion");
-          isScored = true
-        })
+          isScored = true;
+        });
     } else {
       console.log("no se envio nada");
     }
@@ -246,18 +244,33 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
       // height='1300px'
       style={{ maxWidth: "800px", overflowY: "auto" }}
     >
-      <Layout
-        ref={modalRef}
-        style={{ background: '#181818', padding: '0 0' }}>
-        <Row style={{ width: '100%', maxWidth: '750px', height: '45vh', maxHeight: '550px' }}>
-          {
-            videoIndex === 0 ?
-              <img src="https://i.ytimg.com/vi/Dc6likh5aWk/maxresdefault.jpg" alt="foto curso" style={{ width: '100%', height: '100%' }} />
-              :
-              <div style={{ width: '100%', height: '100%' }}>
-                <ReactNetflixPlayer src="https://virgostore.blob.core.windows.net/files/3.%20clase%203.mp4" autoPlay={true} fullPlayer={false} onEnded={() => { console.log('termino') }} />
-              </div>
-          }
+      <Layout ref={modalRef} style={{ background: "#181818", padding: "0 0" }}>
+        <Row
+          style={{
+            width: "100%",
+            maxWidth: "750px",
+            height: "45vh",
+            maxHeight: "550px",
+          }}
+        >
+          {videoIndex === 0 ? (
+            <img
+              src="https://i.ytimg.com/vi/Dc6likh5aWk/maxresdefault.jpg"
+              alt="foto curso"
+              style={{ width: "100%", height: "100%" }}
+            />
+          ) : (
+            <div style={{ width: "100%", height: "100%" }}>
+              <ReactNetflixPlayer
+                src="https://virgostore.blob.core.windows.net/files/3.%20clase%203.mp4"
+                autoPlay={true}
+                fullPlayer={false}
+                onEnded={() => {
+                  console.log("termino");
+                }}
+              />
+            </div>
+          )}
         </Row>
 
         <Content
@@ -415,13 +428,39 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
               </p>
             </div>
             {data.videos.map((item: any) => {
-              return <div className='videoInfo' onClick={() => {
-                setVideoIndex(item.position)
-                modalRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-              }} style={{ cursor: 'pointer', display: 'flex', flexDirection: 'row', width: '100%', height: '80px', color: 'white' }}>
-                <div style={{ width: '10%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', color: 'white' }}>{item.position}</div>
-                {/* <iframe width="40%" height="90%" src="https://iframe.mediadelivery.net/embed/759/eb1c4f77-0cda-46be-b47d-1118ad7c2ffe?autoplay=false" style={{borderStyle:'none'}}  loading="lazy" allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" allowFullScreen={true}/> */}
-                {/* <iframe src={item.urlEmbed+'?autoplay=false'} 
+              return (
+                <div
+                  className="videoInfo"
+                  onClick={() => {
+                    setVideoIndex(item.position);
+                    modalRef.current?.scrollIntoView({
+                      behavior: "smooth",
+                      block: "start",
+                    });
+                  }}
+                  style={{
+                    cursor: "pointer",
+                    display: "flex",
+                    flexDirection: "row",
+                    width: "100%",
+                    height: "80px",
+                    color: "white",
+                  }}
+                >
+                  <div
+                    style={{
+                      width: "10%",
+                      height: "100%",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      color: "white",
+                    }}
+                  >
+                    {item.position}
+                  </div>
+                  {/* <iframe width="40%" height="90%" src="https://iframe.mediadelivery.net/embed/759/eb1c4f77-0cda-46be-b47d-1118ad7c2ffe?autoplay=false" style={{borderStyle:'none'}}  loading="lazy" allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" allowFullScreen={true}/> */}
+                  {/* <iframe src={item.urlEmbed+'?autoplay=false'} 
                     loading="lazy"  style={{width:'60%'}}
                     allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" allowFullScreen={true}>
                   </iframe> */}
@@ -492,17 +531,22 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
               </p>
             </div>
             {course_routes.map((item: any) => {
-              return <Card
-                //  style={{ display: 'flex', flexDirection: 'row', width: '100%', height: '100px', border: '1px solid green', marginTop: '2%', color: 'white' }}
-                hoverable
-                style={{ width: '155px', height: '155px' }}
-                cover={<img style={{ height: '100px' }} alt="example" src="https://ichef.bbci.co.uk/news/640/cpsprodpb/870D/production/_111437543_197389d9-800f-4763-8654-aa30c04220e4.png" />}
-              >
-                <Meta
-                  style={{ color: 'white' }}
-                  title={item.name}
-                />
-              </Card>
+              return (
+                <Card
+                  //  style={{ display: 'flex', flexDirection: 'row', width: '100%', height: '100px', border: '1px solid green', marginTop: '2%', color: 'white' }}
+                  hoverable
+                  style={{ width: "155px", height: "155px" }}
+                  cover={
+                    <img
+                      style={{ height: "100px" }}
+                      alt="example"
+                      src="https://ichef.bbci.co.uk/news/640/cpsprodpb/870D/production/_111437543_197389d9-800f-4763-8654-aa30c04220e4.png"
+                    />
+                  }
+                >
+                  <Meta style={{ color: "white" }} title={item.name} />
+                </Card>
+              );
             })}
           </div>
         </Content>
