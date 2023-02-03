@@ -12,7 +12,8 @@ import { VideoEditor } from "../videoEditor/videoEditor";
 import { UploadOutlined, FileImageOutlined } from "@ant-design/icons";
 import type { UploadProps } from "antd";
 import { message, Upload } from "antd";
-import { Space } from 'antd';
+import { Space } from "antd";
+import ModalRoutes from "./ModalRoutes/ModalRoutes";
 
 export const CourseEditor = (state: any) => {
   const [loading, setLoading] = useState(false);
@@ -31,7 +32,15 @@ export const CourseEditor = (state: any) => {
   const [videos, setVideos] = useState([]);
   const [img, setImg] = useState<any>([]);
   const [messageApi, contextHolder] = message.useMessage();
-  
+  const [open, setOpen] = useState(false);
+  const [routes2, setRoutes2] = useState<any>([]);
+
+  useEffect(() => {
+    (async () => {
+      let res = await services.getRoutes();
+      setRoutes2(res.data.payload);
+    })();
+  }, []);
 
   useEffect(() => {
     (async () => {
@@ -58,15 +67,13 @@ export const CourseEditor = (state: any) => {
   const editCourseData = async (id: string, field: string, data: any) => {
     let res = await services.updateCourse(id, field, data);
     messageApi.open({
-      type: 'success',
-      content: 'Se realizó la acción de forma correcta.',
+      type: "success",
+      content: "Se realizó la acción de forma correcta.",
     });
   };
 
   return (
-    
     <div style={{ backgroundColor: "black", color: "white" }}>
-      
       <ConfigProvider
         theme={{
           algorithm: darkAlgorithm,
@@ -199,39 +206,6 @@ export const CourseEditor = (state: any) => {
             </Button>
           </Col>
         </Row>
-
-        <Row
-          gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
-          justify="center"
-          align="middle"
-        >
-          <Col>
-            <h3>Ruta</h3>
-          </Col>
-          <Col span={8}>
-            <Select
-              mode="multiple"
-              value={routes}
-              style={{ width: "100%" }}
-              onChange={(value: string) => {
-                setRoutes(value);
-              }}
-              options={r_}
-            />
-          </Col>
-
-          <Col>
-            <Button
-              shape="round"
-              onClick={() => {
-                editCourseData(currentState.id, "routes", routes || []);
-              }}
-            >
-              Actualizar
-            </Button>
-          </Col>
-        </Row>
-
         <Row
           gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
           justify="center"
@@ -270,7 +244,21 @@ export const CourseEditor = (state: any) => {
           justify="center"
           align="middle"
         >
-          <VideoEditor videos={videos} id={idCourse}  />
+          <Button onClick={() => setOpen(true)}>Actualizar Rutas</Button>
+          <ModalRoutes
+            titleCourse={titleCourse}
+            open={open}
+            setOpen={setOpen}
+            routes={routes2}
+          />
+        </Row>
+
+        <Row
+          gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+          justify="center"
+          align="middle"
+        >
+          <VideoEditor videos={videos} id={idCourse} />
         </Row>
       </ConfigProvider>
     </div>
