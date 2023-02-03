@@ -80,7 +80,6 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
   const [rate, setRate] = useState(0);
   const [userInfo, setUserInfo]: any = useState({});
   let isScored = false;
-
   const handleSubmitScore = async () => {
     try {
       const res = await services.postScore(
@@ -102,9 +101,16 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
   const modalRef: any = useRef(null);
   const { Meta } = Card;
 
-  const cuourse_tags = data.tags;
+  const course_tags = data.tags;
   const course_videos = data.videos;
   const course_routes = data.route;
+
+  console.log('data',data)
+  console.log('tags:',course_tags)
+  console.log('videos:',course_videos)
+  console.log('rutas:',course_routes)
+
+
   const cerrarModal = () => {
     Cerrar(false);
     setOpen(false);
@@ -253,24 +259,11 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
             maxHeight: "550px",
           }}
         >
-          {videoIndex === 0 ? (
-            <img
+          <img
               src="https://i.ytimg.com/vi/Dc6likh5aWk/maxresdefault.jpg"
               alt="foto curso"
               style={{ width: "100%", height: "100%" }}
             />
-          ) : (
-            <div style={{ width: "100%", height: "100%" }}>
-              <ReactNetflixPlayer
-                src="https://virgostore.blob.core.windows.net/files/3.%20clase%203.mp4"
-                autoPlay={true}
-                fullPlayer={false}
-                onEnded={() => {
-                  console.log("termino");
-                }}
-              />
-            </div>
-          )}
         </Row>
 
         <Content
@@ -385,8 +378,8 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
                     flexWrap: "wrap",
                   }}
                 >
-                  {cuourse_tags.length > 0 &&
-                    cuourse_tags.map((item: any, index: any) => {
+                  {course_tags.length > 0 &&
+                    course_tags.map((item: any, index: any) => {
                       return <Tag style={{ color: "white" }}>{item}</Tag>;
                     })}
                 </div>
@@ -427,7 +420,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
                 Cápsulas de video
               </p>
             </div>
-            {data.videos.map((item: any) => {
+            { course_videos.map((item: any) => {
               return (
                 <div
                   className="videoInfo"
@@ -459,11 +452,6 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
                   >
                     {item.position}
                   </div>
-                  {/* <iframe width="40%" height="90%" src="https://iframe.mediadelivery.net/embed/759/eb1c4f77-0cda-46be-b47d-1118ad7c2ffe?autoplay=false" style={{borderStyle:'none'}}  loading="lazy" allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" allowFullScreen={true}/> */}
-                  {/* <iframe src={item.urlEmbed+'?autoplay=false'} 
-                    loading="lazy"  style={{width:'60%'}}
-                    allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" allowFullScreen={true}>
-                  </iframe> */}
                   <img
                     src={item.thumbnail}
                     width="20%"

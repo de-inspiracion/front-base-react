@@ -12,13 +12,13 @@ function CardSlide({ title, id, description, courses, source }: any) {
       const res: any = await services.getCoursesById(id);
       setIems(res.data);
     };
-    if (source == "Ruta") {
-      setIems(courses);
-    } else {
-      getData();
+    if(source === 'Ruta'){
+      setIems(courses)
+    }
+    else{
+      getData()
     }
   }, []);
-
   const [scrollX, setScrollX] = useState(0);
 
   const handleLeftArrow = () => {
@@ -67,15 +67,12 @@ function CardSlide({ title, id, description, courses, source }: any) {
               marginLeft: scrollX,
             }}
           >
-            {items?.length > 0 &&
-              items.map(({ item, key }: any) => (
-                <CardV
-                  key={key}
-                  itemData={item}
-                  Image={item?.cover}
-                  index={key}
-                ></CardV>
-              ))}
+            {
+              items.length > 0 && items.map((item,key) => {
+                // console.log(item)
+                return <CardV key={key} itemData = {item} Image={item.cover} index={key}/>
+              })
+            }
           </div>
         </div>
       </div>

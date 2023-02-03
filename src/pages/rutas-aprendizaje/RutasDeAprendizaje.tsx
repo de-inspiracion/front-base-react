@@ -14,7 +14,6 @@ const RutasDeAprendizaje = () => {
         }
         getData()
     },[])
-
     return (
         <>
             <Row className="" gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} style={{ overflow: 'hidden'}}>
