@@ -16,6 +16,7 @@ import { ReactNetflixPlayer } from "react-netflix-player";
 import "./card.css";
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
+import { useSelector } from 'react-redux'
 //estilos del modal
 
 const { Content } = Layout;
@@ -73,13 +74,16 @@ const CardV: any = ({ itemData, Image, key, index }: any) => {
 };
 
 const ModalCard = ({ data, Abierto, Cerrar }: any) => {
+
   const { user } = useAuth0();
   const [open, setOpen] = useState(Abierto);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [videoIndex, setVideoIndex] = useState(0);
   const [rate, setRate] = useState(0);
-  const [userInfo, setUserInfo]: any = useState({});
+  const userInfo = useSelector( estado => estado.userInfo )
   let isScored = false;
+  let videoTime = 0
+
   const handleSubmitScore = async () => {
     try {
       const res = await services.postScore(
@@ -105,10 +109,10 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
   const course_videos = data.videos;
   const course_routes = data.route;
 
-  console.log('data',data)
-  console.log('tags:',course_tags)
-  console.log('videos:',course_videos)
-  console.log('rutas:',course_routes)
+  // console.log('data',data)
+  // console.log('tags:',course_tags)
+  // console.log('videos:',course_videos)
+  // console.log('rutas:',course_routes)
 
 
   const cerrarModal = () => {
@@ -124,12 +128,6 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
     }, 2000);
   };
 
-  useEffect(() => {
-    (async () => {
-      let res: any = await services.getUserInfo(String(user?.email));
-      setUserInfo(res);
-    })();
-  }, []);
 
   useEffect(() => {
     const idVideo = data.videos[videoIndex - 1]?.id;
@@ -183,39 +181,39 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
       }
     });
 
-    useEffect(() => {
-      const idVideo: any = data.videos[videoIndex - 1]?.id;
-      const user: any = userInfo;
-      //aqui usamos el ID del usuario
-      const headers = {
-        userId: userInfo.id, //id del usuario
-      };
+    // useEffect(() => {
+    //   const idVideo: any = data.videos[videoIndex - 1]?.id;
+    //   const user: any = userInfo;
+    //   //aqui usamos el ID del usuario
+    //   const headers = {
+    //     userId: userInfo.id, //id del usuario
+    //   };
 
-      const userScore = {
-        score: rate,
-      };
+    //   const userScore = {
+    //     score: rate,
+    //   };
 
-      if (rate > 0 && videoIndex > 0) {
-        axios
-          .post(
-            `https://nestjs-virgo-production.up.railway.app/videos/${idVideo}/score`,
-            userScore,
-            { headers: headers }
-          )
-          .then((res) => {
-            console.log(res, "se envio a la base de datos");
-            user.scored.push({ video: idVideo });
-            isScored = true;
-            setRate(0);
-          })
-          .catch((error) => {
-            console.log(error, "error al enviar la calificacion");
-            isScored = true;
-          });
-      } else {
-        console.log("no se envio nada");
-      }
-    }, [rate || videoIndex]);
+    //   if (rate > 0 && videoIndex > 0) {
+    //     axios
+    //       .post(
+    //         `https://nestjs-virgo-production.up.railway.app/videos/${idVideo}/score`,
+    //         userScore,
+    //         { headers: headers }
+    //       )
+    //       .then((res) => {
+    //         console.log(res, "se envio a la base de datos");
+    //         user.scored.push({ video: idVideo });
+    //         isScored = true;
+    //         setRate(0);
+    //       })
+    //       .catch((error) => {
+    //         console.log(error, "error al enviar la calificacion");
+    //         isScored = true;
+    //       });
+    //   } else {
+    //     console.log("no se envio nada");
+    //   }
+    // }, [rate || videoIndex]);
 
     console.log(userInfo, "info del usuario");
 
@@ -251,21 +249,54 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
       style={{ maxWidth: "800px", overflowY: "auto" }}
     >
       <Layout ref={modalRef} style={{ background: "#181818", padding: "0 0" }}>
-        <Row
-          style={{
-            width: "100%",
-            maxWidth: "750px",
-            height: "45vh",
-            maxHeight: "550px",
-          }}
-        >
-          <img
-              src="https://i.ytimg.com/vi/Dc6likh5aWk/maxresdefault.jpg"
-              alt="foto curso"
-              style={{ width: "100%", height: "100%" }}
-            />
-        </Row>
+      <Row style={{ width: '100%', maxWidth: '750px', height: '45vh', maxHeight: '550px' }}>
+          {
+            videoIndex === 0 ?
+              <img src={data ? data.cover : 'https://image.tmdb.org/t/p/w300/20mOwAAPwZ1vLQkw0fvuQHiG7bO.jpg'} alt="foto curso" style={{ width: '100%', height: '100%' }} />
+              :
+              <div style={{ width: '100%', height: '100%' }}>
+                <ReactNetflixPlayer  src="https://virgostore.blob.core.windows.net/files/3.%20clase%203.mp4" autoPlay={true} fullPlayer={false}
+                onTimeUpdate={
+                    async (evt)=>{
+                      let time = evt.target.currentTime
+                      if(time - videoTime > 5){
+                        // setVideoTime(time)
+                        videoTime = time
+                        console.log('desde video mandar data')
+                        let body = {
+                          idVideo: data.videos[videoIndex-1].id,
+                          idCourse: data.id,
+                          progress: time,
+                          finished: false,
+                          num: videoIndex
+                        }
+                        // console.log(body)
+                        const res = await services.editUserVideoProgress(userInfo.id,body)
+                        console.log(res)
+                      }
+                    }
+                  }
+                onEnded={
+                  async () => {
+                    //mandar data del video aca con un finished true
+                    let body = {
+                      idVideo: data.videos[videoIndex-1].id,
+                      idCourse: data.id,
+                      progress: data.videos[videoIndex-1].duration,
+                      finished: true,
+                      num: videoIndex
+                    }
 
+                    const res = await services.editUserVideoProgress(userInfo.id,body)
+                    console.log('termino')
+                    console.log('res',res)
+                    console.log(body)                    
+                  }
+                }
+              />
+              </div>
+          }
+        </Row>
         <Content
           style={{
             alignItems: "center",

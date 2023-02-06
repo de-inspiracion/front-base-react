@@ -1,19 +1,32 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
+  id: null,
   name: null,
+  email: null,
+  directive: null,
+  profile: null,
   age: null,
-  authenticated: null
+  authenticated: null,
+  finished: [],
+  inprogress:[],
+  scored:[]
 }
 export const UserData = createSlice({
   name: 'userInfo',
   initialState,
   reducers: {
     newDataUser: (state, newdata) => {
-      console.log('en slice: payload: ',newdata)
-      state.name = newdata.payload.userName
-      state.authenticated = newdata.payload.isAthenticated
+      state.id = newdata.payload.id
+      state.name = newdata.payload.name
+      state.email = newdata.payload.email,
+      state.directive = newdata.payload.directive
+      state.profile = newdata.payload.profile
+      state.authenticated = newdata.payload.authenticated
       state.age = newdata.payload.age
+      state.inprogress = newdata.payload.inprogress
+      state.finished = newdata.payload.finished,
+      state.scored = newdata.payload.scored
     },
   },
 })

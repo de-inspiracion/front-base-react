@@ -148,6 +148,18 @@ const getRoutes = async () => {
   );
   return res;
 };
+const editUserVideoProgress = async (userId:String, body:any) => {
+  console.log(userId,body)
+  try {
+    const res = await axios.post(`https://nestjs-virgo-production.up.railway.app/user/${userId}/course/inProgress`,body)
+    console.log(res)
+    return 'Datos enviados correctamente'
+  } catch (error) {
+    console.log(error)
+    return `Error al mandar progreso del video del usuario ${userId}`
+  }
+}
+
 
 export default {
   post,
@@ -162,4 +174,5 @@ export default {
   newCourse,
   newVideo,
   getRoutes,
+  editUserVideoProgress
 };
