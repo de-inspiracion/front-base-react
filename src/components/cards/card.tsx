@@ -43,7 +43,6 @@ const CardV: any = ({ itemData, Image, key, index }: any) => {
     };
     getData();
   }, []);
-  console.log(courseData)
   return (
     <div
       key={key}
@@ -106,7 +105,13 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
     }, 2000);
   };
 
+  const changeSetRate = (value: any, change:any = null) => {
+    if (!change) {
+      setRate(value);
+    }
+  }
   const GetRateComponent = () => {
+    let scoredVideo= false
     const user: any = userInfo;
     const currentVideo: any = data?.videos[videoIndex - 1];
     if (!user?.scored || !currentVideo) {
@@ -115,20 +120,19 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
 
     user.scored.forEach((score: any) => {
       if (score.video == currentVideo?.id) {
-        console.log("el score es true");
+        scoredVideo = true
+        changeSetRate(score.score, true)
       } else {
         console.log("el score es false");
       }
-    });
-
-
+    }); 
     return (
       <Rate
         allowHalf
-        disabled={isScored}
+        disabled={scoredVideo}
         defaultValue={0}
-        value= {data.videos[videoIndex - 1]?.score.averageScore}
-        onChange={(value) => setRate(value)}
+        value= {videoIndex ?  data.videos[videoIndex - 1]?.score.averageScore : rate}
+        onChange={(value) => changeSetRate(value)}
       />
     );
   };
@@ -154,9 +158,10 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
           { headers: headers }
         )
         .then((res) => {
+          changeSetRate(rate);
           console.log(res, "se envio a la base de datos");
           user.scored.push({ video: idVideo });
-          setIsScored(true);
+          data.videos[videoIndex - 1].score.averageScore = rate;
         })
         .catch((error) => {
           console.log(error, "error al enviar la calificacion");
@@ -171,7 +176,6 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
 
   console.log("data", data)
   console.log(data.videos[videoIndex - 1]?.score.averageScore, "score")
-  console.log(isScored, "isScored")
   return (
     <Modal
       open={open}
