@@ -80,27 +80,10 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [videoIndex, setVideoIndex] = useState(0);
   const [rate, setRate] = useState(0);
+  const [isScored, setIsScored] = useState(false);
   const userInfo = useSelector( estado => estado.userInfo )
-  let isScored = false;
   let videoTime = 0
 
-  const handleSubmitScore = async () => {
-    try {
-      const res = await services.postScore(
-        data.videos[videoIndex - 1]?.id,
-        rate
-      );
-      console.log("res, se envio a la base de datos", res);
-    } catch {
-      console.error("error al enviar la calificacion");
-    }
-  };
-
-  useEffect(() => {
-    if (rate > 0) {
-      handleSubmitScore;
-    }
-  }, [rate]);
 
   const modalRef: any = useRef(null);
   const { Meta } = Card;
@@ -108,11 +91,6 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
   const course_tags = data.tags;
   const course_videos = data.videos;
   const course_routes = data.route;
-
-  // console.log('data',data)
-  // console.log('tags:',course_tags)
-  // console.log('videos:',course_videos)
-  // console.log('rutas:',course_routes)
 
 
   const cerrarModal = () => {
@@ -128,15 +106,42 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
     }, 2000);
   };
 
+  const GetRateComponent = () => {
+    const user: any = userInfo;
+    const currentVideo: any = data?.videos[videoIndex - 1];
+    if (!user?.scored || !currentVideo) {
+      return;
+    }
+
+    user.scored.forEach((score: any) => {
+      if (score.video == currentVideo?.id) {
+        console.log("el score es true");
+      } else {
+        console.log("el score es false");
+      }
+    });
+
+
+    return (
+      <Rate
+        allowHalf
+        disabled={isScored}
+        defaultValue={0}
+        value= {data.videos[videoIndex - 1]?.score.averageScore}
+        onChange={(value) => setRate(value)}
+      />
+    );
+  };
+
 
   useEffect(() => {
     const idVideo = data.videos[videoIndex - 1]?.id;
-    const user: any = userInfo;
     //aqui usamos el ID del usuario
+    const user = userInfo;
+    
     const headers = {
       userId: userInfo.id, //id del usuario
     };
-
     const userScore = {
       score: rate,
     };
@@ -151,82 +156,22 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
         .then((res) => {
           console.log(res, "se envio a la base de datos");
           user.scored.push({ video: idVideo });
-          isScored = true;
-          setRate(0);
+          setIsScored(true);
         })
         .catch((error) => {
           console.log(error, "error al enviar la calificacion");
-          isScored = true;
         });
-    } else {
-      console.log("no se envio nada");
-    }
-  }, [rate || videoIndex]);
-
-  // console.log(userInfo, "info del usuario");
-
-  const GetRateComponent = () => {
-    const user: any = userInfo;
-    const currentVideo: any = data?.videos[videoIndex - 1];
-    if (!user?.scored || !currentVideo) {
-      return;
+    } else{
+      console.log("no post")
     }
 
-    user.scored.forEach((score: any) => {
-      // scored.video es el  id del video del user
-      // currentVideo.id es el id del video del curso
-      if (score.video == currentVideo.id) {
-        isScored = true;
-        console.log("el score es true");
-      }
-    });
+  }, [rate]);
 
-    // useEffect(() => {
-    //   const idVideo: any = data.videos[videoIndex - 1]?.id;
-    //   const user: any = userInfo;
-    //   //aqui usamos el ID del usuario
-    //   const headers = {
-    //     userId: userInfo.id, //id del usuario
-    //   };
 
-    //   const userScore = {
-    //     score: rate,
-    //   };
 
-    //   if (rate > 0 && videoIndex > 0) {
-    //     axios
-    //       .post(
-    //         `https://nestjs-virgo-production.up.railway.app/videos/${idVideo}/score`,
-    //         userScore,
-    //         { headers: headers }
-    //       )
-    //       .then((res) => {
-    //         console.log(res, "se envio a la base de datos");
-    //         user.scored.push({ video: idVideo });
-    //         isScored = true;
-    //         setRate(0);
-    //       })
-    //       .catch((error) => {
-    //         console.log(error, "error al enviar la calificacion");
-    //         isScored = true;
-    //       });
-    //   } else {
-    //     console.log("no se envio nada");
-    //   }
-    // }, [rate || videoIndex]);
-
-    console.log(userInfo, "info del usuario");
-
-    return (
-      <Rate
-        allowHalf
-        disabled={isScored}
-        defaultValue={0}
-        value={data.videos[videoIndex - 1]?.score.averageScore}
-        onChange={(value) => setRate(value)}
-      />
-    );
-  };
+  console.log("data", data)
+  console.log(data.videos[videoIndex - 1]?.score.averageScore, "score")
+  console.log(isScored, "isScored")
   return (
     <Modal
       open={open}
@@ -262,7 +207,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
                       if(time - videoTime > 5){
                         // setVideoTime(time)
                         videoTime = time
-                        console.log('desde video mandar data')
+                        // console.log('desde video mandar data')
                         let body = {
                           idVideo: data.videos[videoIndex-1].id,
                           idCourse: data.id,
@@ -272,7 +217,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
                         }
                         // console.log(body)
                         const res = await services.editUserVideoProgress(userInfo.id,body)
-                        console.log(res)
+                        // console.log(res)
                       }
                     }
                   }
@@ -288,9 +233,9 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
                     }
 
                     const res = await services.editUserVideoProgress(userInfo.id,body)
-                    console.log('termino')
-                    console.log('res',res)
-                    console.log(body)                    
+                    // console.log('termino')
+                    // console.log('res',res)
+                    // console.log(body)                    
                   }
                 }
               />
@@ -326,7 +271,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
             >
               <div style={{ display: "flex", alignItems: "center" }}>
                 {GetRateComponent()}
-                {isScored ? (
+                {data.videos[videoIndex - 1]?.score.averageScore || isScored ? (
                   <p
                     style={{
                       color: "white",
