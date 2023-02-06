@@ -1,6 +1,6 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { Button, Layout, Typography } from "antd";
-import landing from "../../assets/landing.jpg";
+import landing from "../../assets/background.png";
 
 // const App = () => (
 const Landing = () => {
