@@ -43,7 +43,7 @@ const CardV: any = ({ itemData, Image, key, index }: any) => {
     };
     getData();
   }, []);
-  // console.log(courseData)
+  console.log(courseData)
   return (
     <div
       key={key}
@@ -200,7 +200,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
               <img src={data ? data.cover : 'https://image.tmdb.org/t/p/w300/20mOwAAPwZ1vLQkw0fvuQHiG7bO.jpg'} alt="foto curso" style={{ width: '100%', height: '100%' }} />
               :
               <div style={{ width: '100%', height: '100%' }}>
-                <ReactNetflixPlayer  src="https://virgostore.blob.core.windows.net/files/3.%20clase%203.mp4" autoPlay={true} fullPlayer={false}
+                <ReactNetflixPlayer  src={data.videos[videoIndex-1].urlEmbed} autoPlay={true} fullPlayer={false}
                 onTimeUpdate={
                     async (evt)=>{
                       let time = evt.target.currentTime
