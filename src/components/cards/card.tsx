@@ -16,7 +16,8 @@ import { ReactNetflixPlayer } from "react-netflix-player";
 import "./card.css";
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { newDataUser } from "../../store/user/userData";
 //estilos del modal
 
 const { Content } = Layout;
@@ -81,6 +82,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
   const [rate, setRate] = useState(0);
   const [isScored, setIsScored] = useState(false);
   const userInfo = useSelector( estado => estado.userInfo )
+  const dispatch = useDispatch()
   let videoTime = 0
 
 
@@ -112,16 +114,16 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
   }
   const GetRateComponent = () => {
     let scoredVideo= false
+    let scoredNow = 0;
     const user: any = userInfo;
     const currentVideo: any = data?.videos[videoIndex - 1];
     if (!user?.scored || !currentVideo) {
       return;
     }
-
     user.scored.forEach((score: any) => {
       if (score.video == currentVideo?.id) {
         scoredVideo = true
-        changeSetRate(score.score, true)
+        scoredNow = score.scored
       } else {
         console.log("el score es false");
       }
@@ -131,7 +133,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
         allowHalf
         disabled={scoredVideo}
         defaultValue={0}
-        value= {videoIndex ?  data.videos[videoIndex - 1]?.score.averageScore : rate}
+        value= {scoredNow}
         onChange={(value) => changeSetRate(value)}
       />
     );
@@ -158,10 +160,23 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
           { headers: headers }
         )
         .then((res) => {
-          changeSetRate(rate);
+          // changeSetRate(rate);
           console.log(res, "se envio a la base de datos");
-          user.scored.push({ video: idVideo });
-          data.videos[videoIndex - 1].score.averageScore = rate;
+          const us = JSON.parse(JSON.stringify(user))
+          us.scored.push({ video: idVideo, scored: rate });
+          // data.videos[videoIndex - 1].score.averageScore = rate;
+          dispatch(newDataUser({
+            id: us.id,
+            name: us.nombre,
+            email: us.email,
+            directive: us.directive,
+            profile: us.perfil,
+            authenticated: true,
+            inprogress: us.inprogress,
+            finished: us.finished,
+            scored: us.scored
+          }))
+          GetRateComponent()
         })
         .catch((error) => {
           console.log(error, "error al enviar la calificacion");
