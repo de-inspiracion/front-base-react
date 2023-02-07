@@ -24,7 +24,8 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import Table, { ColumnsType } from "antd/es/table";
-
+import { useSelector } from 'react-redux'
+const {Meta} = Card
 const { Content } = Layout;
 const { Title, Paragraph, Text } = Typography;
 
@@ -84,6 +85,8 @@ const data: DataType[] = [
 ];
 
 const MiProgreso = () => {
+  const userInfo = useSelector( (estado:any) => estado.userInfo)
+  console.log(userInfo)
   return (
     <ConfigProvider theme={{ algorithm: theme.darkAlgorithm }}>
       <Layout style={{ padding: "30px 30px" }}>
@@ -247,8 +250,28 @@ const MiProgreso = () => {
               styles={{ borderBottom: "solid 8px #7a00c2" }}
             />
           </Space>
+          <Space wrap={true} direction='vertical'>
+            { userInfo.inprogress.length > 0 && <div>
+              <Typography.Title level={3}>Cursos en Progreso</Typography.Title>
+              <Space direction='horizontal'>
+                {userInfo.inprogress.map( (video:any) => {
+                  return <div>video</div>
+                })}
+              </Space>
+            </div>}
+            {userInfo.finished.length > 0 && <div>
+              <Typography.Title level={3}>Crusos Finalizados</Typography.Title>
+              <Space direction='horizontal'>
+                {userInfo.finished.map( (curso:any) => {
+                  return <Card cover={<img alt="example" src={curso.course.cover} />}>
+                        <Meta title={curso.course.name} />
+                  </Card>
+                })}
+              </Space>
+            </div>}
+          </Space>
         </Space>
-
+              {  }
         <Space direction="vertical">
           <Typography.Title level={3}>Certificados</Typography.Title>
           <Table columns={columns} dataSource={data} />
