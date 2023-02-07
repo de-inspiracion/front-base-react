@@ -148,6 +148,7 @@ const getRoutes = async () => {
   );
   return res;
 };
+
 const editUserVideoProgress = async (userId:String, body:any) => {
   console.log(userId,body)
   try {
@@ -158,6 +159,20 @@ const editUserVideoProgress = async (userId:String, body:any) => {
     console.log(error)
     return `Error al mandar progreso del video del usuario ${userId}`
   }
+}
+
+const getCertificate = async (body:any) => {
+
+  const res = await axios.post(`http://localhost:3000/user/courseCertificate`,body)
+  const base64String = res.data.toString('base64')
+
+
+  const linkSource = `data:application/pdf;base64,${res.data}`;
+  const downloadLink = document.createElement("a");
+  downloadLink.href = linkSource;
+  downloadLink.download = `CERTIFICATE ${body.userName} - ${body.courseName}`;
+  downloadLink.click();
+
 }
 
 
@@ -174,5 +189,6 @@ export default {
   newCourse,
   newVideo,
   getRoutes,
-  editUserVideoProgress
+  editUserVideoProgress,
+  getCertificate
 };

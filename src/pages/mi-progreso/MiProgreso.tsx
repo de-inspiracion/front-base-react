@@ -24,66 +24,69 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import Table, { ColumnsType } from "antd/es/table";
-
+import { useSelector } from 'react-redux'
+import services from '../../services/http'
 const { Content } = Layout;
 const { Title, Paragraph, Text } = Typography;
 
 interface DataType {
   key: React.Key;
   name: string;
-  age: number;
-  cursos: string;
-  description: string;
+  id: string;
+  date:string;
 }
 
-const columns: ColumnsType<DataType> = [
-  { title: "Nro", dataIndex: "key", key: "key" },
-  { title: "Cursos Completados", dataIndex: "cursos", key: "cursos" },
-  {
-    title: "Descargar Certificado",
-    dataIndex: "",
-    key: "x",
-    render: () => (
-      <a>
-        Descargar
-        <DownloadOutlined style={{ cursor: "pointer" }} />
-      </a>
-    ),
-  },
-];
 
-const data: DataType[] = [
-  {
-    key: 1,
-    name: "John Brown",
-    age: 32,
-    cursos: "New York No. 1 Lake Park",
-    description: "This not expandable",
-  },
-  {
-    key: 2,
-    name: "Jim Green",
-    age: 42,
-    cursos: "London No. 1 Lake Park",
-    description: "This not expandable.",
-  },
-  {
-    key: 3,
-    name: "Not Expandable",
-    age: 29,
-    cursos: "Jiangsu No. 1 Lake Park",
-    description: "This not expandable",
-  },
-  {
-    key: 4,
-    name: "Joe Black",
-    age: 32,
-    cursos: "Sidney No. 1 Lake Park",
-    description: "This not expandable.",
-  },
-];
+
+
+const getFinishedCourses = (courses:any)=>{
+  const data:DataType[] = []
+
+  for(let i = 0;i<courses.length;i++){
+    const course = courses[i].course
+    data.push(
+      {
+        key: i + 1 ,
+        name: course.name,
+        id: course._id,
+        date: course.updatedAt
+      }
+    )
+  }
+
+  return data
+}
 
 const MiProgreso = () => {
+  const userInfo = useSelector(state => state.userInfo)
+
+  const columns: ColumnsType<DataType> = [
+      // { title: "Nro", dataIndex: "key", key: "key" },
+      { title: "Cursos Completados", dataIndex: "name", key: "name" },
+      {
+        title: "Descargar Certificado",
+        dataIndex: "",
+        key: "id",
+        render: (row) => (
+          <a onClick={async ()=>{
+            const body = {
+              userName: userInfo.name,
+              userId: userInfo.id,
+              courseId: row.id,
+              courseName: row.name,
+              courseDate: row.date
+            }
+            const res = await services.getCertificate(body)
+          }}>
+            Descargar
+            <DownloadOutlined style={{ cursor: "pointer" }} />
+          </a>
+        ),
+      },
+    ];
+
+  
+
   return (
     <ConfigProvider theme={{ algorithm: theme.darkAlgorithm }}>
       <Layout style={{ padding: "30px 30px" }}>
@@ -91,8 +94,8 @@ const MiProgreso = () => {
           <Typography.Text style={{ fontSize: "18px" }} strong>
             Bienvenido:
           </Typography.Text>
-          <Typography.Text style={{ fontSize: "18px" }} type="secondary">
-            TOMÁS DESPOUY ZULUETA
+          <Typography.Text style={{ fontSize: "18px", margin:10 }} type="secondary">
+            {userInfo.name.toUpperCase()}
           </Typography.Text>
         </Content>
 
@@ -251,7 +254,7 @@ const MiProgreso = () => {
 
         <Space direction="vertical">
           <Typography.Title level={3}>Certificados</Typography.Title>
-          <Table columns={columns} dataSource={data} />
+          <Table columns={columns} dataSource={getFinishedCourses(userInfo.finished)} />
         </Space>
       </Layout>
     </ConfigProvider>
