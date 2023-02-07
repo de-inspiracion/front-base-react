@@ -1,9 +1,10 @@
-import { Divider, List, Space, Modal, Table } from "antd";
-import { useCallback, useRef, useState } from "react";
+import { Divider, List, Space, Modal, Table, Button } from "antd";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import update from "immutability-helper";
 import type { ColumnsType } from "antd/es/table";
+import axios from "axios";
 
 interface DraggableBodyRowProps
   extends React.HTMLAttributes<HTMLTableRowElement> {
@@ -15,6 +16,11 @@ interface DataType {
   key: string;
   name: string;
   position: number;
+}
+
+interface Item {
+  index: number;
+  type: string;
 }
 
 const type = "DraggableBodyRow";
@@ -71,7 +77,8 @@ const columns: ColumnsType<DataType> = [
   },
 ];
 
-const ModalRoutes = ({ open, setOpen, routes, titleCourse }: any) => {
+const ModalRoutes = ({ open, setOpen, routes, state }: any) => {
+  const [idRoute, setIdRoute] = useState("");
   const [data, setData] = useState([]);
 
   const components = {
@@ -95,19 +102,55 @@ const ModalRoutes = ({ open, setOpen, routes, titleCourse }: any) => {
     [data]
   );
 
-  const actualCourse = [
+  const actualCourse: any = [
     {
-      key: "26",
-      name: titleCourse,
-      position: 1,
+      name: state.state.name,
+      position: state.state.position,
+      id: state.state.id,
     },
   ];
 
-  const viewCourses = (item: any) => {
-    const coursesData = item.courses;
-    const courseAdd = coursesData.push(...actualCourse);
-    setData(coursesData);
-    console.log("courseAdd", courseAdd);
+  const showCourses = (item: any) => {
+    setIdRoute(item.id);
+    for (let i = 0; i < item.courses.length; i++) {
+      if (state.state.id === item.courses[i].id) {
+        return setData(item.courses);
+      }
+    }
+    return setData([...item.courses, ...actualCourse]);
+  };
+
+  const handleSave = () => {
+    const actualRoute = idRoute;
+    console.log("actualRoute", actualRoute);
+
+    const headers = {
+      "Content-Type": "application/json",
+    };
+
+    let updatePositon: any = data.map((item: any, index: number) => {
+      return {
+        position: index + 1,
+        course: item.id,
+      };
+    });
+
+    console.log("updatePositon", updatePositon);
+
+    axios
+      .post(
+        `https://nestjs-virgo-production.up.railway.app/route/${actualRoute}`,
+        updatePositon,
+        { headers: headers }
+      )
+      .then((res) => {
+        console.log(res);
+        console.log("se hizo el post");
+      })
+      .catch((err) => {
+        console.log(err);
+        console.log("No se hizo el post");
+      });
   };
 
   return (
@@ -145,20 +188,20 @@ const ModalRoutes = ({ open, setOpen, routes, titleCourse }: any) => {
           <List
             itemLayout="horizontal"
             dataSource={routes}
-            renderItem={(item: any) => (
+            renderItem={(route: any) => (
               <List.Item
                 actions={[
                   <a
-                    key="list-loadmore-edit"
+                    key={route.id}
                     onClick={() => {
-                      viewCourses(item);
+                      showCourses(route);
                     }}
                   >
                     Ver Cursos
                   </a>,
                 ]}
               >
-                <List.Item.Meta title={item.name} />
+                <List.Item.Meta title={route.name} />
               </List.Item>
             )}
           />
@@ -207,6 +250,9 @@ const ModalRoutes = ({ open, setOpen, routes, titleCourse }: any) => {
               />
             </DndProvider>
           </div>
+          <Button type="primary" onClick={handleSave}>
+            Actualizar
+          </Button>
         </Space>
       </Space>
     </Modal>

@@ -250,6 +250,7 @@ export const CourseEditor = (state: any) => {
             open={open}
             setOpen={setOpen}
             routes={routes2}
+            state={state}
           />
         </Row>
 
