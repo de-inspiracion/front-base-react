@@ -271,7 +271,6 @@ const MiProgreso = () => {
             </div>}
           </Space>
         </Space>
-              {  }
         <Space direction="vertical">
           <Typography.Title level={3}>Certificados</Typography.Title>
           <Table columns={columns} dataSource={data} />
