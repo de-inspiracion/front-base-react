@@ -85,38 +85,8 @@ const MiProgreso = () => {
       },
     ];
 
-const data: DataType[] = [
-  {
-    key: 1,
-    name: "John Brown",
-    age: 32,
-    cursos: "New York No. 1 Lake Park",
-    description: "This not expandable",
-  },
-  {
-    key: 2,
-    name: "Jim Green",
-    age: 42,
-    cursos: "London No. 1 Lake Park",
-    description: "This not expandable.",
-  },
-  {
-    key: 3,
-    name: "Not Expandable",
-    age: 29,
-    cursos: "Jiangsu No. 1 Lake Park",
-    description: "This not expandable",
-  },
-  {
-    key: 4,
-    name: "Joe Black",
-    age: 32,
-    cursos: "Sidney No. 1 Lake Park",
-    description: "This not expandable.",
-  },
-];
+  
 
-const MiProgreso = () => {
   return (
     <ConfigProvider theme={{ algorithm: theme.darkAlgorithm }}>
       <Layout style={{ padding: "30px 30px" }}>
@@ -280,27 +250,8 @@ const MiProgreso = () => {
               styles={{ borderBottom: "solid 8px #7a00c2" }}
             />
           </Space>
-          <Space wrap={true} direction='vertical'>
-            { userInfo.inprogress.length > 0 && <div>
-              <Typography.Title level={3}>Cursos en Progreso</Typography.Title>
-              <Space direction='horizontal'>
-                {userInfo.inprogress.map( (video:any) => {
-                  return <div>video</div>
-                })}
-              </Space>
-            </div>}
-            {userInfo.finished.length > 0 && <div>
-              <Typography.Title level={3}>Crusos Finalizados</Typography.Title>
-              <Space direction='horizontal'>
-                {userInfo.finished.map( (curso:any) => {
-                  return <Card cover={<img alt="example" src={curso.course.cover} />}>
-                        <Meta title={curso.course.name} />
-                  </Card>
-                })}
-              </Space>
-            </div>}
-          </Space>
         </Space>
+
         <Space direction="vertical">
           <Typography.Title level={3}>Certificados</Typography.Title>
           <Table columns={columns} dataSource={getFinishedCourses(userInfo.finished)} />

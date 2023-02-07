@@ -163,7 +163,7 @@ const editUserVideoProgress = async (userId:String, body:any) => {
 
 const getCertificate = async (body:any) => {
 
-  const res = await axios.post(`http://localhost:3000/user/courseCertificate`,body)
+  const res = await axios.post(`https://nestjs-virgo-production.up.railway.app/user/courseCertificate`,body)
   const base64String = res.data.toString('base64')
 
 
