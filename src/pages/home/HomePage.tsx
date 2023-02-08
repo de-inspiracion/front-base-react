@@ -8,24 +8,30 @@ import services from "../../services/http";
 import { useDispatch } from 'react-redux'
 import { newDataUser } from '../../store/user/userData'
 export const HomePage = () => {
-  const { user, isAuthenticated, isLoading } = useAuth0();
+  const { user, isAuthenticated, isLoading, logout } = useAuth0();
   const dispatch = useDispatch()
+
 
   useEffect(() => {
     const getData = async () => {
-      let res = await services.getUserInfo(String(user?.email))
-      dispatch(newDataUser({
-        id: res.id,
-        name: res.nombre,
-        email: res.email,
-        directive: res.directive,
-        profile: res.perfil,
-        authenticated: isAuthenticated,
-        age: res.age,
-        inprogress: res.inprogress,
-        finished: res.finished,
-        scored: res.scored
-      }))
+      try {
+        let res = await services.getUserInfo(String(user?.email))
+        dispatch(newDataUser({
+          id: res.id,
+          name: res.nombre,
+          email: res.email,
+          directive: res.directive,
+          profile: res.perfil,
+          authenticated: isAuthenticated,
+          age: res.age,
+          inprogress: res.inprogress,
+          finished: res.finished,
+          scored: res.scored
+        }))
+      } catch (error) {
+        logout({ returnTo: "http://localhost:5173" });
+      }
+
     };
     getData();
   }, []);
