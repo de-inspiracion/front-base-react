@@ -2,8 +2,6 @@ import React from "react";
 
 import {
   Avatar,
-  Breadcrumb,
-  Button,
   Col,
   Dropdown,
   Layout,
@@ -11,7 +9,6 @@ import {
   MenuProps,
   message,
   Row,
-  Space,
   theme,
 } from "antd";
 import { UserOutlined } from "@ant-design/icons";
@@ -21,6 +18,7 @@ import "./navbar.css";
 
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 const { Search } = Input;
 
 const { Header, Content, Footer } = Layout;
@@ -45,6 +43,9 @@ const items: MenuProps["items"] = [
 ];
 
 const NavBarComponent: React.FC = () => {
+
+  const userInfo = useSelector  ( estado => estado.userInfo )
+
   const { logout } = useAuth0();
   const {
     token: { colorBgContainer },
@@ -64,6 +65,34 @@ const NavBarComponent: React.FC = () => {
   };
 
   const navigate = useNavigate();
+
+    
+ const menuItems =  [
+  {
+    label: "Home",
+    key: "/home",
+  },
+
+  {
+    label: "Rutas de Aprendizaje",
+    key: "/home/rutas-de-aprendizaje",
+  },
+
+  {
+    label: "Mi Progreso",
+    key: "/home/mi-progreso",
+  },
+]
+
+const menuVirgo = [
+  {
+    label: "Cursos",
+    key: "/admin/course",
+  },
+]
+
+console.log('ProfileUSER' ,userInfo.profile)
+
 
   return (
     <Layout>
@@ -113,22 +142,7 @@ const NavBarComponent: React.FC = () => {
               theme="dark"
               style={{ background: "#141414", border: "none" }}
               mode="horizontal"
-              items={[
-                {
-                  label: "Home",
-                  key: "/home",
-                },
-
-                {
-                  label: "Rutas de Aprendizaje",
-                  key: "/home/rutas-de-aprendizaje",
-                },
-
-                {
-                  label: "Mi Progreso",
-                  key: "/home/mi-progreso",
-                },
-              ]}
+              items={userInfo.profile == 'virgo' ? menuVirgo : menuItems }
             />
           </Col>
 

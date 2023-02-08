@@ -10,6 +10,7 @@ import "./viewCourses.css";
 import axios from "axios";
 
 import NewCourse from "./NewCourse";
+import NavBarComponent from "../../../../components/navbar/Navbar";
 
 
 interface courseData {
@@ -59,6 +60,7 @@ export const ViewCourses = () => {
           algorithm:darkAlgorithm
         }}
     >
+      <NavBarComponent/>
       <div>
         <Divider>Vista de cursos</Divider>
 

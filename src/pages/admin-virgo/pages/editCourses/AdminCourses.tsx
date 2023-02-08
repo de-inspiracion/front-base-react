@@ -4,10 +4,13 @@ import { CourseEditor } from "./components/courseEditor/courseEdit";
 import { VideoEditor } from "./components/videoEditor/videoEditor";
 
 import "./adminCourses.css";
+import NavBarComponent from "../../../../components/navbar/Navbar";
 export const AdminCourses = () => {
   let { idCourse } = useParams();
   let { state } = useLocation();
   return (
+    <>
+    <NavBarComponent/>
     <div
       className="admin-course"
       style={{ backgroundColor: "black", color: "white" }}
@@ -17,5 +20,6 @@ export const AdminCourses = () => {
       </Divider>
       <CourseEditor state={state}></CourseEditor>
     </div>
+    </>
   );
 };
