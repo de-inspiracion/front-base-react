@@ -1,4 +1,4 @@
-import { Divider, List, Space, Modal, Table, Button } from "antd";
+import { Divider, List, Space, Modal, Table, Button, message } from "antd";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
@@ -80,6 +80,21 @@ const columns: ColumnsType<DataType> = [
 const ModalRoutes = ({ open, setOpen, routes, state }: any) => {
   const [idRoute, setIdRoute] = useState("");
   const [data, setData] = useState([]);
+  const [messageApi, contextHolder] = message.useMessage();
+
+  const success = () => {
+    messageApi.open({
+      type: "success",
+      content: "Se actualizo la ruta correctamente",
+    });
+  };
+
+  const error = () => {
+    messageApi.open({
+      type: "error",
+      content: "Error al actualizar la ruta",
+    });
+  };
 
   const components = {
     body: {
@@ -146,10 +161,12 @@ const ModalRoutes = ({ open, setOpen, routes, state }: any) => {
       .then((res) => {
         console.log(res);
         console.log("se hizo el post");
+        success();
       })
       .catch((err) => {
         console.log(err);
         console.log("No se hizo el post");
+        error();
       });
   };
 
@@ -169,6 +186,7 @@ const ModalRoutes = ({ open, setOpen, routes, state }: any) => {
           justifyContent: "space-around",
         }}
       >
+        {contextHolder}
         <Space
           direction="vertical"
           style={{ width: 400, border: "1px #2c2c2c solid" }}
