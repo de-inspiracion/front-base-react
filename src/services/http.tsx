@@ -45,7 +45,6 @@ const getCourseVideos = async (courseId: String) => {
     );
     return res.data;
   } catch (error) {
-    // console.log(error)
     return "ERROR AL TRAER VIDEOS PARA LAS CARDS";
   }
 };

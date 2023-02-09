@@ -44,6 +44,7 @@ const CardV: any = ({ itemData, Image, key, index }: any) => {
     };
     getData();
   }, []);
+
   return (
     <div
       key={key}
@@ -74,7 +75,7 @@ const CardV: any = ({ itemData, Image, key, index }: any) => {
 };
 
 const ModalCard = ({ data, Abierto, Cerrar }: any) => {
-
+  // console.log('data modal 1: ',data)
   const { user } = useAuth0();
   const [open, setOpen] = useState(Abierto);
   const [confirmLoading, setConfirmLoading] = useState(false);
@@ -83,9 +84,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
   const [isScored, setIsScored] = useState(false);
   const userInfo = useSelector( estado => estado.userInfo )
   const dispatch = useDispatch()
-  let videoTime = 0
-
-
+  const [videoTime,setVideoTime] = useState(0)
   const modalRef: any = useRef(null);
   const { Meta } = Card;
 
@@ -186,11 +185,6 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
     }
 
   }, [rate]);
-
-
-
-  console.log("data", data)
-  console.log(data.videos[videoIndex - 1]?.score.averageScore, "score")
   return (
     <Modal
       open={open}
@@ -223,12 +217,10 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
                 onTimeUpdate={
                     async (evt)=>{
                       let time = evt.target.currentTime
-                      if(time - videoTime > 5){
-                        // setVideoTime(time)
-                        videoTime = time
-                        // console.log('desde video mandar data')
+                      if(time - videoTime > 30){
+                        setVideoTime(time)
                         let body = {
-                          idVideo: data.videos[videoIndex-1].id,
+                          idVideo: course_videos[videoIndex-1].id,
                           idCourse: data.id,
                           progress: time,
                           finished: false,
@@ -246,7 +238,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
                     let body = {
                       idVideo: course_videos[videoIndex-1].id,
                       idCourse: data.id,
-                      progress: course_videos[videoIndex-1].duration,
+                      progress: videoTime,
                       finished: true,
                       num: videoIndex
                     }

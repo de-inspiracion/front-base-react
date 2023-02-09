@@ -26,6 +26,10 @@ import {
 import Table, { ColumnsType } from "antd/es/table";
 import { useSelector } from 'react-redux'
 import services from '../../services/http'
+import CourseInProgressModal from "./components/CourseInProgressModal";
+import { useState } from 'react'
+const { Meta } = Card;
+
 const { Content } = Layout;
 const { Title, Paragraph, Text } = Typography;
 
@@ -58,8 +62,12 @@ const getFinishedCourses = (courses:any)=>{
 }
 
 const MiProgreso = () => {
-  const userInfo = useSelector(state => state.userInfo)
-
+  const userInfo = useSelector((state:any) => state.userInfo)
+  const [abrirModal,setAbrirModal] = useState(false)
+  const handleCloseModal = () => {
+    setAbrirModal(false)
+  }
+  const [dataModal, setDataModal] = useState({})
   const columns: ColumnsType<DataType> = [
       // { title: "Nro", dataIndex: "key", key: "key" },
       { title: "Cursos Completados", dataIndex: "name", key: "name" },
@@ -251,7 +259,34 @@ const MiProgreso = () => {
             />
           </Space>
         </Space>
-
+        {
+          userInfo.inprogress.length > 0 &&
+          <Space direction="vertical">
+            <Typography.Title level={3}>Cursos en Progreso</Typography.Title>
+            
+          </Space>
+        }
+        {
+          userInfo.finished.length > 0 &&
+          <Space direction="vertical">
+            <Typography.Title level={3}>Cursos en Finalizados</Typography.Title>
+            <Space direction="horizontal">
+                {
+                  userInfo.finished.map( (curso:any) => {
+                    return <Card style={{ width: 240, cursor:'pointer' }} cover={<img alt="cover" src={curso.course.cover} />} onClick={()=>{
+                      setDataModal(curso)
+                      setAbrirModal(true)
+                    }}>
+                      <Meta style={{textAlign:'center'}} title={curso.course.name} />
+                    </Card>
+                  } )
+                }
+            </Space>
+          </Space>
+        }
+        {
+          abrirModal && <CourseInProgressModal Data={dataModal}  Open={abrirModal} Cerrar={handleCloseModal} />
+        }
         <Space direction="vertical">
           <Typography.Title level={3}>Certificados</Typography.Title>
           <Table columns={columns} dataSource={getFinishedCourses(userInfo.finished)} />
