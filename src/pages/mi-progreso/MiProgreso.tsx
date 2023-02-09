@@ -224,13 +224,8 @@ const MiProgreso = () => {
         {userInfo.inprogress.length > 0 && (
           <Space direction="vertical">
             <Typography.Title level={3}>Cursos en Progreso</Typography.Title>
-          </Space>
-        )}
-        {userInfo.finished.length > 0 && (
-          <Space direction="vertical">
-            <Typography.Title level={3}>Cursos en Finalizados</Typography.Title>
             <Space direction="horizontal">
-              {userInfo.finished.map((curso: any) => {
+              {userInfo.inprogress.map((curso: any) => {
                 return (
                   <Card
                     style={{ width: 240, cursor: "pointer" }}

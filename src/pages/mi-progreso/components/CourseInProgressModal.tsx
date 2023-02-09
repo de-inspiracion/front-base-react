@@ -4,7 +4,8 @@ const { Meta } = Card
 import { CloseOutlined } from '@ant-design/icons'
 import services from '../../../services/http'
 import { ReactNetflixPlayer } from "react-netflix-player";
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { updateVideoTimeStamp } from '../../../store/user/userData';
 const { Content } = Layout;
 
 export default function CourseInProgressModal({Open,Data,Cerrar}:any) {
@@ -30,8 +31,8 @@ export default function CourseInProgressModal({Open,Data,Cerrar}:any) {
     const [videoIndex,setVideoIndex] = useState(0)
     const [videoTime,setVideoTime] = useState(0)
     const userInfo = useSelector( (state:any) => state.userInfo )
+    const dispatch = useDispatch()
     const [isScored, setIsScored] = useState(false);
-
     const modalRef: any = useRef(null);
     const course_tags = courseData.tags;
     const course_videos = courseData.videos;
@@ -46,8 +47,8 @@ export default function CourseInProgressModal({Open,Data,Cerrar}:any) {
         }
         getData()
     },[])
-    // console.log('course data: ',courseData)
-    // console.log('course videos: ',course_videos)
+    // console.log(userInfo)
+    // console.log(`indice: ${videoIndex}, marca de tiempo: ${videoTime}`)
     return (
                 
         <Modal
@@ -79,10 +80,16 @@ export default function CourseInProgressModal({Open,Data,Cerrar}:any) {
                             :
                             <div style={{ width: '100%', height: '100%' }}>
                                 <ReactNetflixPlayer  src={course_videos[videoIndex-1].urlEmbed} autoPlay={true} fullPlayer={false}
+                                startPosition={videoTime}
                                 onTimeUpdate={
                                     async (evt)=>{
                                         let time = evt.target.currentTime
                                         if(time - videoTime > 30){
+                                            console.log('se mando')
+                                            dispatch(updateVideoTimeStamp({
+                                                index: videoIndex-1,
+                                                timestamp: videoTime
+                                            }))
                                             setVideoTime(time)
                                                 let body = {
                                                 idVideo: course_videos[videoIndex-1].id,
@@ -93,7 +100,7 @@ export default function CourseInProgressModal({Open,Data,Cerrar}:any) {
                                             }
                                             // console.log(body)
                                             const res = await services.editUserVideoProgress(userInfo.id,body)
-                                            // console.log(res)
+                                            
                                         }
                                     }
                                 }
@@ -108,10 +115,13 @@ export default function CourseInProgressModal({Open,Data,Cerrar}:any) {
                                             num: videoIndex
                                         }
                                         const res = await services.editUserVideoProgress(userInfo.id,body)
-                                        // console.log('termino')
-                                        // console.log('res',res)
-                                        // console.log(body)                    
+                                        dispatch(updateVideoTimeStamp({
+                                            index: videoIndex-1,
+                                            timestamp: videoTime
+                                        }))  
+                                        console.log('ended')                
                                     }
+                                    
                                 }
                                 />
                             </div>
@@ -276,7 +286,13 @@ export default function CourseInProgressModal({Open,Data,Cerrar}:any) {
                                 <div
                                     className="videoInfo"
                                     onClick={() => {
-                                        setVideoIndex(item.position);
+                                        setVideoIndex(item.position)
+
+                                        try {
+                                            setVideoTime(userInfo.inprogress[item.position - 1 ].progress)
+                                        } catch (error) {
+                                            setVideoTime(0)
+                                        }
                                         modalRef.current?.scrollIntoView({
                                         behavior: "smooth",
                                         block: "start",
