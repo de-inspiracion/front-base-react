@@ -1,8 +1,6 @@
 import {
   Card,
-  Col,
   ConfigProvider,
-  Divider,
   Layout,
   Row,
   Space,
@@ -11,89 +9,106 @@ import {
   Typography,
 } from "antd";
 import {
-  ClockCircleOutlined,
-  CompressOutlined,
-  DollarCircleOutlined,
   DownloadOutlined,
   FieldTimeOutlined,
   GatewayOutlined,
-  ShoppingCartOutlined,
-  ShoppingOutlined,
   StarFilled,
   TrophyFilled,
-  UserOutlined,
 } from "@ant-design/icons";
 import Table, { ColumnsType } from "antd/es/table";
-import { useSelector } from 'react-redux'
-import services from '../../services/http'
+import { useSelector } from "react-redux";
+import services from "../../services/http";
 import CourseInProgressModal from "./components/CourseInProgressModal";
-import { useState } from 'react'
+import { useEffect, useState } from "react";
 const { Meta } = Card;
 
 const { Content } = Layout;
-const { Title, Paragraph, Text } = Typography;
+
+interface statisticData {
+  stars: number;
+  studyHours: number;
+  completedRoutes: number;
+  rank: string;
+}
 
 interface DataType {
   key: React.Key;
   name: string;
   id: string;
-  date:string;
+  date: string;
 }
 
+const getFinishedCourses = (courses: any) => {
+  const data: DataType[] = [];
 
-
-
-const getFinishedCourses = (courses:any)=>{
-  const data:DataType[] = []
-
-  for(let i = 0;i<courses.length;i++){
-    const course = courses[i].course
-    data.push(
-      {
-        key: i + 1 ,
-        name: course.name,
-        id: course._id,
-        date: course.updatedAt
-      }
-    )
+  for (let i = 0; i < courses.length; i++) {
+    const course = courses[i].course;
+    data.push({
+      key: i + 1,
+      name: course.name,
+      id: course._id,
+      date: course.updatedAt,
+    });
   }
 
-  return data
-}
+  return data;
+};
 
 const MiProgreso = () => {
-  const userInfo = useSelector((state:any) => state.userInfo)
-  const [abrirModal,setAbrirModal] = useState(false)
+  const userInfo = useSelector((state: any) => state.userInfo);
+  const [abrirModal, setAbrirModal] = useState(false);
+  const [statistics, setStatistics] = useState<statisticData[]>([]);
+  const [color, setColor] = useState("");
+
   const handleCloseModal = () => {
-    setAbrirModal(false)
-  }
-  const [dataModal, setDataModal] = useState({})
+    setAbrirModal(false);
+  };
+  const [dataModal, setDataModal] = useState({});
+
+  useEffect(() => {
+    const getData = async () => {
+      let res = await services.getStatistics(userInfo.id);
+      setStatistics(res.data);
+    };
+    getData();
+  }, []);
+
+  useEffect(() => {
+    if (statistics?.rank === "Bronze") {
+      setColor("#cd7f32");
+    } else if (statistics?.rank === "Silver") {
+      setColor("#c0c0c0");
+    } else {
+      setColor("#fada17");
+    }
+  }, [statistics]);
+
   const columns: ColumnsType<DataType> = [
-      // { title: "Nro", dataIndex: "key", key: "key" },
-      { title: "Cursos Completados", dataIndex: "name", key: "name" },
-      {
-        title: "Descargar Certificado",
-        dataIndex: "",
-        key: "id",
-        render: (row) => (
-          <a onClick={async ()=>{
+    // { title: "Nro", dataIndex: "key", key: "key" },
+    { title: "Cursos Completados", dataIndex: "name", key: "name" },
+    {
+      title: "Descargar Certificado",
+      dataIndex: "",
+      key: "id",
+      render: (row) => (
+        <a
+          onClick={async () => {
             const body = {
               userName: userInfo.name,
               userId: userInfo.id,
               courseId: row.id,
               courseName: row.name,
-              courseDate: row.date
-            }
-            const res = await services.getCertificate(body)
-          }}>
-            Descargar
-            <DownloadOutlined style={{ cursor: "pointer" }} />
-          </a>
-        ),
-      },
-    ];
-
-  
+              courseDate: row.date,
+            };
+            const res = await services.getCertificate(body);
+          }}
+        >
+          Descargar
+          <DownloadOutlined style={{ cursor: "pointer" }} />
+        </a>
+      ),
+    },
+  ];
 
   return (
     <ConfigProvider theme={{ algorithm: theme.darkAlgorithm }}>
@@ -102,7 +117,10 @@ const MiProgreso = () => {
           <Typography.Text style={{ fontSize: "18px" }} strong>
             Bienvenido:
           </Typography.Text>
-          <Typography.Text style={{ fontSize: "18px", margin:10 }} type="secondary">
+          <Typography.Text
+            style={{ fontSize: "18px", margin: 10 }}
+            type="secondary"
+          >
             {userInfo.name.toUpperCase()}
           </Typography.Text>
         </Content>
@@ -113,7 +131,7 @@ const MiProgreso = () => {
             <Space wrap={true}>
               <Card
                 style={{
-                  borderBottom: "8px #c2c2c2 solid",
+                  borderBottom: `8px ${color} solid`,
                   width: "310px",
                   textAlign: "center",
                 }}
@@ -122,8 +140,8 @@ const MiProgreso = () => {
                   <TrophyFilled
                     style={{
                       fontSize: "60px",
-                      color: "#c2c2c2",
-                      border: "1px solid #c2c2c2",
+                      color: `${color}`,
+                      border: `1px solid ${color}`,
                       borderRadius: "50%",
                       padding: "10px",
                     }}
@@ -133,10 +151,10 @@ const MiProgreso = () => {
                     valueStyle={{
                       fontWeight: 700,
                       fontSize: 45,
-                      color: "#c2c2c2",
+                      color: `${color}`,
                     }}
                     title={"Categoria:"}
-                    value={"SILVER"}
+                    value={statistics?.rank}
                   />
                 </Space>
               </Card>
@@ -162,63 +180,7 @@ const MiProgreso = () => {
                       color: "#fada17",
                     }}
                     title={"Estrellas Virgo:"}
-                    value={25}
-                  />
-                </Space>
-              </Card>
-            </Space>
-          </Space>
-
-          <Space direction="vertical">
-            <Typography.Title level={3}>...</Typography.Title>
-            <Space wrap={true}>
-              <Card
-                style={{
-                  borderBottom: "8px #59bd27 solid",
-                  width: "310px",
-                  textAlign: "center",
-                }}
-              >
-                <Space direction="horizontal">
-                  <ClockCircleOutlined
-                    style={{
-                      fontSize: "60px",
-                      color: "#59bd27",
-                    }}
-                  />
-                  <Statistic
-                    style={{ padding: "0 10px" }}
-                    valueStyle={{
-                      fontSize: 45,
-                      fontWeight: 500,
-                    }}
-                    title={"Horas de Estudio"}
-                    value={152}
-                  />
-                </Space>
-              </Card>
-              <Card
-                style={{
-                  borderBottom: "8px #d10b0e solid",
-                  width: "310px",
-                  textAlign: "center",
-                }}
-              >
-                <Space direction="horizontal">
-                  <CompressOutlined
-                    style={{
-                      fontSize: "60px",
-                      color: "#d10b0e",
-                    }}
-                  />
-                  <Statistic
-                    style={{ padding: "0 10px" }}
-                    valueStyle={{
-                      fontSize: 45,
-                      fontWeight: 500,
-                    }}
-                    title={"Rutas de Aprendizaje"}
-                    value={12}
+                    value={statistics?.stars}
                   />
                 </Space>
               </Card>
@@ -234,14 +196,14 @@ const MiProgreso = () => {
                 <FieldTimeOutlined
                   style={{
                     fontSize: "60px",
-                    color: "#7a00c2",
+                    color: "#4ed2ef",
                   }}
                 />
               }
-              otherPart={"35"}
-              text={"Horas de Estudio del Mes"}
+              otherPart={statistics?.studyHours?.toFixed(1)}
+              text={"Horas de Estudio"}
               styles={{
-                borderBottom: "solid 8px #7a00c2",
+                borderBottom: "solid 8px #4ed2ef",
               }}
             />
             <DashboardCard
@@ -249,47 +211,58 @@ const MiProgreso = () => {
                 <GatewayOutlined
                   style={{
                     fontSize: "60px",
-                    color: "#7a00c2",
+                    color: "#4c73d7",
                   }}
                 />
               }
-              otherPart={"05"}
-              text={"Todas tus Rutas de aprendizaje"}
-              styles={{ borderBottom: "solid 8px #7a00c2" }}
+              otherPart={2}
+              text={"Cursos Completados"}
+              styles={{ borderBottom: "solid 8px #4c73d7" }}
             />
           </Space>
         </Space>
-        {
-          userInfo.inprogress.length > 0 &&
+        {userInfo.inprogress.length > 0 && (
           <Space direction="vertical">
             <Typography.Title level={3}>Cursos en Progreso</Typography.Title>
-            
           </Space>
-        }
-        {
-          userInfo.finished.length > 0 &&
+        )}
+        {userInfo.finished.length > 0 && (
           <Space direction="vertical">
             <Typography.Title level={3}>Cursos en Finalizados</Typography.Title>
             <Space direction="horizontal">
-                {
-                  userInfo.finished.map( (curso:any) => {
-                    return <Card style={{ width: 240, cursor:'pointer' }} cover={<img alt="cover" src={curso.course.cover} />} onClick={()=>{
-                      setDataModal(curso)
-                      setAbrirModal(true)
-                    }}>
-                      <Meta style={{textAlign:'center'}} title={curso.course.name} />
-                    </Card>
-                  } )
-                }
+              {userInfo.finished.map((curso: any) => {
+                return (
+                  <Card
+                    style={{ width: 240, cursor: "pointer" }}
+                    cover={<img alt="cover" src={curso.course.cover} />}
+                    onClick={() => {
+                      setDataModal(curso);
+                      setAbrirModal(true);
+                    }}
+                  >
+                    <Meta
+                      style={{ textAlign: "center" }}
+                      title={curso.course.name}
+                    />
+                  </Card>
+                );
+              })}
             </Space>
           </Space>
-        }
-        {
-          abrirModal && <CourseInProgressModal Data={dataModal}  Open={abrirModal} Cerrar={handleCloseModal} />
-        }
+        )}
+        {abrirModal && (
+          <CourseInProgressModal
+            Data={dataModal}
+            Open={abrirModal}
+            Cerrar={handleCloseModal}
+          />
+        )}
         <Space direction="vertical">
           <Typography.Title level={3}>Certificados</Typography.Title>
-          <Table columns={columns} dataSource={getFinishedCourses(userInfo.finished)} />
+          <Table
+            columns={columns}
+            dataSource={getFinishedCourses(userInfo.finished)}
+          />
         </Space>
       </Layout>
     </ConfigProvider>

@@ -148,32 +148,41 @@ const getRoutes = async () => {
   return res;
 };
 
-const editUserVideoProgress = async (userId:String, body:any) => {
-  console.log(userId,body)
+const editUserVideoProgress = async (userId: String, body: any) => {
+  console.log(userId, body);
   try {
-    const res = await axios.post(`https://nestjs-virgo-production.up.railway.app/user/${userId}/course/inProgress`,body)
-    console.log(res)
-    return 'Datos enviados correctamente'
+    const res = await axios.post(
+      `https://nestjs-virgo-production.up.railway.app/user/${userId}/course/inProgress`,
+      body
+    );
+    console.log(res);
+    return "Datos enviados correctamente";
   } catch (error) {
-    console.log(error)
-    return `Error al mandar progreso del video del usuario ${userId}`
+    console.log(error);
+    return `Error al mandar progreso del video del usuario ${userId}`;
   }
-}
+};
 
-const getCertificate = async (body:any) => {
-
-  const res = await axios.post(`https://nestjs-virgo-production.up.railway.app/user/courseCertificate`,body)
-  const base64String = res.data.toString('base64')
-
+const getCertificate = async (body: any) => {
+  const res = await axios.post(
+    `https://nestjs-virgo-production.up.railway.app/user/courseCertificate`,
+    body
+  );
+  const base64String = res.data.toString("base64");
 
   const linkSource = `data:application/pdf;base64,${res.data}`;
   const downloadLink = document.createElement("a");
   downloadLink.href = linkSource;
   downloadLink.download = `CERTIFICATE ${body.userName} - ${body.courseName}`;
   downloadLink.click();
+};
 
-}
-
+const getStatistics = async (idUser: any) => {
+  const res = await axios.get(
+    `https://nestjs-virgo-production.up.railway.app/user/${idUser}/progressInfo`
+  );
+  return res;
+};
 
 export default {
   post,
@@ -189,5 +198,6 @@ export default {
   newVideo,
   getRoutes,
   editUserVideoProgress,
-  getCertificate
+  getCertificate,
+  getStatistics,
 };
