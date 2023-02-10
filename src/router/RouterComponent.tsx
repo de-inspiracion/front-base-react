@@ -12,6 +12,7 @@ import { ViewCourses } from "../pages/admin-virgo/pages/editCourses/ViewCourses"
 import MiProgreso from "../pages/mi-progreso/MiProgreso";
 import RutasDeAprendizaje from "../pages/rutas-aprendizaje/RutasDeAprendizaje";
 import { ConfigProvider, theme } from "antd";
+import AdminMain from "../pages/admin-virgo/pages/AdminMain";
 
 export default function RouterComponent() {
   const { user, isAuthenticated, isLoading } = useAuth0();
@@ -66,6 +67,10 @@ export default function RouterComponent() {
     {
       path: "/account",
       element: <AccountPage></AccountPage>,
+    },
+    {
+      path: "/admin",
+      element: <AdminMain />,
     },
     {
       path: "/admin/course",

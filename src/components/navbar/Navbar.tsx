@@ -43,8 +43,7 @@ const items: MenuProps["items"] = [
 ];
 
 const NavBarComponent: React.FC = () => {
-
-  const userInfo = useSelector  ( estado => estado.userInfo )
+  const userInfo = useSelector((estado) => estado.userInfo);
 
   const { logout } = useAuth0();
   const {
@@ -66,33 +65,35 @@ const NavBarComponent: React.FC = () => {
 
   const navigate = useNavigate();
 
-    
- const menuItems =  [
-  {
-    label: "Home",
-    key: "/home",
-  },
+  const menuItems = [
+    {
+      label: "Home",
+      key: "/home",
+    },
 
-  {
-    label: "Rutas de Aprendizaje",
-    key: "/home/rutas-de-aprendizaje",
-  },
+    {
+      label: "Rutas de Aprendizaje",
+      key: "/home/rutas-de-aprendizaje",
+    },
 
-  {
-    label: "Mi Progreso",
-    key: "/home/mi-progreso",
-  },
-]
+    {
+      label: "Mi Progreso",
+      key: "/home/mi-progreso",
+    },
+  ];
 
-const menuVirgo = [
-  {
-    label: "Cursos",
-    key: "/admin/course",
-  },
-]
+  const menuVirgo = [
+    {
+      label: "Home",
+      key: "/admin",
+    },
+    {
+      label: "Cursos",
+      key: "/admin/course",
+    },
+  ];
 
-console.log('ProfileUSER' ,userInfo.profile)
-
+  console.log("ProfileUSER", userInfo.profile);
 
   return (
     <Layout>
@@ -142,7 +143,7 @@ console.log('ProfileUSER' ,userInfo.profile)
               theme="dark"
               style={{ background: "#141414", border: "none" }}
               mode="horizontal"
-              items={userInfo.profile == 'virgo' ? menuVirgo : menuItems }
+              items={userInfo.profile == "virgo" ? menuVirgo : menuItems}
             />
           </Col>
 
