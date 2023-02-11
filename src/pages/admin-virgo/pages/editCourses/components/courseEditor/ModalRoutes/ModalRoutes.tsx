@@ -79,7 +79,7 @@ const columns: ColumnsType<DataType> = [
 
 const ModalRoutes = ({ open, setOpen, routes, state }: any) => {
   const [idRoute, setIdRoute] = useState("");
-  const [data, setData] = useState([]);
+  const [data, setData] = useState([]) as any;
   const [messageApi, contextHolder] = message.useMessage();
 
   const success = () => {

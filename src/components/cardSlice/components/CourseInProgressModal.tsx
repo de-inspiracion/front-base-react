@@ -26,6 +26,7 @@ export default function CourseInProgressModal({Open,Data,Cerrar}:any) {
         tags:[],
         updatedAt:'',
         videos:[],
+        description: '',
         _v:-1
     })
     const [videoIndex,setVideoIndex] = useState(0)
@@ -35,7 +36,7 @@ export default function CourseInProgressModal({Open,Data,Cerrar}:any) {
     const [isScored, setIsScored] = useState(false);
     const modalRef: any = useRef(null);
     const course_tags = courseData.tags;
-    const course_videos = courseData.videos;
+    const course_videos: any = courseData.videos;
     const course_routes = courseData.route;
   
     useEffect(()=>{
@@ -82,7 +83,7 @@ export default function CourseInProgressModal({Open,Data,Cerrar}:any) {
                                 <ReactNetflixPlayer  src={course_videos[videoIndex-1].urlEmbed} autoPlay={true} fullPlayer={false}
                                 startPosition={videoTime}
                                 onTimeUpdate={
-                                    async (evt)=>{
+                                    async (evt:any)=>{
                                         let time = evt.target.currentTime
                                         if(time - videoTime > 30){
                                             console.log('se mando')

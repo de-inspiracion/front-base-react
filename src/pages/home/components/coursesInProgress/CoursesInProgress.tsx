@@ -7,7 +7,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { newDataUser } from "../../../../store/user/userData";
 import CardSlice from "../../../../components/cardSlice/cardSlice";
 import services from "./services/http";
-import CourseInProgressModal from "./components/CourseInProgressModal";
 const inProfressList = [
   { title: "curso 1", key: 0 },
   { title: "curso 2", key: 1 },

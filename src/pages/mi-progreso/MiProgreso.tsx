@@ -57,7 +57,7 @@ const getFinishedCourses = (courses: any) => {
 const MiProgreso = () => {
   const userInfo = useSelector((state: any) => state.userInfo);
   const [abrirModal, setAbrirModal] = useState(false);
-  const [statistics, setStatistics] = useState<statisticData[]>([]);
+  const [statistics, setStatistics] = useState<statisticData[] | any>([]);
   const [color, setColor] = useState("");
 
   const handleCloseModal = () => {

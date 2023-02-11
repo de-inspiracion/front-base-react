@@ -82,7 +82,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
   const [videoIndex, setVideoIndex] = useState(0);
   const [rate, setRate] = useState(0);
   const [isScored, setIsScored] = useState(false);
-  const userInfo = useSelector( estado => estado.userInfo )
+  const userInfo = useSelector( (estado: any) => estado.userInfo )
   const dispatch = useDispatch()
   const [videoTime,setVideoTime] = useState(0)
   const modalRef: any = useRef(null);
@@ -215,7 +215,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
               <div style={{ width: '100%', height: '100%' }}>
                 <ReactNetflixPlayer  src={course_videos[videoIndex-1].urlEmbed} autoPlay={true} fullPlayer={false}
                 onTimeUpdate={
-                    async (evt)=>{
+                    async (evt:any)=>{
                       let time = evt.target.currentTime
                       if(time - videoTime > 30){
                         setVideoTime(time)
@@ -367,7 +367,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
                 >
                   {course_tags.length > 0 &&
                     course_tags.map((item: any, index: any) => {
-                      return <Tag style={{ color: "white" }}>{item}</Tag>;
+                      return <Tag key={index} style={{ color: "white" }}>{item}</Tag>;
                     })}
                 </div>
               </div>
@@ -407,9 +407,10 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
                 Cápsulas de video
               </p>
             </div>
-            { course_videos.map((item: any) => {
+            { course_videos.map((item: any, index: any) => {
               return (
                 <div
+                  key={index}
                   className="videoInfo"
                   onClick={() => {
                     setVideoIndex(item.position);
@@ -505,9 +506,10 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
                 Rutas de aprendizaje
               </p>
             </div>
-            {course_routes.map((item: any) => {
+            {course_routes.map((item: any, index: any) => {
               return (
                 <Card
+                  key={index}
                   //  style={{ display: 'flex', flexDirection: 'row', width: '100%', height: '100px', border: '1px solid green', marginTop: '2%', color: 'white' }}
                   hoverable
                   style={{ width: "155px", height: "155px" }}

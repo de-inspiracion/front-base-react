@@ -79,9 +79,10 @@ function CardSlide({ title, id, description, courses, source }: any) {
                 marginLeft: scrollX,
               }}
             >
-              {userInfo.inprogress.map((curso: any) => {
+              {userInfo.inprogress.map((curso: any, index: any) => {
                 return (
                   <Card
+                    key={index}
                     style={{ width: 240, cursor: "pointer" }}
                     cover={<img alt="cover" src={curso.course.cover} />}
                     onClick={() => {
@@ -117,7 +118,7 @@ function CardSlide({ title, id, description, courses, source }: any) {
               }}
             >
               {
-                items.length > 0 && items.map((item,key) => {
+                items.length > 0 && items.map((item: any,key) => {
                   // console.log(item)
                   return <CardV key={key} itemData = {item} Image={item.cover} index={key}/>
                 })

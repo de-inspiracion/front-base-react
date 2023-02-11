@@ -28,7 +28,7 @@ export const UserData = createSlice({
       state.finished = newdata.payload.finished,
       state.scored = newdata.payload.scored
     },
-    updateVideoTimeStamp: (state, newdata) => {
+    updateVideoTimeStamp: (state: any, newdata) => {
       state.inprogress[newdata.payload.index].progress = newdata.payload.timestamp 
     }
   },
