@@ -184,6 +184,22 @@ const getStatistics = async (idUser: any) => {
   return res;
 };
 
+const getQuestions = async (idVideo: string) => {
+  const res = await axios.get(
+    `https://nestjs-virgo-production.up.railway.app/videos/${idVideo}/questions`
+  );
+  return res;
+}
+
+const addQuestions = async (idVideo: string, body: any) => {
+  const bodyQuestion = { questions: body}
+  const res = await axios.post(
+    `https://nestjs-virgo-production.up.railway.app/videos/${idVideo}/questions`,
+    bodyQuestion
+  );
+  return res;
+}
+
 export default {
   post,
   getCourses,
@@ -200,4 +216,6 @@ export default {
   editUserVideoProgress,
   getCertificate,
   getStatistics,
+  getQuestions,
+  addQuestions,
 };

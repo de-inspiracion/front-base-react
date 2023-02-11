@@ -18,12 +18,114 @@ export const VideoEditor = (props:customProps) => {
   const { defaultAlgorithm, darkAlgorithm } = theme;
   const [open, setOpen] = useState(false)
   const [messageApi, contextHolder] = message.useMessage();
+  const [currentVideoSelected, setcurrentVideoSelected] = useState('');
+  const questionsDefault = [
+    {
+        "question": "una pregunta?",
+        "number": 1,
+        "options": [
+            {
+                "option": "opcion 1",
+                "number": 1,
+                "correct": false
+            },
+            {
+                "option": "opcion 2",
+                "number": 2,
+                "correct": true
+            },
+            {
+                "option": "opcion 3",
+                "number": 3,
+                "correct": false
+            }
+        ]
+    },
+    {
+      "question": "una pregunta2 ?",
+      "number": 2,
+      "options": [
+          {
+              "option": "opcion 10",
+              "number": 1,
+              "correct": false
+          },
+          {
+              "option": "opcion 2",
+              "number": 2,
+              "correct": true
+          },
+          {
+              "option": "opcion 3",
+              "number": 3,
+              "correct": false
+          }
+      ]
+  },
+  {
+    "question": "una pregunta3 ?",
+    "number": 3,
+    "options": [
+        {
+            "option": "opcion 1",
+            "number": 1,
+            "correct": false
+        },
+        {
+            "option": "opcion 2",
+            "number": 2,
+            "correct": true
+        },
+        {
+            "option": "opcion 3",
+            "number": 3,
+            "correct": false
+        }
+    ]
+}
+]
 
+  let questionForVideo: any[] = [];
+  props.videos.forEach((questionVideo: any) => {
+    return questionForVideo.push(questionsDefault)
+  })
+
+  // console.log("keys : ", questionForVideo)
+  const [questions, setQuestion] = useState(questionsDefault)
   const editVideoInfo = async (id: any, body: any) => {
     await services.editVideoInfo(id, body)
   }
 
-  const EditableText = ({ func, text }: any) => {
+  const editQuestionTitle = async (text: string, indexQuestion: number) => {
+    questions[indexQuestion].question = text;;
+    setQuestion([...questions])
+    console.log("currentVideoSelected", currentVideoSelected)
+    await services.addQuestions(currentVideoSelected, questions)
+    console.log("esto enviare : ", questions[indexQuestion])
+  }
+
+  const getQuestionFromVideo = async (idVideo: string, index: number) => {
+    let res = await services.getQuestions(idVideo);
+    console.log("getQuestionFromVideo  : ", res)
+    if(!res.data.payload) {
+      const questionVideo = questionForVideo[index]
+      console.log("questionVideo", questionVideo)
+      setQuestion([...questionVideo])
+      console.log("getQuestionFromVideo", res)
+      return;
+    }
+
+    const data = res.data.payload.questions;
+    setQuestion([...data])
+    
+  }
+
+  const openModal = (idVideo: any, index: any) => {
+    setcurrentVideoSelected(idVideo)
+    getQuestionFromVideo(idVideo, index);
+    setOpen(true);
+  }
+  const EditableText = ({ func, text, index }: any) => {
     return (
       <Typography.Title
         editable={{
@@ -37,6 +139,7 @@ export const VideoEditor = (props:customProps) => {
         }}
         level={4}
         style={{ margin: 0 }}
+        key={index}
       >
         {text}
       </Typography.Title>
@@ -67,7 +170,7 @@ export const VideoEditor = (props:customProps) => {
                   style={{ width: 300 }}
                   extra={
                     <Popover content={<p>Preguntas</p>}>
-                      <PlusCircleOutlined style={{ color: 'green', cursor: 'pointer' }} onClick={() => { setOpen(true) }} />
+                      <PlusCircleOutlined style={{ color: 'green', cursor: 'pointer' }} onClick={() => {  openModal(value['id'], index) }} />
                     </Popover>
 
                   }
@@ -93,11 +196,40 @@ export const VideoEditor = (props:customProps) => {
           <NewVideo id = {props.id} numberofVideos = {props.videos.length || 0} />
 
         <Modal width="80vw" title="Preguntas" open={open} onOk={() => { setOpen(false) }} >
-          <div style={{ cursor: 'pointer' }}>
-            + ADD QUESTION
-          </div>
           <div style={{ display: 'flex', gap: 50, width: '100%', justifyContent: 'center' }}>
-            <Row>
+          {questions.length > 0 &&
+                    questions.map((item, index: any) => {
+                      return (
+
+                        <Row>
+                        <Col>
+                          <Card key={index} title={<EditableText text={item.question}
+                          func={
+                            (text: any) => {
+                              editQuestionTitle(text, index)
+                            }
+                          }
+                          ind = {index}
+                          />} extra={<DeleteOutlined style={{ color: 'red', fontSize: 18, marginLeft: 100 }} />}>
+                            <Radio.Group >
+                              <Space direction="vertical">
+                                {
+                                  item.options.map((option, index: any) => {
+                                    return (
+                                      <Radio key={index} value={1}>{<EditableText text={option.option} />}</Radio>
+                                    )
+                                  })
+                                }
+                              </Space>
+                            </Radio.Group>
+                          </Card>
+                        </Col>
+                      </Row>
+
+                      )
+                    })}
+          
+            {/* <Row>
               <Col>
                 <Card title={<EditableText text={'QUESTION 1'} />} extra={<DeleteOutlined style={{ color: 'red', fontSize: 18, marginLeft: 100 }} />}>
                   <Radio.Group >
@@ -140,7 +272,7 @@ export const VideoEditor = (props:customProps) => {
                   </Radio.Group>
                 </Card>
               </Col>
-            </Row>
+            </Row> */}
 
           </div>
 
