@@ -3,13 +3,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { newDataUser } from "../../store/user/userData";
 import services from "../../services/http";
 import { useEffect, useState } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 
 export const Login = () => {
   const { user, isAuthenticated, logout } = useAuth0();
   const dispatch = useDispatch();
   const [profile, setProfile] = useState("");
   console.log("user", user);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getData = async () => {
@@ -31,7 +33,7 @@ export const Login = () => {
         );
         setProfile(res.perfil);
       } catch (err) {
-        logout({ returnTo: "http://localhost:5173" });
+        navigate("/accountnotfound");
       }
     };
     getData();
