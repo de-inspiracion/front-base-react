@@ -10,16 +10,15 @@ export const AdminCourses = () => {
   let { state } = useLocation();
   return (
     <>
-    <NavBarComponent/>
-    <div
-      className="admin-course"
-      style={{ backgroundColor: "black", color: "white" }}
-    >
-      <Divider style={{ color: "white", fontSize: "3vh" }}>
-        Editor de curso
-      </Divider>
-      <CourseEditor state={state}></CourseEditor>
-    </div>
+      <div
+        className="admin-course"
+        style={{ backgroundColor: "black", color: "white" }}
+      >
+        <Divider style={{ color: "white", fontSize: "3vh" }}>
+          Editor de curso
+        </Divider>
+        <CourseEditor state={state}></CourseEditor>
+      </div>
     </>
   );
 };

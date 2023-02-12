@@ -1,5 +1,4 @@
 import React from "react";
-
 import {
   Avatar,
   Col,
@@ -44,7 +43,7 @@ const items: MenuProps["items"] = [
 
 const NavBarComponent: React.FC = () => {
   const userInfo = useSelector((estado: any) => estado.userInfo);
-
+  const navigate = useNavigate();
   const { logout } = useAuth0();
   const {
     token: { colorBgContainer },
@@ -63,8 +62,16 @@ const NavBarComponent: React.FC = () => {
     onClick: handleMenuClick,
   };
 
-  const navigate = useNavigate();
-
+  const menuVirgo = [
+    {
+      label: "Home",
+      key: "/admin",
+    },
+    {
+      label: "Cursos",
+      key: "/admin/course",
+    },
+  ];
   const menuItems = [
     {
       label: "Home",
@@ -81,19 +88,6 @@ const NavBarComponent: React.FC = () => {
       key: "/home/mi-progreso",
     },
   ];
-
-  const menuVirgo = [
-    {
-      label: "Home",
-      key: "/admin",
-    },
-    {
-      label: "Cursos",
-      key: "/admin/course",
-    },
-  ];
-
-  console.log("ProfileUSER", userInfo.profile);
 
   return (
     <Layout>
@@ -136,25 +130,17 @@ const NavBarComponent: React.FC = () => {
 
           <Col xs={12}>
             <Menu
-              defaultSelectedKeys={["/home"]}
               onClick={({ key }) => {
                 navigate(key);
               }}
               theme="dark"
               style={{ background: "#141414", border: "none" }}
               mode="horizontal"
-              items={userInfo.profile == "virgo" ? menuVirgo : menuItems}
+              items={userInfo.profile != "virgo" ? menuItems : menuVirgo}
             />
           </Col>
 
           <Col span={4} xs={4} md={4} xl={4} className="section-search">
-            {/* <Input placeholder="Busca algun curso" allowClear onChange={onChange} /> */}
-            {/* // este estaba */}
-            {/* <Input.Search allowClear style={{ width: '100%' }} defaultValue="" /> */}
-
-            {/* <Button style={{ width: 80 }} onClick={() => onSearch('')}>
-              Buscar
-          </Button> */}
             <Search
               placeholder="search text"
               onSearch={onSearch}

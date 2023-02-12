@@ -4,7 +4,6 @@ import NavBarComponent from "../../../components/navbar/Navbar";
 const AdminMain = () => {
   return (
     <div>
-      <NavBarComponent />
       <div
         style={{
           height: "90vh",

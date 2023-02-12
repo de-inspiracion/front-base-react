@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 
-import { useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Divider } from "antd";
 import { Avatar, Button, List, Typography } from "antd";
 import { ConfigProvider, theme, Card } from "antd";
-import services from '../../../../services/http'
+import services from "../../../../services/http";
 const { Text, Link } = Typography;
 import "./viewCourses.css";
 import axios from "axios";
@@ -12,17 +12,15 @@ import axios from "axios";
 import NewCourse from "./NewCourse";
 import NavBarComponent from "../../../../components/navbar/Navbar";
 
-
 interface courseData {
   name: string;
   description: string;
   tags: Object;
   routes: Object;
-  category:Object;
+  category: Object;
   image: string;
-  id:string
+  id: string;
 }
-
 
 export const ViewCourses = () => {
   const { defaultAlgorithm, darkAlgorithm } = theme;
@@ -31,49 +29,48 @@ export const ViewCourses = () => {
   const [initLoading, setInitLoading] = useState(true);
   const [loading, setLoading] = useState(false);
 
-
-  const [courses,setCourses] = useState<courseData[]>([])
+  const [courses, setCourses] = useState<courseData[]>([]);
 
   const navigate = useNavigate();
- 
 
   useEffect(() => {
-    setLoading(true)
-    const getData = async ()=>{
-      let res = await services.getCourses()
-      setCourses(res.data.payload)
-    }
-    getData()
-    setLoading(false)
+    setLoading(true);
+    const getData = async () => {
+      let res = await services.getCourses();
+      setCourses(res.data.payload);
+    };
+    getData();
+    setLoading(false);
   }, []);
 
-  const editCourse = async (id:string,item:any) => {
-    navigate(id,{
-      state:item,
-      replace:true
+  const editCourse = async (id: string, item: any) => {
+    navigate(id, {
+      state: item,
+      replace: true,
     });
   };
 
   return (
     <ConfigProvider
-        theme={{
-          algorithm:darkAlgorithm
-        }}
+      theme={{
+        algorithm: darkAlgorithm,
+      }}
     >
-      <NavBarComponent/>
       <div>
         <Divider>Vista de cursos</Divider>
 
         <div style={{ padding: "10px" }}>
-
           <List
             itemLayout="horizontal"
             dataSource={courses}
             renderItem={(item) => (
               <List.Item
                 actions={[
-                  <a key="list-loadmore-edit" 
-                    onClick={()=>{editCourse(item.id,item)}}
+                  <a
+                    key="list-loadmore-edit"
+                    onClick={() => {
+                      editCourse(item.id, item);
+                    }}
                   >
                     Editar
                   </a>,
@@ -81,7 +78,11 @@ export const ViewCourses = () => {
               >
                 <List.Item.Meta
                   avatar={
-                    <Avatar src='https://www.w3schools.com/howto/img_avatar.png' shape="square" size={64} />
+                    <Avatar
+                      src="https://www.w3schools.com/howto/img_avatar.png"
+                      shape="square"
+                      size={64}
+                    />
                   }
                   title={item.name}
                   description={item.description}
@@ -89,11 +90,9 @@ export const ViewCourses = () => {
               </List.Item>
             )}
           />
-          
         </div>
         <NewCourse />
       </div>
-      </ConfigProvider>
-    
+    </ConfigProvider>
   );
 };

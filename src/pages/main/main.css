@@ -2,9 +2,6 @@
   /* display: 'flex'; */
 }
 
-.content {
-  display: flex;
-}
 
 .ant-modal-content {
   background-color: #181818 !important;
