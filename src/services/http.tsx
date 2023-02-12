@@ -196,7 +196,7 @@ const addQuestions = async (idVideo: string, body: any) => {
   const res = await axios.post(
     `https://nestjs-virgo-production.up.railway.app/videos/${idVideo}/questions`,
     bodyQuestion
-  );
+  );  
   return res;
 }
 

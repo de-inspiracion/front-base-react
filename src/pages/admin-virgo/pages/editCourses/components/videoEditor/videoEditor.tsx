@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { ConfigProvider, theme } from "antd";
 import { Card, Space, Grid, Row, Col } from 'antd';
 import { Divider, Radio, Typography, Popover, Modal } from "antd";
-import { PlusCircleOutlined, DeleteOutlined } from '@ant-design/icons';
+import { PlusCircleOutlined, DeleteOutlined, CompassOutlined } from '@ant-design/icons';
 import services from '../../../../../../services/http'
 import NewVideo from "./NewVideo";
 import { message } from "antd";
@@ -90,7 +90,6 @@ export const VideoEditor = (props:customProps) => {
     return questionForVideo.push(questionsDefault)
   })
 
-  // console.log("keys : ", questionForVideo)
   const [questions, setQuestion] = useState(questionsDefault)
   const editVideoInfo = async (id: any, body: any) => {
     await services.editVideoInfo(id, body)
@@ -99,19 +98,60 @@ export const VideoEditor = (props:customProps) => {
   const editQuestionTitle = async (text: string, indexQuestion: number) => {
     questions[indexQuestion].question = text;;
     setQuestion([...questions])
-    console.log("currentVideoSelected", currentVideoSelected)
-    await services.addQuestions(currentVideoSelected, questions)
-    console.log("esto enviare : ", questions[indexQuestion])
   }
 
+  const editOptionQuestion = async (
+    text: string,
+    indexQuestion: number,
+    indexOption: number
+    ) => {
+    questions[indexQuestion].options[indexOption].option = text;
+    setQuestion([...questions])
+  }
+
+  const editCorrectOptionQuestion = async (
+    indexQuestion: number,
+    indexOption: any
+    ) => {
+    indexOption = Number(indexOption)
+    questions[indexQuestion].options.forEach((opt) => {
+      opt.correct = false
+    })
+    questions[indexQuestion].options[indexOption].correct = true;
+    setQuestion([...questions])
+  }
+
+  const valueOptionSelected = (options: any[]) => {
+    let indexOptionSeleceted = 0;
+    options.forEach((option: any, idx) => {
+      if (option.correct === true) {
+        indexOptionSeleceted = idx;
+      }
+    })
+    return indexOptionSeleceted;
+  }
+
+  const updateQuestions = async ()  => {
+    try {
+      await services.addQuestions(currentVideoSelected, questions)
+      messageApi.open({
+        type: 'success',
+        content: 'Se realizó la acción de forma correcta.',
+      });
+      setOpen(false)
+    } catch (error) {
+      messageApi.open({
+        type: 'error',
+        content: 'error en la actualización.',
+      });
+    }
+   
+  }
   const getQuestionFromVideo = async (idVideo: string, index: number) => {
     let res = await services.getQuestions(idVideo);
-    console.log("getQuestionFromVideo  : ", res)
     if(!res.data.payload) {
       const questionVideo = questionForVideo[index]
-      console.log("questionVideo", questionVideo)
       setQuestion([...questionVideo])
-      console.log("getQuestionFromVideo", res)
       return;
     }
 
@@ -125,16 +165,15 @@ export const VideoEditor = (props:customProps) => {
     getQuestionFromVideo(idVideo, index);
     setOpen(true);
   }
+  const handleCancel = () => {
+    setOpen(false);
+  };
   const EditableText = ({ func, text, index }: any) => {
     return (
       <Typography.Title
         editable={{
           onChange: async (value) => {
             await func(value)
-            messageApi.open({
-              type: 'success',
-              content: 'Se realizó la acción de forma correcta.',
-            });
           }
         }}
         level={4}
@@ -195,7 +234,7 @@ export const VideoEditor = (props:customProps) => {
 
           <NewVideo id = {props.id} numberofVideos = {props.videos.length || 0} />
 
-        <Modal width="80vw" title="Preguntas" open={open} onOk={() => { setOpen(false) }} >
+        <Modal width="80vw" title="Preguntas" open={open} onCancel={handleCancel} onOk={() => { updateQuestions() }} >
           <div style={{ display: 'flex', gap: 50, width: '100%', justifyContent: 'center' }}>
           {questions.length > 0 &&
                     questions.map((item, index: any) => {
@@ -211,12 +250,18 @@ export const VideoEditor = (props:customProps) => {
                           }
                           ind = {index}
                           />} extra={<DeleteOutlined style={{ color: 'red', fontSize: 18, marginLeft: 100 }} />}>
-                            <Radio.Group >
+                            <Radio.Group value={valueOptionSelected(item.options)}  onChange={(e) => editCorrectOptionQuestion(index, e.target.value)}>
                               <Space direction="vertical">
                                 {
-                                  item.options.map((option, index: any) => {
+                                  item.options.map((option, indexOption: any) => {
                                     return (
-                                      <Radio key={index} value={1}>{<EditableText text={option.option} />}</Radio>
+                                      <Radio key={indexOption} value={indexOption}>{<EditableText text={option.option}
+                                      func={
+                                        (text: any) => {
+                                          editOptionQuestion(text, index, indexOption)
+                                        }
+                                      }
+                                      />}</Radio>
                                     )
                                   })
                                 }
