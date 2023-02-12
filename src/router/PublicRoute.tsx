@@ -1,9 +1,11 @@
-import React from 'react'
-import { Navigate } from 'react-router-dom'
+import { Login } from "../pages/login/Login";
 
-export default function PublicRoute({isAuthenticated, component: Component, ...rest}:any) {
-    // si no esta logeado va al componente si no al home
-    return (
-        !isAuthenticated ? Component: <Navigate to='home'/>
-    )
+export default function PublicRoute({
+  isAuthenticated,
+  component: Component,
+}: any) {
+  if (isAuthenticated) {
+    return <Login />;
+  }
+  return Component;
 }

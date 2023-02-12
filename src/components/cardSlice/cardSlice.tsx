@@ -24,7 +24,7 @@ function CardSlide({ title, id, description, courses, source }: any) {
       setIems(courses)
     }
     else if( source === 'En Progreso'){
-      console.log('en progreso')
+      
     }
     else{
       getData()

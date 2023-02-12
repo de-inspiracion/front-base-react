@@ -29,12 +29,12 @@
 }
 
 .ant-menu-dark.ant-menu-horizontal>.ant-menu-item-selected {
-  color: #7a7a7a;
+  color: #ffd45a;
 }
 
 
 .ant-menu-dark.ant-menu-horizontal>.ant-menu-item-selected {
-  background-color: rgb(255, 255, 255);
+  background: none;
   height: 65px;
 }
 
