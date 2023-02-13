@@ -187,6 +187,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
   }, [rate]);
   return (
     <Modal
+    className="modalCard"
       open={open}
       onCancel={cerrarModal}
       onOk={handleOk}

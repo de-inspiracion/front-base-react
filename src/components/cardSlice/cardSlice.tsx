@@ -102,7 +102,7 @@ function CardSlide({ title, id, description, courses, source }: any) {
         </div>
         :
         <div className="movieRow" {...handlers}>
-          <h2> {title} </h2>
+          <h2>{title}</h2>
           <div className="movieRow--left" onClick={handleLeftArrow}>
             <img src="https://img.icons8.com/ios-glyphs/50/FFFFFF/chevron-left.png" />
           </div>

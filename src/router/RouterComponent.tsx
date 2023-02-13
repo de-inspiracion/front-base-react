@@ -128,7 +128,7 @@ export default function RouterComponent() {
       theme={{
         algorithm: theme.darkAlgorithm,
         token: {
-          colorPrimary: "#722ED1",
+          colorPrimary: "#ffd45a",
         },
       }}
     >

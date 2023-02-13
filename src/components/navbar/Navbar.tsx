@@ -102,15 +102,15 @@ const NavBarComponent: React.FC = () => {
           height: "74px",
         }}
       >
-        <Row justify={"center"} gutter={[20, 20]} style={{ padding: "0 0px" }}>
+        <Row justify={'space-between'} style={{ padding: "0" }}>
           <Col
             style={{
               display: "flex",
               justifyContent: "start",
               alignItems: "center",
-              padding: "0 30px",
+              padding: "0 10px",
             }}
-            xs={6}
+            xs={4}
           >
             <svg
               width="43"
@@ -128,7 +128,7 @@ const NavBarComponent: React.FC = () => {
             </svg>
           </Col>
 
-          <Col xs={12}>
+          <Col xs={8} md={8} xl={8}>
             <Menu
               onClick={({ key }) => {
                 navigate(key);
@@ -140,19 +140,19 @@ const NavBarComponent: React.FC = () => {
             />
           </Col>
 
-          <Col span={4} xs={4} md={4} xl={4} className="section-search">
+          <Col span={4} xs={4} md={6} xl={10} className="section-search">
             <Search
               placeholder="search text"
               onSearch={onSearch}
               style={{ width: "100%" }}
             />
           </Col>
-          <Col style={{ textAlign: "end" }} xs={2}>
+          <Col style={{ textAlign: "end"} } xs={2}>
             <Dropdown menu={menuProps}>
               <Avatar
                 size="small"
                 icon={<UserOutlined />}
-                style={{ backgroundColor: "#87d068", margin: "0 10px" }}
+                style={{ backgroundColor: "#87d068"}}
               />
             </Dropdown>
           </Col>

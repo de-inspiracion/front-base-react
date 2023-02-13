@@ -15,6 +15,7 @@
   width: 99999px;
   transition: all ease 0.3s;
 }
+
 .movieRow--item {
   display: inline-block;
   width: 200px;
@@ -46,7 +47,7 @@
   transition: all ease 0.3s;
 }
 
-.movieRow:hover .movieRow--left, 
+.movieRow:hover .movieRow--left,
 .movieRow:hover .movieRow--right {
   opacity: 1;
 }
@@ -59,13 +60,14 @@
   right: 0;
 }
 
-@media (max-width:760px){
+@media (max-width:760px) {
+
   .movieRow--left,
   .movieRow--right {
-      opacity: 1;
+    opacity: 1;
   }
 
-  .movieRow--right{
-      margin-right: 1vh;
+  .movieRow--right {
+    margin-right: 1vh;
   }
 }
