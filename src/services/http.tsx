@@ -1,5 +1,5 @@
 import axios from "axios";
-
+const base_url = import.meta.env.VITE_BASE_URL
 const post = async (url: string) => {
   const result = await axios({
     method: "get",
@@ -11,7 +11,7 @@ const post = async (url: string) => {
 
 const getCourses = async () => {
   const courses_res = await axios.get(
-    "https://nestjs-virgo-production.up.railway.app/courses",
+    base_url + "/courses",
     {
       headers: {
         "Access-Control-Allow-Origin": true,
@@ -25,7 +25,7 @@ const getCourses = async () => {
 const postScore = async (id: string, score: number) => {
   const result = await axios({
     method: "post",
-    url: `https://nestjs-virgo-production.up.railway.app/videos/${id}/score`,
+    url: `${base_url}/videos/${id}/score`,
     data: {
       score,
     },
@@ -36,7 +36,7 @@ const postScore = async (id: string, score: number) => {
 const getCourseVideos = async (courseId: String) => {
   try {
     const res = await axios.get(
-      `https://nestjs-virgo-production.up.railway.app/courses/${courseId}`,
+      `${base_url}/courses/${courseId}`,
       {
         headers: {
           "Access-Control-Allow-Origin": true,
@@ -51,7 +51,7 @@ const getCourseVideos = async (courseId: String) => {
 
 const getUserInfo = async (email: String) => {
   const res = await axios.get(
-    `https://nestjs-virgo-production.up.railway.app/user/${email}`
+    `${base_url}/user/${email}`
   );
   return res.data.payload;
 };
@@ -61,7 +61,7 @@ const updateCourse = async (id: string, field: string, data: any) => {
   body[field] = data;
   console.log(body);
   const res = await axios.put(
-    `https://nestjs-virgo-production.up.railway.app/courses/${id}`,
+    `${base_url}/courses/${id}`,
     body
   );
   return res;
@@ -69,13 +69,13 @@ const updateCourse = async (id: string, field: string, data: any) => {
 
 const getInfo = async (id: string | undefined) => {
   let category: any = await axios.get(
-    `https://nestjs-virgo-production.up.railway.app/category`
+    `${base_url}/category`
   );
   let routes: any = await axios.get(
-    `https://nestjs-virgo-production.up.railway.app/route`
+    `${base_url}/route`
   );
   let course: any = await axios.get(
-    `https://nestjs-virgo-production.up.railway.app/courses/${id}`
+    `${base_url}/courses/${id}`
   );
   let r_ = [];
   let c_ = [];
@@ -107,7 +107,7 @@ const getInfo = async (id: string | undefined) => {
 
 const editVideoInfo = async (id: string, body: any) => {
   const res = await axios.post(
-    `https://nestjs-virgo-production.up.railway.app/videos/${id}`,
+    `${base_url}/videos/${id}`,
     body
   );
   window.location.reload();
@@ -116,7 +116,7 @@ const editVideoInfo = async (id: string, body: any) => {
 
 const editCourseCover = async (id: string, body: any) => {
   const res = await axios.post(
-    `https://nestjs-virgo-production.up.railway.app/courses/${id}/uploadCover`,
+    `${base_url}/courses/${id}/uploadCover`,
     body
   );
   window.location.reload();
@@ -124,7 +124,7 @@ const editCourseCover = async (id: string, body: any) => {
 
 const newCourse = async (name: string) => {
   const res = await axios.post(
-    `https://nestjs-virgo-production.up.railway.app/courses`,
+    `${base_url}/courses`,
     {
       name: name,
     }
@@ -134,7 +134,7 @@ const newCourse = async (name: string) => {
 
 const newVideo = async (id: string, body: any) => {
   const res = await axios.post(
-    `https://nestjs-virgo-production.up.railway.app/courses/${id}/uploadVideo`,
+    `${base_url}/courses/${id}/uploadVideo`,
     body,
     { timeout: 1800000, headers: { "Access-Control-Allow-Origin": "*" } }
   );
@@ -143,7 +143,7 @@ const newVideo = async (id: string, body: any) => {
 
 const getRoutes = async () => {
   const res = await axios.get(
-    "https://nestjs-virgo-production.up.railway.app/route"
+    "${base_url}/route"
   );
   return res;
 };
@@ -152,7 +152,7 @@ const editUserVideoProgress = async (userId: String, body: any) => {
   console.log(userId, body);
   try {
     const res = await axios.post(
-      `https://nestjs-virgo-production.up.railway.app/user/${userId}/course/inProgress`,
+      `${base_url}/user/${userId}/course/inProgress`,
       body
     );
     console.log(res);
@@ -165,7 +165,7 @@ const editUserVideoProgress = async (userId: String, body: any) => {
 
 const getCertificate = async (body: any) => {
   const res = await axios.post(
-    `https://nestjs-virgo-production.up.railway.app/user/courseCertificate`,
+    `${base_url}/user/courseCertificate`,
     body
   );
   const base64String = res.data.toString("base64");
@@ -179,14 +179,14 @@ const getCertificate = async (body: any) => {
 
 const getStatistics = async (idUser: any) => {
   const res = await axios.get(
-    `https://nestjs-virgo-production.up.railway.app/user/${idUser}/progressInfo`
+    `${base_url}/user/${idUser}/progressInfo`
   );
   return res;
 };
 
 const getQuestions = async (idVideo: string) => {
   const res = await axios.get(
-    `https://nestjs-virgo-production.up.railway.app/videos/${idVideo}/questions`
+    `${base_url}/videos/${idVideo}/questions`
   );
   return res;
 }
@@ -194,12 +194,25 @@ const getQuestions = async (idVideo: string) => {
 const addQuestions = async (idVideo: string, body: any) => {
   const bodyQuestion = { questions: body}
   const res = await axios.post(
-    `https://nestjs-virgo-production.up.railway.app/videos/${idVideo}/questions`,
+    `${base_url}/videos/${idVideo}/questions`,
     bodyQuestion
   );  
   return res;
 }
 
+const getFiles = async (idVideo: string) => {
+  const res = await axios.get(
+    `${base_url}/videos/${idVideo}/files`
+  );
+  return res;
+}
+
+const deleteFile = async (idVideo: string, file: string) => {
+  const res = await axios.delete(
+    `${base_url}/videos/${idVideo}/file/${file}`
+  );
+  return res;
+}
 export default {
   post,
   getCourses,
@@ -218,4 +231,6 @@ export default {
   getStatistics,
   getQuestions,
   addQuestions,
+  getFiles,
+  deleteFile,
 };
