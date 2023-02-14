@@ -450,7 +450,7 @@ export const VideoEditor = (props: customProps) => {
           open={openModalFiles}
           onCancel={handleCancelModalFiles}
           onOk={() => {
-            updateQuestions();
+            setOpenModalFiles(false);
           }}
         >
     
