@@ -9,7 +9,6 @@ import { updateVideoTimeStamp } from '../../../store/user/userData';
 const { Content } = Layout;
 
 export default function CourseInProgressModal({Open,Data,Cerrar}:any) {
-    console.log('DATA MODAL. ',Data)
     const [open,setOpen] = useState(Open)
     const handeClose = () => {
         Cerrar()
@@ -50,12 +49,12 @@ export default function CourseInProgressModal({Open,Data,Cerrar}:any) {
         getData()
     },[])
     let data_video = course_videos.filter((video:any) => video.id === Data.video )[0]
-    if(data_video){
-        console.log('EXISTE: ',data_video['urlEmbed'])
-    }
-    else{
-        console.log('NO EXISTE')
-    }
+    // if(data_video){
+    //     console.log('EXISTE: ',data_video['urlEmbed'])
+    // }
+    // else{
+    //     console.log('NO EXISTE')
+    // }
 
     // console.log(userInfo)
     // console.log(`indice: ${videoIndex}, marca de tiempo: ${videoTime}`)
@@ -113,7 +112,6 @@ export default function CourseInProgressModal({Open,Data,Cerrar}:any) {
                                                 finished: false,
                                                 num: videoIndex
                                             }
-                                            console.log(body)
                                             const res:any = await services.editUserVideoProgress(userInfo.id,body)
                                             // console.log('DATA: ',res)
                                             // console.log('se mando')

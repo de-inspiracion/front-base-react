@@ -149,13 +149,11 @@ const getRoutes = async () => {
 };
 
 const editUserVideoProgress = async (userId: String, body: any) => {
-  console.log(userId, body);
   try {
     const res = await axios.post(
       `https://nestjs-virgo-production.up.railway.app/user/${userId}/course/inProgress`,
       body
     );
-    console.log(res);
     return res;
   } catch (error) {
     console.log(error);

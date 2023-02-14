@@ -13,7 +13,6 @@ export const HomePage = () => {
   const dispatch = useDispatch()
 
   const userInfo = useSelector( (estado:any) => estado.userInfo  )
-  console.log(userInfo)
   useEffect(() => {
     const getData = async () => {
       try {
