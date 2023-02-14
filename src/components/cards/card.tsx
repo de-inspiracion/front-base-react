@@ -19,7 +19,7 @@ import axios from "axios";
 import { useSelector, useDispatch } from 'react-redux'
 import { newDataUser } from "../../store/user/userData";
 //estilos del modal
-
+import { updateVideoTimeStamp } from "../../store/user/userData";
 const { Content } = Layout;
 
 const CardV: any = ({ itemData, Image, key, index }: any) => {
@@ -228,8 +228,10 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
                           num: videoIndex
                         }
                         // console.log(body)
-                        const res = await services.editUserVideoProgress(userInfo.id,body)
+                        const res:any = await services.editUserVideoProgress(userInfo.id,body)
                         // console.log(res)
+                        dispatch(updateVideoTimeStamp(res.data.payload.inProgress))
+
                       }
                     }
                   }

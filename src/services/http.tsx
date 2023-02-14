@@ -156,7 +156,7 @@ const editUserVideoProgress = async (userId: String, body: any) => {
       body
     );
     console.log(res);
-    return "Datos enviados correctamente";
+    return res;
   } catch (error) {
     console.log(error);
     return `Error al mandar progreso del video del usuario ${userId}`;

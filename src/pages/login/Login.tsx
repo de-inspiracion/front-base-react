@@ -9,7 +9,7 @@ export const Login = () => {
   const { user, isAuthenticated, logout } = useAuth0();
   const dispatch = useDispatch();
   const [profile, setProfile] = useState("");
-  console.log("user", user);
+  // console.log("user", user);
 
   const navigate = useNavigate();
 
@@ -43,8 +43,8 @@ export const Login = () => {
     return null;
   }
 
-  console.log("profileEnter", profile === "virgo");
-  console.log("profileEnButton", profile);
+  // console.log("profileEnter", profile === "virgo");
+  // console.log("profileEnButton", profile);
   return profile === "virgo" ? (
     <Navigate to="/admin" />
   ) : (

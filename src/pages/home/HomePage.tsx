@@ -7,11 +7,13 @@ import "./home.css";
 import services from "../../services/http";
 import { useDispatch } from 'react-redux'
 import { newDataUser } from '../../store/user/userData'
+import { useSelector } from 'react-redux'
 export const HomePage = () => {
   const { user, isAuthenticated, isLoading, logout } = useAuth0();
   const dispatch = useDispatch()
 
-
+  const userInfo = useSelector( (estado:any) => estado.userInfo  )
+  console.log(userInfo)
   useEffect(() => {
     const getData = async () => {
       try {
