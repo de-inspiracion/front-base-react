@@ -1,27 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Card, Row, Space, Typography } from "antd";
-const { Meta } = Card
+import { Row } from "antd";
 import "./coursesInProgress.css";
-import { getListInProgress } from "../../services/home.service";
-import { useSelector, useDispatch } from "react-redux";
-import { newDataUser } from "../../../../store/user/userData";
+import { useSelector } from "react-redux";
 import CardSlice from "../../../../components/cardSlice/cardSlice";
 import services from "./services/http";
-const inProfressList = [
-  { title: "curso 1", key: 0 },
-  { title: "curso 2", key: 1 },
-];
 
-const coursesInProgress = getListInProgress().then((data) => {
-  // console.log(data.data)
-});
 
 const CoursesInProgress: React.FC = () => {
   const userInfo = useSelector((state: any) => state.userInfo);
-  const dispatch = useDispatch();
-  const changeValue = () => {
-    dispatch(newDataUser("alejandro"));
-  };
 
   const [categories, setCategories] = useState([]);
   useEffect(() => {

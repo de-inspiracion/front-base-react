@@ -149,14 +149,12 @@ const getRoutes = async () => {
 };
 
 const editUserVideoProgress = async (userId: String, body: any) => {
-  console.log(userId, body);
   try {
     const res = await axios.post(
       `${base_url}/user/${userId}/course/inProgress`,
       body
     );
-    console.log(res);
-    return "Datos enviados correctamente";
+    return res;
   } catch (error) {
     console.log(error);
     return `Error al mandar progreso del video del usuario ${userId}`;

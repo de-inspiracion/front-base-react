@@ -6,21 +6,10 @@
   background: #141414;
 }
 
-.ant-input-group-addon button {
-  background-color: #141414;
-}
+.ant-input-group-addon button {}
 
 
 .ant-input-group-addon button svg {
-  color: #fff;
-}
-
-.ant-input-affix-wrapper {
-  background-color: #141414;
-}
-
-.ant-input-affix-wrapper input {
-  background-color: #141414;
   color: #fff;
 }
 
@@ -36,13 +25,4 @@
 .ant-menu-dark.ant-menu-horizontal>.ant-menu-item-selected {
   background: none;
   height: 65px;
-}
-
-.ant-menu-light.ant-menu-horizontal>.ant-menu-item-selected::after {
-  border-bottom-color: #ec0303;
-}
-
-*/ .ant-menu-item-selected {
-  background-color: #7a7a7a !important;
-  color: #fff !important;
 }

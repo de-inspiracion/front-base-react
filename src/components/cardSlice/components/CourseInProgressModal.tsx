@@ -38,7 +38,7 @@ export default function CourseInProgressModal({Open,Data,Cerrar}:any) {
     const course_tags = courseData.tags;
     const course_videos: any = courseData.videos;
     const course_routes = courseData.route;
-  
+    // console.log(`VIDEOS DEL CURSO ${Data._id}:`, course_videos)
     useEffect(()=>{
         const getData = async () => {
             setCargando(true)
@@ -48,6 +48,14 @@ export default function CourseInProgressModal({Open,Data,Cerrar}:any) {
         }
         getData()
     },[])
+    let data_video = course_videos.filter((video:any) => video.id === Data.video )[0]
+    // if(data_video){
+    //     console.log('EXISTE: ',data_video['urlEmbed'])
+    // }
+    // else{
+    //     console.log('NO EXISTE')
+    // }
+
     // console.log(userInfo)
     // console.log(`indice: ${videoIndex}, marca de tiempo: ${videoTime}`)
     return (
@@ -76,21 +84,26 @@ export default function CourseInProgressModal({Open,Data,Cerrar}:any) {
                 <Layout ref={modalRef} style={{ background: "#181818", padding: "0 0" }}>
                     <Row style={{ width: '100%', maxWidth: '750px', height: '45vh', maxHeight: '550px' }}>
                         {
-                            videoIndex === 0 ?
+                            userInfo.inprogress.length === 0 ?
                             <img src={courseData ? courseData.cover : 'https://image.tmdb.org/t/p/w300/20mOwAAPwZ1vLQkw0fvuQHiG7bO.jpg'} alt="foto curso" style={{ width: '100%', height: '100%' }} />
                             :
                             <div style={{ width: '100%', height: '100%' }}>
-                                <ReactNetflixPlayer  src={course_videos[videoIndex-1].urlEmbed} autoPlay={true} fullPlayer={false}
-                                startPosition={videoTime}
+                                <ReactNetflixPlayer  
+                                src={ 
+                                    videoIndex !== 0  ? 
+                                        course_videos[videoIndex-1].urlEmbed :
+                                        data_video ? data_video['urlEmbed'] : course_videos[0].urlEmbed 
+                                } 
+                                autoPlay={false} fullPlayer={false}
+                                startPosition={ 
+                                    videoIndex !== 0 ?
+                                        0 :
+                                        Data.progress ? Data.progress : 0
+                                }
                                 onTimeUpdate={
                                     async (evt:any)=>{
                                         let time = evt.target.currentTime
                                         if(time - videoTime > 30){
-                                            console.log('se mando')
-                                            dispatch(updateVideoTimeStamp({
-                                                index: videoIndex-1,
-                                                timestamp: videoTime
-                                            }))
                                             setVideoTime(time)
                                                 let body = {
                                                 idVideo: course_videos[videoIndex-1].id,
@@ -99,9 +112,10 @@ export default function CourseInProgressModal({Open,Data,Cerrar}:any) {
                                                 finished: false,
                                                 num: videoIndex
                                             }
-                                            // console.log(body)
-                                            const res = await services.editUserVideoProgress(userInfo.id,body)
-                                            
+                                            const res:any = await services.editUserVideoProgress(userInfo.id,body)
+                                            // console.log('DATA: ',res)
+                                            // console.log('se mando')
+                                            dispatch(updateVideoTimeStamp(res.data.payload.inProgress))
                                         }
                                     }
                                 }

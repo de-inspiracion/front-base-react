@@ -4,3 +4,13 @@
     color: #ffffff;
     transition: 0.5s;
 }
+
+
+@media screen and (max-width: 380px) {
+    .modalCard {
+        width: 100% !important;
+        height: auto !important;
+        margin: 0;
+        padding: 0;
+    }
+}

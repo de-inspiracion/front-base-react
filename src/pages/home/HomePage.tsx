@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+  import { useEffect, useState } from "react";
 import { Content } from "antd/es/layout/layout";
 import { useAuth0 } from "@auth0/auth0-react";
 import CoursesInProgress from "./components/coursesInProgress/CoursesInProgress";
@@ -7,11 +7,12 @@ import "./home.css";
 import services from "../../services/http";
 import { useDispatch } from 'react-redux'
 import { newDataUser } from '../../store/user/userData'
+import { useSelector } from 'react-redux'
 export const HomePage = () => {
   const { user, isAuthenticated, isLoading, logout } = useAuth0();
   const dispatch = useDispatch()
 
-
+  const userInfo = useSelector( (estado:any) => estado.userInfo  )
   useEffect(() => {
     const getData = async () => {
       try {
@@ -37,9 +38,9 @@ export const HomePage = () => {
   }, []);
 
   return (
-    <Content style={{ padding: "0 10px" }} className="homePage">
+    <Content className="homePage">
       {isAuthenticated && (
-        <div style={{ color: "white" }}>
+        <div>
           {/* <h5>id: {userInfo.id}</h5>
           <h5>nombre: {userInfo?.nombre}</h5>
           <h5>correo: {userInfo.email}</h5>

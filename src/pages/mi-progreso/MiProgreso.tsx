@@ -215,7 +215,7 @@ const MiProgreso = () => {
                   }}
                 />
               }
-              otherPart={2}
+              otherPart={200}
               text={"Cursos Completados"}
               styles={{ borderBottom: "solid 8px #4c73d7" }}
             />
@@ -269,7 +269,7 @@ function DashboardCard({ icon, otherPart, text, styles }: any) {
     <Card style={styles}>
       <Space align={"center"} direction="horizontal">
         {icon}
-        <Typography.Text style={{ fontSize: 50, padding: "0 10px" }}>
+        <Typography.Text style={{ fontWeight:'bold' ,fontSize: 30, padding: "0 2vw" }}>
           {otherPart}
         </Typography.Text>
         <div
@@ -281,6 +281,8 @@ function DashboardCard({ icon, otherPart, text, styles }: any) {
             textAlign: "center",
             maxWidth: "110px",
             height: 81,
+            display: "flex",
+            alignItems: "center",
           }}
         >
           {text}
