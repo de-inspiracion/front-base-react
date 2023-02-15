@@ -140,13 +140,13 @@ const NavBarComponent: React.FC = () => {
             />
           </Col>
 
-          <Col span={4} xs={4} md={6} xl={10} className="section-search">
+          {/* <Col span={4} xs={4} md={6} xl={10} className="section-search">
             <Search
               placeholder="search text"
               onSearch={onSearch}
               style={{ width: "100%" }}
             />
-          </Col>
+          </Col> */}
           <Col style={{ textAlign: "end"} } xs={2}>
             <Dropdown menu={menuProps}>
               <Avatar

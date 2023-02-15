@@ -38,21 +38,36 @@ const CoursesInProgress: React.FC = () => {
               for (let i = 0; i < childItems.length; i++) {
                 const childItem = childItems[i];
                 const items = childItem[0]
+                console.log(childItem[2])
                 let displayItems:any = []
                 if(e.length === 0){
                   displayItems = items
                   childItem[1](displayItems)
                   continue
                 }
-                for (let j = 0; j < items.length; j++) {
-                  const item = items[j];
-                  const name = (new String(item.name)).toUpperCase()
-                  if(name.includes(e.toUpperCase())){
-                    displayItems.push(item)
+
+                if(childItem[2] === 'En Progreso'){
+                  for (let j = 0; j < items.length; j++) {
+                    const item = items[j];
+                    const name = (new String(item.course.name)).toUpperCase()
+                    if(name.includes(e.toUpperCase())){
+                      displayItems.push(item)
+                    }
                   }
+                  childItem[1](displayItems)
+                }else{
+                  
+                  for (let j = 0; j < items.length; j++) {
+                    const item = items[j];
+                    const name = (new String(item.name)).toUpperCase()
+                    if(name.includes(e.toUpperCase())){
+                      displayItems.push(item)
+                    }
+                  }
+                  childItem[1](displayItems)
                 }
-                console.log()
-                childItem[1](displayItems)
+
+
 
               }
             }}
@@ -60,7 +75,7 @@ const CoursesInProgress: React.FC = () => {
         </Col>
 
         {userInfo.inprogress.length > 0 && 
-          <CardSlice title="Cursos en Progreso" id="progreso" source="En Progreso" description="Cursos en Progreso"/>
+          <CardSlice title="Cursos en Progreso" id="progreso" source="En Progreso" description="Cursos en Progreso" setChildItems = {setChildItems}/>
         }
         {categories.length > 0 &&
           categories.map((categoria: any) => {

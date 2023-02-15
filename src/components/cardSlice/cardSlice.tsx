@@ -31,7 +31,7 @@ function CardSlide({ title, id, description, courses, source, setChildItems }: a
       setIems(res.data);
       setDisplayItems(res.data);
       setChildItems(prev => {
-        const newItem = [res.data,setDisplayItems]
+        const newItem = [res.data,setDisplayItems,source]
         return prev.concat([newItem])
       })
     };
@@ -39,16 +39,22 @@ function CardSlide({ title, id, description, courses, source, setChildItems }: a
       setIems(courses)
       setDisplayItems(courses)
       setChildItems(prev => {
-        const newItem = [courses,setDisplayItems]
+        const newItem = [courses,setDisplayItems,source]
         return prev.concat([newItem])
       })
     }
     else if( source === 'En Progreso'){
-      
+      console.log(userInfo.inprogress)
+      setDisplayItems(userInfo.inprogress)
+      setChildItems(prev => {
+        const newItem = [userInfo.inprogress,setDisplayItems,source]
+        return prev.concat([newItem])
+      })
     }
     else{
       getData()
     }
+    
   }, []);
 
 
@@ -103,7 +109,7 @@ function CardSlide({ title, id, description, courses, source, setChildItems }: a
                 marginLeft: scrollX,
               }}
             >
-              {userInfo.inprogress.map((curso: any, index: any) => {
+              {displayItems.map((curso: any, index: any) => {
                 return (
                   <Card
                     key={index}
