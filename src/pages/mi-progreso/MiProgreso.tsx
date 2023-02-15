@@ -215,7 +215,7 @@ const MiProgreso = () => {
                   }}
                 />
               }
-              otherPart={200}
+              otherPart={statistics?.completedCourses}
               text={"Cursos Completados"}
               styles={{ borderBottom: "solid 8px #4c73d7" }}
             />
