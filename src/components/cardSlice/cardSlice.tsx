@@ -7,21 +7,41 @@ const { Meta } = Card
 import services from "./services/http";
 import { useSelector } from "react-redux";
 import CourseInProgressModal from "./components/CourseInProgressModal";
-function CardSlide({ title, id, description, courses, source }: any) {
+import { Row,Col} from "antd";
+import { Input } from "antd";
+const { Search } = Input;
+
+
+function CardSlide({ title, id, description, courses, source, setChildItems }: any) {
   const [abrirModal, setAbrirModal] = useState(false);
   const [dataModal, setDataModal] = useState({});
+
   const handleCloseModal = () => {
     setAbrirModal(false);
   };
   const userInfo = useSelector((estado:any) => estado.userInfo)
   const [items, setIems] = useState([]);
+
+  const [displayItems,setDisplayItems] = useState([]);
+
+
   useEffect(() => {
     const getData = async () => {
       const res: any = await services.getCoursesById(id);
       setIems(res.data);
+      setDisplayItems(res.data);
+      setChildItems(prev => {
+        const newItem = [res.data,setDisplayItems]
+        return prev.concat([newItem])
+      })
     };
     if(source === 'Ruta'){
       setIems(courses)
+      setDisplayItems(courses)
+      setChildItems(prev => {
+        const newItem = [courses,setDisplayItems]
+        return prev.concat([newItem])
+      })
     }
     else if( source === 'En Progreso'){
       
@@ -30,6 +50,8 @@ function CardSlide({ title, id, description, courses, source }: any) {
       getData()
     }
   }, []);
+
+
   const [scrollX, setScrollX] = useState(0);
 
   const handleLeftArrow = () => {
@@ -42,7 +64,7 @@ function CardSlide({ title, id, description, courses, source }: any) {
 
   const handleRightArrow = () => {
     let x = scrollX - Math.round(window.innerWidth / 2);
-    let listW = items?.length * 200;
+    let listW = displayItems?.length * 200;
     if (window.innerWidth - listW > x) {
       x = window.innerWidth - listW - 70;
     }
@@ -62,6 +84,8 @@ function CardSlide({ title, id, description, courses, source }: any) {
 
   return (
     <>
+
+
       { source == "En Progreso" ?
           <div className="movieRow" {...handlers}>
           <h2> {title} </h2>
@@ -118,7 +142,7 @@ function CardSlide({ title, id, description, courses, source }: any) {
               }}
             >
               {
-                items.length > 0 && items.map((item: any,key) => {
+                displayItems.length > 0 && displayItems.map((item: any,key) => {
                   // console.log(item)
                   return <CardV key={key} itemData = {item} Image={item.cover} index={key}/>
                 })

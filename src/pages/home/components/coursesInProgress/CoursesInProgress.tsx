@@ -1,18 +1,23 @@
 import React, { useEffect, useState } from "react";
-import { Row } from "antd";
+import { Row,Col} from "antd";
 import "./coursesInProgress.css";
 import { useSelector } from "react-redux";
 import CardSlice from "../../../../components/cardSlice/cardSlice";
 import services from "./services/http";
-
+import { Input } from "antd";
+const { Search } = Input;
 
 const CoursesInProgress: React.FC = () => {
   const userInfo = useSelector((state: any) => state.userInfo);
 
   const [categories, setCategories] = useState([]);
+  const [search,setSearch] = useState('')
+  const [childItems,setChildItems] = useState([])
+
   useEffect(() => {
     const getData = async () => {
       const res = await services.getCategories();
+      console.log(res.data)
       setCategories(res.data.payload);
     };
     getData();
@@ -24,6 +29,36 @@ const CoursesInProgress: React.FC = () => {
         gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
         style={{ overflow: "hidden" }}
       >
+
+        <Col style={{margin:'2%'}}>
+          <Search
+            placeholder="Buscar Curso"
+            onSearch={(e)=>{
+
+              for (let i = 0; i < childItems.length; i++) {
+                const childItem = childItems[i];
+                const items = childItem[0]
+                let displayItems:any = []
+                if(e.length === 0){
+                  displayItems = items
+                  childItem[1](displayItems)
+                  continue
+                }
+                for (let j = 0; j < items.length; j++) {
+                  const item = items[j];
+                  const name = (new String(item.name)).toUpperCase()
+                  if(name.includes(e.toUpperCase())){
+                    displayItems.push(item)
+                  }
+                }
+                console.log()
+                childItem[1](displayItems)
+
+              }
+            }}
+          />
+        </Col>
+
         {userInfo.inprogress.length > 0 && 
           <CardSlice title="Cursos en Progreso" id="progreso" source="En Progreso" description="Cursos en Progreso"/>
         }
@@ -34,6 +69,7 @@ const CoursesInProgress: React.FC = () => {
                 title={categoria.name}
                 id={categoria.id}
                 description={categoria.description}
+                setChildItems = {setChildItems}
               />
             );
           })}
