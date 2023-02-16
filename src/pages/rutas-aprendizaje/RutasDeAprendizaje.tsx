@@ -20,7 +20,7 @@ const RutasDeAprendizaje = () => {
             { 
                 rutas.length > 0 && 
                 rutas.map((ruta:any) => {
-                    return <CardSlice title={ruta.name} id={ruta.id} courses={ruta.courses} source='Ruta'/>
+                    return <CardSlice title={ruta.name} id={ruta.id} courses={ruta.courses} source='Ruta' setChildItems = {()=>{}}/>
                 })
             }
             </Row>
