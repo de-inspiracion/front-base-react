@@ -134,6 +134,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
         defaultValue={0}
         value= {scoredNow}
         onChange={(value) => changeSetRate(value)}
+        style={{ fontSize: "18px" }}
       />
     );
   };

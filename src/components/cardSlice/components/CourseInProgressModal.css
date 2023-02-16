@@ -1,0 +1,26 @@
+.ant-modal-content {
+    background-image: linear-gradient(120deg, #747474 0%, #000 100%);
+}
+
+@media screen and (max-width: 380px) {
+    .modalCourseInProgress {
+        width: 100% !important;
+        height: auto !important;
+        margin: 0;
+        padding: 0;
+    }
+}
+
+/* background-image: 'linear-gradient(120deg, #f6d365 0%, #fda085 100%)', */
+
+/* Colores de la maqueta:  */
+
+/* #d10b0e
+#f89b29
+#f3ca3f
+#59bd27
+#4ed2ef
+#4c73d7
+#7a00c2
+#c90171
+*/
