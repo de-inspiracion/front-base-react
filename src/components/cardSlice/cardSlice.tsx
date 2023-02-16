@@ -30,7 +30,7 @@ function CardSlide({ title, id, description, courses, source, setChildItems }: a
       const res: any = await services.getCoursesById(id);
       setIems(res.data);
       setDisplayItems(res.data);
-      setChildItems(prev => {
+      setChildItems((prev:any) => {
         const newItem = [res.data,setDisplayItems,source]
         return prev.concat([newItem])
       })
@@ -38,7 +38,7 @@ function CardSlide({ title, id, description, courses, source, setChildItems }: a
     if(source === 'Ruta'){
       setIems(courses)
       setDisplayItems(courses)
-      setChildItems(prev => {
+      setChildItems((prev:any) => {
         const newItem = [courses,setDisplayItems,source]
         return prev.concat([newItem])
       })
@@ -46,7 +46,7 @@ function CardSlide({ title, id, description, courses, source, setChildItems }: a
     else if( source === 'En Progreso'){
       console.log(userInfo.inprogress)
       setDisplayItems(userInfo.inprogress)
-      setChildItems(prev => {
+      setChildItems((prev:any) => {
         const newItem = [userInfo.inprogress,setDisplayItems,source]
         return prev.concat([newItem])
       })

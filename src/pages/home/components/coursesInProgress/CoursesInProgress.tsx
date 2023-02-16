@@ -12,7 +12,7 @@ const CoursesInProgress: React.FC = () => {
 
   const [categories, setCategories] = useState([]);
   const [search,setSearch] = useState('')
-  const [childItems,setChildItems] = useState([])
+  const [childItems,setChildItems] = useState<any[]>([])
 
   useEffect(() => {
     const getData = async () => {
