@@ -1,5 +1,6 @@
 import axios from "axios";
 const base_url = import.meta.env.VITE_BASE_URL
+console.log(base_url)
 const post = async (url: string) => {
   const result = await axios({
     method: "get",
@@ -211,6 +212,16 @@ const deleteFile = async (idVideo: string, file: string) => {
   );
   return res;
 }
+
+const getVideoQuestions = async (idVideo:String) => {
+  try {
+    const res = await axios.get(`${base_url}/videos/${idVideo}/questions?verify=false`)
+    return res
+  } catch (error) {
+    return `Error al traer info del video ${idVideo}`
+  }
+}
+
 export default {
   post,
   getCourses,
@@ -231,4 +242,5 @@ export default {
   addQuestions,
   getFiles,
   deleteFile,
+  getVideoQuestions
 };

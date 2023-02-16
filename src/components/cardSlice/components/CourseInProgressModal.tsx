@@ -6,6 +6,7 @@ import services from '../../../services/http'
 import { ReactNetflixPlayer } from "react-netflix-player";
 import { useSelector, useDispatch } from 'react-redux'
 import { updateVideoTimeStamp } from '../../../store/user/userData';
+import TestModal from '../../shared/TestModal';
 const { Content } = Layout;
 
 export default function CourseInProgressModal({Open,Data,Cerrar}:any) {
@@ -33,11 +34,13 @@ export default function CourseInProgressModal({Open,Data,Cerrar}:any) {
     const [videoTime,setVideoTime] = useState(0)
     const userInfo = useSelector( (state:any) => state.userInfo )
     const dispatch = useDispatch()
+    const [testModal,setTestModal] = useState(false)
     const [isScored, setIsScored] = useState(false);
     const modalRef: any = useRef(null);
     const course_tags = courseData.tags;
     const course_videos: any = courseData.videos;
     const course_routes = courseData.route;
+    console.log(testModal)
     // console.log(`VIDEOS DEL CURSO ${Data._id}:`, course_videos)
     useEffect(()=>{
         const getData = async () => {
@@ -49,15 +52,6 @@ export default function CourseInProgressModal({Open,Data,Cerrar}:any) {
         getData()
     },[])
     let data_video = course_videos.filter((video:any) => video.id === Data.video )[0]
-    // if(data_video){
-    //     console.log('EXISTE: ',data_video['urlEmbed'])
-    // }
-    // else{
-    //     console.log('NO EXISTE')
-    // }
-
-    // console.log(userInfo)
-    // console.log(`indice: ${videoIndex}, marca de tiempo: ${videoTime}`)
     return (
                 
         <Modal
@@ -121,20 +115,20 @@ export default function CourseInProgressModal({Open,Data,Cerrar}:any) {
                                 }
                                 onEnded={
                                     async () => {
+
                                         //mandar data del video aca con un finished true
                                         let body = {
-                                            idVideo: course_videos[videoIndex-1].id,
+                                            idVideo:  videoIndex !== 0 ? course_videos[videoIndex-1].id : data_video ? data_video.id : course_videos[0].id,
                                             idCourse: courseData.id,
                                             progress: videoTime,
                                             finished: true,
                                             num: videoIndex
                                         }
-                                        const res = await services.editUserVideoProgress(userInfo.id,body)
-                                        dispatch(updateVideoTimeStamp({
-                                            index: videoIndex-1,
-                                            timestamp: videoTime
-                                        }))  
-                                        console.log('ended')                
+                                        const res:any = await services.editUserVideoProgress(userInfo.id,body)
+                                        dispatch(updateVideoTimeStamp(res.data.payload.inProgress))
+                                        console.log('ended')  
+                                        setTestModal(true)    
+                                          
                                     }
                                     
                                 }
@@ -423,6 +417,14 @@ export default function CourseInProgressModal({Open,Data,Cerrar}:any) {
                     </Content>
                 </Layout>
                 }
+                { testModal && <TestModal 
+                Data = {
+                    videoIndex !== 0  ? 
+                        course_videos[videoIndex-1]:
+                        data_video ? data_video : course_videos[0]
+                } 
+                Abrir={testModal}  
+                Cerrar={()=> {setTestModal(false)}}/> }
         </Modal>
     )
 }
