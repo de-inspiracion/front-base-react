@@ -33,7 +33,8 @@ const CoursesInProgress: React.FC = () => {
         <Col style={{margin:'2%'}}>
           <Search
             placeholder="Buscar Curso"
-            onSearch={(e)=>{
+            onChange={(event)=>{
+              const e = event.target.value
 
               for (let i = 0; i < childItems.length; i++) {
                 const childItem = childItems[i];
@@ -70,6 +71,44 @@ const CoursesInProgress: React.FC = () => {
 
 
               }
+            }}
+            onSearch={(e)=>{
+
+              // for (let i = 0; i < childItems.length; i++) {
+              //   const childItem = childItems[i];
+              //   const items = childItem[0]
+              //   console.log(childItem[2])
+              //   let displayItems:any = []
+              //   if(e.length === 0){
+              //     displayItems = items
+              //     childItem[1](displayItems)
+              //     continue
+              //   }
+
+              //   if(childItem[2] === 'En Progreso'){
+              //     for (let j = 0; j < items.length; j++) {
+              //       const item = items[j];
+              //       const name = (new String(item.course.name)).toUpperCase()
+              //       if(name.includes(e.toUpperCase())){
+              //         displayItems.push(item)
+              //       }
+              //     }
+              //     childItem[1](displayItems)
+              //   }else{
+                  
+              //     for (let j = 0; j < items.length; j++) {
+              //       const item = items[j];
+              //       const name = (new String(item.name)).toUpperCase()
+              //       if(name.includes(e.toUpperCase())){
+              //         displayItems.push(item)
+              //       }
+              //     }
+              //     childItem[1](displayItems)
+              //   }
+
+
+
+              // }
             }}
           />
         </Col>
