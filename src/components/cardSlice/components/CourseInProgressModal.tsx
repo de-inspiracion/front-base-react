@@ -7,6 +7,7 @@ import { ReactNetflixPlayer } from "react-netflix-player";
 import { useSelector, useDispatch } from 'react-redux'
 import { updateVideoTimeStamp } from '../../../store/user/userData';
 const { Content } = Layout;
+import './CourseInProgressModal.css'
 
 export default function CourseInProgressModal({Open,Data,Cerrar}:any) {
     const [open,setOpen] = useState(Open)
@@ -61,6 +62,7 @@ export default function CourseInProgressModal({Open,Data,Cerrar}:any) {
     return (
                 
         <Modal
+        style={{ maxWidth: "800px", overflowY: "auto"}}
             open={open}
             footer={false}
             onCancel={handeClose}
@@ -74,14 +76,14 @@ export default function CourseInProgressModal({Open,Data,Cerrar}:any) {
                 }}
                 />
             }
+            className="modalCourseInProgress"
             width="70vw"
-            style={{ maxWidth: "800px", overflowY: "auto" }}
         >
             {
                 cargando ?
                 <div>Loading....</div>
                 :
-                <Layout ref={modalRef} style={{ background: "#181818", padding: "0 0" }}>
+                <Layout ref={modalRef} style={{backgroundImage: 'linear-gradient(120deg, #747474 0%, #000 100%)', padding: "0 0" }}>
                     <Row style={{ width: '100%', maxWidth: '750px', height: '45vh', maxHeight: '550px' }}>
                         {
                             userInfo.inprogress.length === 0 ?
