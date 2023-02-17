@@ -9,6 +9,13 @@ const post = async (url: string) => {
   return result;
 };
 
+const getUsers = async () => {
+  const res = await axios.get(
+    `${base_url}/user`
+  );
+  return res.data;
+};
+
 const getCourses = async () => {
   const courses_res = await axios.get(
     base_url + "/courses",
@@ -232,4 +239,5 @@ export default {
   addQuestions,
   getFiles,
   deleteFile,
+  getUsers,
 };
