@@ -22,9 +22,7 @@ const NewCourse = () => {
     const createCourse = async () => {
       const res:any = await services.newCourse(courseName)
       // messageApi.success('Curso Creado, redireccionando...')
-      navigate(res['payload']['id'],{
-        replace:true
-      })
+      navigate(res['payload']['id'],{state:res['payload']})
     } 
 
   return (
