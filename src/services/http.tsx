@@ -78,6 +78,7 @@ const getInfo = async (id: string | undefined) => {
   let course: any = await axios.get(
     `${base_url}/courses/${id}`
   );
+
   let r_ = [];
   let c_ = [];
   for (let i = 0; i < routes.data.payload.length; i++) {
@@ -144,7 +145,7 @@ const newVideo = async (id: string, body: any) => {
 
 const getRoutes = async () => {
   const res = await axios.get(
-    "${base_url}/route"
+    `${base_url}/route`
   );
   return res;
 };
