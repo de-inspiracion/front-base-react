@@ -1,26 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Space, Table, Tag } from 'antd';
 import services from "../../../services/http";
+import axios from 'axios';
 
 const { Column} = Table;
 
-interface Courses {
-    key: React.Key;
-    id: string;
-    name: string;
-    estado: string;
-  }
+interface Directive {
+  _id: string;
+  idCourse: string;
+  idUser: string;
+  enable: boolean;
+}
 
-const data: Courses[] = [
-  {key:1, id: '63dd554cb57c09585bc719c', name: "Curso de matemáticas", estado: "activo" },
-  {key:2, id: '63dd901eb57c09585bc71cc4', name: "Curso de ciencias", estado: "inactivo" },
-  {key:3, id: '63dd90ceb57c09585bc71cfd', name: "Curso de historia", estado: "activo" },
-];
+interface Directive {
+  id: string;
+  idCourse: string;
+  idUser: string;
+  enable: boolean;
+}
+
 
 const DashboardDirective: React.FC = () => {
-  const [excludeIdCourse, setExcludeIdCourse] = useState('');
-  const [exclude, setExclude] = useState(false);
-  const [getCourses, setGetCourses] = useState([]);
+  const [idCourse, setIdCourse] = useState<string>('');
+  const [getCourses, setGetCourses] = useState<[]>([]);
+  const [getDirective, setGetDirective] = useState<Directive[]>([]);
 
 
   useEffect(() => {
@@ -29,32 +32,98 @@ const DashboardDirective: React.FC = () => {
       let res = await services.getCourses();
       setGetCourses(res.data.payload);
     };
+    const getDirective = async () => {
+      let res = await services.getDirective();
+      setGetDirective(res.data);
+    };
+    getDirective();
     getCourses();
   }, []);
 
-  console.log(getCourses);
-
-  const excludeCourse = (key: React.Key) => {
-    const newData = [...data];
-    const target = newData.find((item) => key === item.key);
+    console.log(getDirective);
+    console.log(getCourses);
+  const excludeCourse = (id: string) => {
+    const newData = [...getCourses];
+    const target: any = newData.find((item: any) => id === item.id);
     if (target) {
-      target.estado = 'excluido';
-      setExclude(!exclude);
-      setExcludeIdCourse(target.id);
+      setIdCourse(target.id);
     }
   };
 
+  const postToDB = () => {
+    const idDirective = getDirective[0]?._id;
+
+    console.log(idDirective);
+    const bodyPost = {
+      idCourse: idCourse,
+    };
+    axios.post(`https://nestjs-virgo-production.up.railway.app/directive/${idDirective}/exclude`, bodyPost, {
+      headers: {
+        'Content-Type': 'application/json',
+        },
+        })
+      .then(res => {
+        console.log('se envio')
+        console.log(res.data.payload)
+      })
+      .catch(err => {
+        console.log(err)
+        console.log('no se envio')
+      })
+  }
+
+
+  const includeCourse = (id: string) => {
+    const newData = [...getCourses];
+    const target: any = newData.find((item: any) => id === item.id);
+    if (target) {
+      setIdCourse(target.id);
+    }
+  };
+
+  const postToDBInclude = () => {
+    const idDirective = getDirective[0]?._id;
+    const bodyPost = {
+      idCourse: idCourse,
+    };
+    axios.post(`https://nestjs-virgo-production.up.railway.app/directive/${idDirective}/include`, bodyPost, {
+      headers: {
+        'Content-Type': 'application/json',
+        },
+        })
+      .then(res => {
+        console.log('se envio')
+        console.log(res.data.payload)
+      })
+      .catch(err => {
+        console.log(err)
+        console.log('no se envio')
+      })
+  }
+
+  useEffect(() => {
+    postToDB()
+    postToDBInclude()
+  }, [idCourse])
+
   return (
-    <Table dataSource={data}>
+    <Table dataSource={getCourses}>
       <Column title="Courses" dataIndex="name" key="firstName" />
-      <Column title="Courses" dataIndex="estado" key="firstName" />
       <Column
-        title="Action"
-        key="action"
-        render={(_: any) => (
+        title="Excluir"
+        key="excluir"
+        render={(course: any) => (
           <Space size="middle">
-            {/* //excluir curso y luego bloquear el boton*/}
-            <Button onClick={() => excludeCourse(_.key)}>Excluir</Button>
+            <Button onClick={() => excludeCourse(course.id)}>Excluir</Button>
+          </Space>
+        )}
+      />
+            <Column
+        title="Incluir"
+        key="incluir"
+        render={(course: any) => (
+          <Space size="middle">
+            <Button onClick={() => includeCourse(course.id)}>Incluir</Button>
           </Space>
         )}
       />

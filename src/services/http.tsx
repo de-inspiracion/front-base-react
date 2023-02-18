@@ -219,6 +219,14 @@ const deleteFile = async (idVideo: string, file: string) => {
   );
   return res;
 }
+
+const getDirective = async () => {
+  const res = await axios.get(
+    base_url + "/directive"
+  );
+  return res;
+};
+
 export default {
   post,
   getCourses,
@@ -240,4 +248,5 @@ export default {
   getFiles,
   deleteFile,
   getUsers,
+  getDirective,
 };

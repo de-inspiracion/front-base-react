@@ -1,9 +1,11 @@
-import React from 'react'
+// import axios from "axios";
+// const base_url = import.meta.env.VITE_BASE_URL
 
-const https = () => {
-  return (
-    <div>https</div>
-  )
-}
+// const getDirective = async () => {
+//   const res = await axios.get(
+//     base_url + "/directive"
+//   );
+//   return res;
+// };
 
-export default https
+// export default { getDirective };
