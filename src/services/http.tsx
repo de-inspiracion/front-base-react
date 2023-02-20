@@ -10,6 +10,13 @@ const post = async (url: string) => {
   return result;
 };
 
+const getUsers = async () => {
+  const res = await axios.get(
+    `${base_url}/user`
+  );
+  return res.data;
+};
+
 const getCourses = async () => {
   const courses_res = await axios.get(
     base_url + "/courses",
@@ -214,14 +221,12 @@ const deleteFile = async (idVideo: string, file: string) => {
   return res;
 }
 
-const getVideoQuestions = async (idVideo:String) => {
-  try {
-    const res = await axios.get(`${base_url}/videos/${idVideo}/questions?verify=false`)
-    return res
-  } catch (error) {
-    return `Error al traer info del video ${idVideo}`
-  }
-}
+const getDirective = async () => {
+  const res = await axios.get(
+    base_url + "/directive"
+  );
+  return res;
+};
 
 export default {
   post,
@@ -243,5 +248,6 @@ export default {
   addQuestions,
   getFiles,
   deleteFile,
-  getVideoQuestions
+  getUsers,
+  getDirective,
 };

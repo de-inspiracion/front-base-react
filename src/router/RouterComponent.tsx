@@ -15,6 +15,8 @@ import { ConfigProvider, theme } from "antd";
 import AdminMain from "../pages/admin-virgo/pages/AdminMain";
 import Landing from "../pages/landing/Landing";
 import NoAccount from "../pages/NoAccount/NoAccount";
+import DirectiveMain from '../pages/directive/pages/DirectiveMain'
+import DashboardDirective from '../pages/directive/pages/DashboardDirective'
 
 export default function RouterComponent() {
   const { user, isAuthenticated, logout } = useAuth0();
@@ -101,10 +103,43 @@ export default function RouterComponent() {
       ],
     },
     {
+      path: "/director",
+      element: (
+        <PrivateRoute isAuthenticated={isAuthenticated} component={<Main />} />
+      ),
+      children: [
+        {
+          path: "/director",
+          element: (
+            <PrivateRoute
+              isAuthenticated={isAuthenticated}
+              component={<DirectiveMain/>}
+            />
+          ),
+        },
+        {
+          path: "/director/courses",
+          element: (
+            <PrivateRoute
+              isAuthenticated={isAuthenticated}
+              component={<DashboardDirective/>}
+            />
+          ),
+        },
+      ],
+    },
+    {
       path: "/accountnotfound",
       element: <NoAccount />,
     },
-
+    // {
+    //   path: "/director",
+    //   element: <DirectiveMain/>,
+    // },
+    // {
+    //   path: "/director/courses",
+    //   element: <DashboardDirective/>,
+    // },
     // {
     //   path: "/account",
     //   element: <AccountPage></AccountPage>,

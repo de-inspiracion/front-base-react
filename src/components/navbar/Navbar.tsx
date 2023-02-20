@@ -72,7 +72,7 @@ const NavBarComponent: React.FC = () => {
       key: "/admin/course",
     },
   ];
-  const menuItems = [
+  const menuProfesor = [
     {
       label: "Home",
       key: "/home",
@@ -86,6 +86,16 @@ const NavBarComponent: React.FC = () => {
     {
       label: "Mi Progreso",
       key: "/home/mi-progreso",
+    },
+  ];
+  const menuDirectiva = [
+    {
+      label: "Home",
+      key: "/director",
+    },
+    {
+      label: "Dashboard",
+      key: "/director/courses",
     },
   ];
 
@@ -136,7 +146,8 @@ const NavBarComponent: React.FC = () => {
               theme="dark"
               style={{ background: "#141414", border: "none" }}
               mode="horizontal"
-              items={userInfo.profile != "virgo" ? menuItems : menuVirgo}
+              //poner tres tipos de menu dentro de items
+              items={userInfo.profile === 'directiva' ? menuDirectiva : (userInfo.profile === 'virgo' ? menuVirgo : menuProfesor)}
             />
           </Col>
 

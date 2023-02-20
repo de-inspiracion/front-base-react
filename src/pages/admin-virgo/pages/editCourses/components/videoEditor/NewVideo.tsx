@@ -63,7 +63,7 @@ const NewVideo = (props:any) => {
                         accept="video/*"
                         beforeUpload = {(e) => {
                                 const blob = new Blob([e])
-                                const newVideo = new File([blob],`${props.numberofVideos + 1}-${e.name}`,{type:e.type})
+                                const newVideo = new File([blob],`${e.name}`,{type:e.type})
                                 console.log(newVideo);
                                 setCourseVideo(newVideo);
                             }}

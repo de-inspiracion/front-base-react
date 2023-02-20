@@ -45,9 +45,19 @@ export const Login = () => {
 
   // console.log("profileEnter", profile === "virgo");
   // console.log("profileEnButton", profile);
-  return profile === "virgo" ? (
-    <Navigate to="/admin" />
-  ) : (
-    <Navigate to="/home" />
-  );
+  // return profile === "virgo" ? (
+  //   <Navigate to="/admin" />
+  // ) : (
+  //   <Navigate to="/home" />
+  // );
+  // Login para 3 usuarios
+  if (profile === "virgo") {
+    return <Navigate to="/admin" />;
+  } else if (profile === "directiva") {
+    return <Navigate to="/director" />;
+  } else if (profile === "profesor") {
+    return <Navigate to="/home" />;
+  } else {
+    return <Navigate to="/" />;
+  }
 };
