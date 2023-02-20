@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Space, Table, Tag } from 'antd';
-import services from "../../../services/http";
+import { Button, Space, Table} from 'antd';
 import axios from 'axios';
+import services from "../../../services/http";
 
 const { Column} = Table;
 
@@ -22,6 +22,7 @@ interface Directive {
 
 const DashboardDirective: React.FC = () => {
   const [idCourse, setIdCourse] = useState<string>('');
+  const [idCourseInclude, setIdCourseInclude] = useState<string>('');
   const [getCourses, setGetCourses] = useState<[]>([]);
   const [getDirective, setGetDirective] = useState<Directive[]>([]);
 
@@ -77,14 +78,14 @@ const DashboardDirective: React.FC = () => {
     const newData = [...getCourses];
     const target: any = newData.find((item: any) => id === item.id);
     if (target) {
-      setIdCourse(target.id);
+      setIdCourseInclude(target.id);
     }
   };
 
   const postToDBInclude = () => {
     const idDirective = getDirective[0]?._id;
     const bodyPost = {
-      idCourse: idCourse,
+      idCourse: idCourseInclude,
     };
     axios.post(`https://nestjs-virgo-production.up.railway.app/directive/${idDirective}/include`, bodyPost, {
       headers: {
@@ -103,8 +104,11 @@ const DashboardDirective: React.FC = () => {
 
   useEffect(() => {
     postToDB()
-    postToDBInclude()
   }, [idCourse])
+
+  useEffect(() => {
+    postToDBInclude()
+  }, [idCourseInclude])
 
   return (
     <Table dataSource={getCourses}>

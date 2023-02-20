@@ -223,7 +223,7 @@ const deleteFile = async (idVideo: string, file: string) => {
 
 const getDirective = async () => {
   const res = await axios.get(
-    base_url + "/directive"
+    `${base_url}/directive`
   );
   return res;
 };
