@@ -119,7 +119,8 @@ const editVideoInfo = async (id: string, body: any) => {
     `${base_url}/videos/${id}`,
     body
   );
-  window.location.reload();
+  // console.log(res.data)
+  // window.location.reload();
   return res;
 };
 
@@ -128,7 +129,7 @@ const editCourseCover = async (id: string, body: any) => {
     `${base_url}/courses/${id}/uploadCover`,
     body
   );
-  window.location.reload();
+  return res.data.payload.url
 };
 
 const newCourse = async (name: string) => {

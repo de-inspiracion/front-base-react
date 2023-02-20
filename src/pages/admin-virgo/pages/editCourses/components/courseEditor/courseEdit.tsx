@@ -116,7 +116,8 @@ export const CourseEditor = (state: any) => {
               onClick={async () => {
                 const formData = new FormData();
                 formData.append("cover", img);
-                await services.editCourseCover(currentState.id, formData);
+                const url = await services.editCourseCover(currentState.id, formData);
+                setCurrentState({...currentState,cover:url})
               }}
             >
               Subir Imagen

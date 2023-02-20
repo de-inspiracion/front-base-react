@@ -103,6 +103,7 @@ export const VideoEditor = (props: customProps) => {
   useEffect(() => {
     const v: any[] = props.videos;
     setVideos(v)
+    console.log(v)
   }, props.videos)
   let questionForVideo: any[] = [];
   videos.forEach((questionVideo: any) => {
@@ -112,6 +113,16 @@ export const VideoEditor = (props: customProps) => {
   const [questions, setQuestion] = useState(questionsDefault);
   const editVideoInfo = async (id: any, body: any) => {
     await services.editVideoInfo(id, body);
+    const videosInfo = [...videos]
+    const key = Object.keys(body)[0]
+    const content = body[key]
+    for (let i = 0; i < videosInfo.length; i++) {
+      if(videosInfo[i]['id'] == id){
+        videosInfo[i][key] = content
+      }
+      
+    }
+    setVideos(videosInfo)
   };
 
   const editQuestionTitle = async (text: string, indexQuestion: number) => {
