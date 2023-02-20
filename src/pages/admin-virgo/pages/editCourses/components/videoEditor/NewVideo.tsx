@@ -7,7 +7,7 @@ import { Button, Modal } from 'antd';
 import { message } from 'antd';
 import { Input } from 'antd';
 import services from '../../../../../../services/http'
-import { useNavigate} from "react-router-dom";
+import { redirect, useNavigate} from "react-router-dom";
 import { PlusOutlined } from '@ant-design/icons';
 import { Upload } from 'antd';
 import type { RcFile, UploadProps } from 'antd/es/upload';
@@ -21,8 +21,8 @@ interface customProps{
     setVideos:any,
     numberofVideos:any
 }
-
-const NewVideo = (props:any) => {
+redirect("/");
+const NewVideo = (props : any) => {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [courseVideo,setCourseVideo] = useState<any>([])
@@ -33,10 +33,15 @@ const NewVideo = (props:any) => {
             const formData = new FormData();
             formData.append("video", courseVideo);
             const res = await services.newVideo(props.id, formData);
+            console.log("rsponse vide :", res)
             setLoading(false)
-            window.location.reload()
+            props.onAction(res.payload)
+            setIsModalOpen(false)
       }
+const cancel = () => {
 
+  setIsModalOpen(false)
+}
   return (
 
     
@@ -52,7 +57,7 @@ const NewVideo = (props:any) => {
         
             <Modal title="Subir Video" open={isModalOpen} 
                         onOk={createVideo} 
-                        onCancel={()=>setIsModalOpen(false)}
+                        onCancel={()=>cancel()}
                         >
                     <Upload
                         name="avatar"

@@ -1,6 +1,6 @@
 import { Button, Descriptions, List, Upload } from "antd";
 import Paragraph from "antd/es/typography/Paragraph";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ConfigProvider, theme } from "antd";
 import { Card, Space, Grid, Row, Col } from "antd";
 import { Divider, Radio, Typography, Popover, Modal } from "antd";
@@ -33,6 +33,7 @@ export const VideoEditor = (props: customProps) => {
   const [messageApi, contextHolder] = message.useMessage();
   const [currentVideoSelected, setcurrentVideoSelected] = useState("");
   const [listFiles, setListFiles] = useState([] as any);
+  const [videos, setVideos] = useState([] as any[])
   const questionsDefault = [
     {
       question: "una pregunta?",
@@ -99,8 +100,12 @@ export const VideoEditor = (props: customProps) => {
     },
   ];
 
+  useEffect(() => {
+    const v: any[] = props.videos;
+    setVideos(v)
+  }, props.videos)
   let questionForVideo: any[] = [];
-  props.videos.forEach((questionVideo: any) => {
+  videos.forEach((questionVideo: any) => {
     return questionForVideo.push(questionsDefault);
   });
 
@@ -192,8 +197,6 @@ export const VideoEditor = (props: customProps) => {
   };
 
   const deleteFile = async (file: string, index: number) => {
-    console.log("index:" , index)
-    console.log("file:" , file)
     const result = await services.deleteFile(currentVideoSelected, file);
 
     if(result?.data?.payload) {
@@ -248,7 +251,9 @@ export const VideoEditor = (props: customProps) => {
       </Typography.Title>
     );
   };
-
+  const handleAction = (newVideo:any) => {
+    setVideos(videos.concat(newVideo))
+}
   return (
     <>
       <ConfigProvider
@@ -266,7 +271,9 @@ export const VideoEditor = (props: customProps) => {
             marginTop: "30px",
           }}
         >
-          {props.videos.map((value: any, index: any) => {
+          {
+          
+          videos.map((value: any, index: any) => {
             return (
               <Card
                 key={index}
@@ -319,7 +326,7 @@ export const VideoEditor = (props: customProps) => {
           })}
         </Space>
 
-        <NewVideo id={props.id} numberofVideos={props.videos.length || 0} />
+        <NewVideo onAction={(evento: any) => handleAction(evento)} id={props.id} numberofVideos={props.videos.length || 0} />
 
         <Modal
           width="80vw"

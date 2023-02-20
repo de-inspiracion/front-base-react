@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, RouterProvider, HashRouter } from "react-router-dom";
 import { AccountPage } from "../pages/account/Account";
 import PublicRoute from "./PublicRoute";
 import PrivateRoute from "./PrivateRoute";
