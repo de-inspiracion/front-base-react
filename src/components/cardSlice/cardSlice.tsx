@@ -93,43 +93,45 @@ function CardSlide({ title, id, description, courses, source, setChildItems }: a
 
 
       { source == "En Progreso" ?
+        <div>
           <div className="movieRow" {...handlers}>
-          <h2> {title} </h2>
-          <div className="movieRow--left" onClick={handleLeftArrow}>
-            <img src="https://img.icons8.com/ios-glyphs/50/FFFFFF/chevron-left.png" />
-          </div>
-          <div className="movieRow--right" onClick={handleRightArrow}>
-            <img src="https://img.icons8.com/ios-glyphs/50/FFFFFF/chevron-right.png" />
-          </div>
+            <h2> {title} </h2>
+            <div className="movieRow--left" onClick={handleLeftArrow}>
+              <img src="https://img.icons8.com/ios-glyphs/50/FFFFFF/chevron-left.png" />
+            </div>
+            <div className="movieRow--right" onClick={handleRightArrow}>
+              <img src="https://img.icons8.com/ios-glyphs/50/FFFFFF/chevron-right.png" />
+            </div>
 
-          <div className="movieRow--listarea">
-            <div
-              className="movieRow--list"
-              style={{
-                marginLeft: scrollX,
-              }}
-            >
-              {displayItems.map((curso: any, index: any) => {
-                return (
-                  <Card
-                    key={index}
-                    style={{ width: 240, cursor: "pointer" }}
-                    cover={<img alt="cover" src={curso.course.cover} />}
-                    onClick={() => {
-                      setDataModal(curso);
-                      setAbrirModal(true);
-                    }}
-                  >
-                    <Meta
-                      style={{ textAlign: "center" }}
-                      title={curso.course.name}
-                    />
-                  </Card>
-                );
-              })}
+            <div className="movieRow--listarea">
+              <div
+                className="movieRow--list"
+                style={{
+                  marginLeft: scrollX,
+                }}
+              >
+                {displayItems.map((curso: any, index: any) => {
+                  return (
+                    <Card
+                      key={index}
+                      style={{ width: 240, cursor: "pointer" }}
+                      cover={<img alt="cover" src={curso.course.cover} />}
+                      onClick={() => {
+                        setDataModal(curso);
+                        setAbrirModal(true);
+                      }}
+                    >
+                      <Meta
+                        style={{ textAlign: "center" }}
+                        title={curso.course.name}
+                      />
+                    </Card>
+                  );
+                })}
+              </div>
             </div>
           </div>
-        </div>
+          </div>
         :
         <div className="movieRow" {...handlers}>
           <h2>{title}</h2>

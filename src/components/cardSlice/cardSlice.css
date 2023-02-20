@@ -12,6 +12,8 @@
 }
 
 .movieRow--list {
+  display: flex;
+  
   width: 99999px;
   transition: all ease 0.3s;
 }
