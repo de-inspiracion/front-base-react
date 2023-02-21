@@ -100,7 +100,7 @@ export const CourseEditor = (state: any) => {
               listType="picture-card"
               className="avatar-uploader"
               showUploadList={false}
-              multiple={false}
+              maxCount={1}
               accept="image/*"
               // action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
               onChange={(e) => {
