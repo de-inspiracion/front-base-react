@@ -33,7 +33,7 @@ export const VideoEditor = (props: customProps) => {
   const [messageApi, contextHolder] = message.useMessage();
   const [currentVideoSelected, setcurrentVideoSelected] = useState("");
   const [listFiles, setListFiles] = useState([] as any);
-  const [videos, setVideos] = useState([] as any[])
+  const [videos, setVideos] = useState([] as any[]);
   const questionsDefault = [
     {
       question: "una pregunta?",
@@ -102,9 +102,9 @@ export const VideoEditor = (props: customProps) => {
 
   useEffect(() => {
     const v: any[] = props.videos;
-    setVideos(v)
-    console.log(v)
-  }, props.videos)
+    setVideos(v);
+    console.log(v);
+  }, props.videos);
   let questionForVideo: any[] = [];
   videos.forEach((questionVideo: any) => {
     return questionForVideo.push(questionsDefault);
@@ -113,16 +113,15 @@ export const VideoEditor = (props: customProps) => {
   const [questions, setQuestion] = useState(questionsDefault);
   const editVideoInfo = async (id: any, body: any) => {
     await services.editVideoInfo(id, body);
-    const videosInfo = [...videos]
-    const key = Object.keys(body)[0]
-    const content = body[key]
+    const videosInfo = [...videos];
+    const key = Object.keys(body)[0];
+    const content = body[key];
     for (let i = 0; i < videosInfo.length; i++) {
-      if(videosInfo[i]['id'] == id){
-        videosInfo[i][key] = content
+      if (videosInfo[i]["id"] == id) {
+        videosInfo[i][key] = content;
       }
-      
     }
-    setVideos(videosInfo)
+    setVideos(videosInfo);
   };
 
   const editQuestionTitle = async (text: string, indexQuestion: number) => {
@@ -196,22 +195,22 @@ export const VideoEditor = (props: customProps) => {
 
   const handleOpenModalFiles = (idVideo: any, index: any) => {
     setcurrentVideoSelected(idVideo);
-    getFilesVideo(idVideo)
+    getFilesVideo(idVideo);
     setOpenModalFiles(true);
   };
 
-  const getFilesVideo = async (video:string) => {
+  const getFilesVideo = async (video: string) => {
     const result = await services.getFiles(video);
-    if(result?.data?.payload) {
-      setListFiles(result.data.payload)
+    if (result?.data?.payload) {
+      setListFiles(result.data.payload);
     }
   };
 
   const deleteFile = async (file: string, index: number) => {
     const result = await services.deleteFile(currentVideoSelected, file);
 
-    if(result?.data?.payload) {
-      setListFiles(result.data.payload)
+    if (result?.data?.payload) {
+      setListFiles(result.data.payload);
       messageApi.open({
         type: "success",
         content: "Se realizó la acción de forma correcta.",
@@ -236,7 +235,7 @@ export const VideoEditor = (props: customProps) => {
         console.log(info.file, info.fileList);
       }
       if (info.file.status === "done") {
-        console.log("info file: ", info)
+        console.log("info file: ", info);
         const responseFile = info.file.response.payload;
         setListFiles([...responseFile]);
         message.success(`${info.file.name} file uploaded successfully`);
@@ -262,9 +261,9 @@ export const VideoEditor = (props: customProps) => {
       </Typography.Title>
     );
   };
-  const handleAction = (newVideo:any) => {
-    setVideos(videos.concat(newVideo))
-}
+  const handleAction = (newVideo: any) => {
+    setVideos(videos.concat(newVideo));
+  };
   return (
     <>
       <ConfigProvider
@@ -273,71 +272,59 @@ export const VideoEditor = (props: customProps) => {
         }}
       >
         {contextHolder}
-        <Space
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            maxWidth: "1000px",
-            gap: "20px",
-            marginTop: "30px",
-          }}
-        >
-          {
-          
-          videos.map((value: any, index: any) => {
+        <Row justify="space-around" align="middle">
+          {videos.map((value: any, index: any) => {
             return (
-              <Card
-                key={index}
-                title={
-                  <EditableText
-                    text={value["name"]}
-                    func={(text: any) => {
-                      editVideoInfo(value["id"], { name: text });
-                    }}
-                  />
-                }
-                style={{ width: 300 }}
-                // extra={
-                //   <Popover content={<p>Preguntas</p>}>
-                //     <Button type="primary"  onClick={() => {  openModal(value['id'], index) }}>
-                //       Preguntas
-                //     </Button>
-                //     <PlusCircleOutlined style={{ color: 'green', cursor: 'pointer' }} onClick={() => {  openModal(value['id'], index) }} />
-                //   </Popover>
+              <Col style={{ padding: "50px" }} md={24} xl={24} xxl={24}>
+                <Card
+                  key={index}
+                  style={{ width: "100%" }}
+                  title={
+                    <EditableText
+                      text={value["name"]}
+                      func={(text: any) => {
+                        editVideoInfo(value["id"], { name: text });
+                      }}
+                    />
+                  }
+                  // style={{ width: 300 }}
+                  actions={[
+                    <QuestionOutlined
+                      key="questions"
+                      onClick={() => {
+                        openModal(value["id"], index);
+                      }}
+                    />,
+                    <FilePdfOutlined
+                      key="files"
+                      onClick={() => {
+                        handleOpenModalFiles(value["id"], index);
+                      }}
+                    />,
+                  ]}
+                >
+                  <img src={value["thumbnail"]} style={{ width: "100%" }} />
 
-                // }
-
-                actions={[
-                  <QuestionOutlined
-                    key="questions"
-                    onClick={() => {
-                      openModal(value["id"], index);
-                    }}
-                  />,
-                  <FilePdfOutlined
-                    key="files"
-                    onClick={() => {
-                      handleOpenModalFiles(value["id"], index);
-                    }}
-                  />,
-                ]}
-              >
-                <img src={value["thumbnail"]} style={{ width: "100%" }} />
-
-                <span style={{ fontSize: 18 }}>
-                  <EditableText
-                    text={value["description"]}
-                    func={(text: any) => {
-                      editVideoInfo(value["id"], { description: text });
-                    }}
-                  />
-                </span>
-              </Card>
+                  <span style={{ fontSize: 18 }}>
+                    <EditableText
+                      text={value["description"]}
+                      func={(text: any) => {
+                        editVideoInfo(value["id"], { description: text });
+                      }}
+                    />
+                  </span>
+                </Card>
+              </Col>
             );
           })}
-        </Space>
+        </Row>
+        {/* </Space> */}
 
-        <NewVideo onAction={(evento: any) => handleAction(evento)} id={props.id} numberofVideos={props.videos.length || 0} />
+        <NewVideo
+          onAction={(evento: any) => handleAction(evento)}
+          id={props.id}
+          numberofVideos={props.videos.length || 0}
+        />
 
         <Modal
           width="80vw"
@@ -348,58 +335,63 @@ export const VideoEditor = (props: customProps) => {
             updateQuestions();
           }}
         >
-        <Row justify="center" >
+          <Row justify="center">
             {questions.length > 0 &&
               questions.map((item, index: any) => {
                 return (
-
-                    <Col  xs={24} sm={24} md={24} lg={24} xl={24} xxl={24} style={{marginBottom: '10px'}}>
-                      <Card
-                      
-                        key={index}
-                        title={
-                          <EditableText
-                            text={item.question}
-                            func={(text: any) => {
-                              editQuestionTitle(text, index);
-                            }}
-                            ind={index}
-                          />
+                  <Col
+                    xs={24}
+                    sm={24}
+                    md={24}
+                    lg={24}
+                    xl={24}
+                    xxl={24}
+                    style={{ marginBottom: "10px" }}
+                  >
+                    <Card
+                      key={index}
+                      title={
+                        <EditableText
+                          text={item.question}
+                          func={(text: any) => {
+                            editQuestionTitle(text, index);
+                          }}
+                          ind={index}
+                        />
+                      }
+                    >
+                      <Radio.Group
+                        value={valueOptionSelected(item.options)}
+                        onChange={(e) =>
+                          editCorrectOptionQuestion(index, e.target.value)
                         }
                       >
-                        <Radio.Group
-                          value={valueOptionSelected(item.options)}
-                          onChange={(e) =>
-                            editCorrectOptionQuestion(index, e.target.value)
-                          }
-                        >
-                          <Space direction="vertical">
-                            {item.options.map((option, indexOption: any) => {
-                              return (
-                                <Radio key={indexOption} value={indexOption}>
-                                  {
-                                    <EditableText
-                                      text={option.option}
-                                      func={(text: any) => {
-                                        editOptionQuestion(
-                                          text,
-                                          index,
-                                          indexOption
-                                        );
-                                      }}
-                                    />
-                                  }
-                                </Radio>
-                              );
-                            })}
-                          </Space>
-                        </Radio.Group>
-                      </Card>
-                    </Col>
-                 
+                        <Space direction="vertical">
+                          {item.options.map((option, indexOption: any) => {
+                            return (
+                              <Radio key={indexOption} value={indexOption}>
+                                {
+                                  <EditableText
+                                    text={option.option}
+                                    func={(text: any) => {
+                                      editOptionQuestion(
+                                        text,
+                                        index,
+                                        indexOption
+                                      );
+                                    }}
+                                  />
+                                }
+                              </Radio>
+                            );
+                          })}
+                        </Space>
+                      </Radio.Group>
+                    </Card>
+                  </Col>
                 );
               })}
-        </Row>
+          </Row>
         </Modal>
 
         <Modal
@@ -411,38 +403,37 @@ export const VideoEditor = (props: customProps) => {
             setOpenModalFiles(false);
           }}
         >
-    
-            <Row>
-              <Col  xs={12}>
-                <Upload maxCount={1} {...propsFiles}>
-                  <Button icon={<UploadOutlined />}>Cargar</Button>
-                </Upload>
-              </Col>
-            </Row>
+          <Row>
+            <Col xs={12}>
+              <Upload maxCount={1} {...propsFiles}>
+                <Button icon={<UploadOutlined />}>Cargar</Button>
+              </Upload>
+            </Col>
+          </Row>
 
-            <Row>
-              <Col md={24} xl={24} xxl={24}>
-                <List
-                  className="demo-loadmore-list"
-                  itemLayout="horizontal"
-                  dataSource={listFiles}
-                  renderItem={(item:any, index) => (
-                    <List.Item
-                      actions={[
-                        <Button onClick={() => deleteFile(item.id, index)} icon={<DeleteOutlined />}>Eliminar</Button>
-                      ]}
-                    >
-
-                    <List.Item.Meta
-                      title={item?.name}
-                    />
-
-                    </List.Item>
-                    
-                  )}
-                />
-              </Col>
-            </Row>
+          <Row>
+            <Col md={24} xl={24} xxl={24}>
+              <List
+                className="demo-loadmore-list"
+                itemLayout="horizontal"
+                dataSource={listFiles}
+                renderItem={(item: any, index) => (
+                  <List.Item
+                    actions={[
+                      <Button
+                        onClick={() => deleteFile(item.id, index)}
+                        icon={<DeleteOutlined />}
+                      >
+                        Eliminar
+                      </Button>,
+                    ]}
+                  >
+                    <List.Item.Meta title={item?.name} />
+                  </List.Item>
+                )}
+              />
+            </Col>
+          </Row>
         </Modal>
       </ConfigProvider>
     </>
