@@ -348,20 +348,14 @@ export const VideoEditor = (props: customProps) => {
             updateQuestions();
           }}
         >
-          <div
-            style={{
-              display: "flex",
-              gap: 50,
-              width: "100%",
-              justifyContent: "center",
-            }}
-          >
+        <Row justify="center" >
             {questions.length > 0 &&
               questions.map((item, index: any) => {
                 return (
-                  <Row>
-                    <Col>
+
+                    <Col  xs={24} sm={24} md={24} lg={24} xl={24} xxl={24} style={{marginBottom: '10px'}}>
                       <Card
+                      
                         key={index}
                         title={
                           <EditableText
@@ -370,15 +364,6 @@ export const VideoEditor = (props: customProps) => {
                               editQuestionTitle(text, index);
                             }}
                             ind={index}
-                          />
-                        }
-                        extra={
-                          <DeleteOutlined
-                            style={{
-                              color: "red",
-                              fontSize: 18,
-                              marginLeft: 100,
-                            }}
                           />
                         }
                       >
@@ -411,55 +396,10 @@ export const VideoEditor = (props: customProps) => {
                         </Radio.Group>
                       </Card>
                     </Col>
-                  </Row>
+                 
                 );
               })}
-
-            {/* <Row>
-              <Col>
-                <Card title={<EditableText text={'QUESTION 1'} />} extra={<DeleteOutlined style={{ color: 'red', fontSize: 18, marginLeft: 100 }} />}>
-                  <Radio.Group >
-                    <Space direction="vertical">
-                      <Radio value={1}>{<EditableText text={'OPTION A'} />}</Radio>
-                      <Radio value={2}>{<EditableText text={'OPTION B'} />}</Radio>
-                      <Radio value={3}>{<EditableText text={'OPTION C'} />}</Radio>
-                      <div onClick={() => { alert('ADD OPTION') }} style={{ cursor: 'pointer' }}> + ADD OPTION</div>
-                    </Space>
-                  </Radio.Group>
-                </Card>
-              </Col>
-            </Row>
-
-            <Row>
-              <Col>
-                <Card title={<EditableText text={'QUESTION 1'} />} extra={<DeleteOutlined style={{ color: 'red', fontSize: 18, marginLeft: 100 }} />}>
-                  <Radio.Group >
-                    <Space direction="vertical">
-                      <Radio value={1}>{<EditableText text={'OPTION A'} />}</Radio>
-                      <Radio value={2}>{<EditableText text={'OPTION B'} />}</Radio>
-                      <Radio value={3}>{<EditableText text={'OPTION C'} />}</Radio>
-                      <div onClick={() => { alert('ADD OPTION') }} style={{ cursor: 'pointer' }}> + ADD OPTION</div>
-                    </Space>
-                  </Radio.Group>
-                </Card>
-              </Col>
-            </Row>
-
-            <Row>
-              <Col>
-                <Card title={<EditableText text={'QUESTION 1'} />} extra={<DeleteOutlined style={{ color: 'red', fontSize: 18, marginLeft: 100 }} />}>
-                  <Radio.Group >
-                    <Space direction="vertical">
-                      <Radio value={1}>{<EditableText text={'OPTION A'} />}</Radio>
-                      <Radio value={2}>{<EditableText text={'OPTION B'} />}</Radio>
-                      <Radio value={3}>{<EditableText text={'OPTION C'} />}</Radio>
-                      <div onClick={() => { alert('ADD OPTION') }} style={{ cursor: 'pointer' }}> + ADD OPTION</div>
-                    </Space>
-                  </Radio.Group>
-                </Card>
-              </Col>
-            </Row> */}
-          </div>
+        </Row>
         </Modal>
 
         <Modal
@@ -474,14 +414,14 @@ export const VideoEditor = (props: customProps) => {
     
             <Row>
               <Col  xs={12}>
-                <Upload {...propsFiles}>
-                  <Button icon={<UploadOutlined />}>Click to Upload</Button>
+                <Upload maxCount={1} {...propsFiles}>
+                  <Button icon={<UploadOutlined />}>Cargar</Button>
                 </Upload>
               </Col>
             </Row>
 
             <Row>
-              <Col  xxl={24}>
+              <Col md={24} xl={24} xxl={24}>
                 <List
                   className="demo-loadmore-list"
                   itemLayout="horizontal"
