@@ -573,6 +573,8 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
             </div>
             {course_videos.map((item: any, index: any) => {
               return (
+              <div style={{width:'100%'}}> 
+
                 <div
                   key={index}
                   className="videoInfo"
@@ -634,6 +636,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
                   >
                     {item.duration} min.
                   </div>
+                </div>
                 </div>
               );
             })}
