@@ -35,6 +35,7 @@ export const CourseEditor = (state: any) => {
   const [messageApi, contextHolder] = message.useMessage();
   const [open, setOpen] = useState(false);
   const [routes2, setRoutes2] = useState<any>([]);
+  const [expert, setExpert] = useState<any>('')
 
   useEffect(() => {
     (async () => {
@@ -56,6 +57,7 @@ export const CourseEditor = (state: any) => {
       setRoutes(res[2]["route"]);
       setCategory(res[2]["category"]);
       setVideos(res[2]["videos"]);
+      setExpert(res[2]['expert'] || '');
     })();
   }, []);
 
@@ -173,6 +175,32 @@ export const CourseEditor = (state: any) => {
               style={{ margin: 0 }}
             >
               {descriptionCourse}
+            </Typography.Title>
+          </Col>
+        </Row>
+
+        <Row
+          gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+          justify="center"
+          align="middle"
+        >
+          <Col span={6}>
+            <h3>Experto</h3>
+          </Col>
+          <Col span={6}>
+            <Typography.Title
+              editable={{
+                onChange: (value) => {
+                  console.log(value);
+                  setExpert(value);
+                  editCourseData(currentState.id, "expert", value);
+                },
+              }}
+              onChange={(data) => console.log(data)}
+              level={5}
+              style={{ margin: 0 }}
+            >
+              {expert}
             </Typography.Title>
           </Col>
         </Row>
