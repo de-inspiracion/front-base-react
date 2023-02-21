@@ -1,4 +1,4 @@
-import { Button, Space, Table } from "antd";
+import { Button, message, Space, Table } from "antd";
 import React, { useEffect, useState } from "react";
 import Column from "antd/es/table/Column";
 import axios from "axios";
@@ -19,6 +19,21 @@ const DirectorMain: React.FC = () => {
   const [usersInfo, setUsersInfo] = useState<UsersInfo[]>([]);
 
   const userInfo = useSelector((estado: any) => estado.userInfo);
+  const [messageApi, contextHolder] = message.useMessage();
+
+  const success = () => {
+    messageApi.open({
+      type: "success",
+      content: "This is a success message",
+    });
+  };
+
+  const error = () => {
+    messageApi.open({
+      type: "error",
+      content: "This is an error message",
+    });
+  };
 
   useEffect(() => {
     const usersDirective = async (idDirective: string) => {
@@ -44,18 +59,22 @@ const DirectorMain: React.FC = () => {
   const postToDB = () => {
     const IDuser = idUser;
     const state = stated;
-    axios
-      .post(
-        `https://nestjs-virgo-production.up.railway.app/user/${IDuser}/enable/${state}`
-      )
-      .then((res) => {
-        console.log("se envio");
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-        console.log("no se envio");
-      });
+    if (idUser) {
+      axios
+        .post(
+          `https://nestjs-virgo-production.up.railway.app/user/${IDuser}/enable/${state}`
+        )
+        .then((res) => {
+          console.log("se envio");
+          console.log(res);
+          success();
+        })
+        .catch((err) => {
+          console.log(err);
+          console.log("no se envio");
+          error();
+        });
+    }
   };
   useEffect(() => {
     postToDB();
@@ -63,6 +82,7 @@ const DirectorMain: React.FC = () => {
 
   return (
     <>
+      {contextHolder}
       <Table dataSource={usersInfo}>
         <Column title="Name" dataIndex="name" key="name" />
         <Column
