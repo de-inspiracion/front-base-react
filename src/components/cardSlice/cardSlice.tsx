@@ -22,7 +22,6 @@ function CardSlide({
 }: any) {
   const [abrirModal, setAbrirModal] = useState(false);
   const [dataModal, setDataModal] = useState({});
-  console.log('data modal: ',dataModal)
   const handleCloseModal = () => {
     setAbrirModal(false);
   };
@@ -49,7 +48,6 @@ function CardSlide({
         return prev.concat([newItem]);
       });
     } else if (source === "En Progreso") {
-      console.log(userInfo.inprogress);
       setDisplayItems(userInfo.inprogress);
       setChildItems((prev: any) => {
         const newItem = [userInfo.inprogress, setDisplayItems, source];

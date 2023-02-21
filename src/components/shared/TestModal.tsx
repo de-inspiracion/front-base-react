@@ -6,6 +6,7 @@ import services from '../../services/http'
 import { CloseOutlined } from '@ant-design/icons'
 import './testModal.css'
 export default function TestModal({Data, Abrir, Cerrar}:any) {
+  console.log('DATA MODAL: ',Data)
   const [open, setOpen] = useState(Abrir)
   const [loading, setLoading] = useState(false)
   const [loadginMessage,setLoadingMessage] = useState('')
