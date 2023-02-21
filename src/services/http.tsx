@@ -228,6 +228,22 @@ const getDirective = async () => {
   return res;
 };
 
+const validateAnswers = async( videoId: String, answers:any)=>{
+
+  let body = {
+    responses: answers.map((element:any)=> {
+      return {
+        numberQuestion: element.number,
+        numberOption: element.option_number
+      }
+    })
+  }
+  const res = await axios.post(`${base_url}/videos/${videoId}/questions/verify`,body)
+  const verification = res.data.payload
+  
+  return verification
+}
+
 export default {
   post,
   getCourses,
@@ -250,4 +266,5 @@ export default {
   deleteFile,
   getUsers,
   getDirective,
+  validateAnswers
 };

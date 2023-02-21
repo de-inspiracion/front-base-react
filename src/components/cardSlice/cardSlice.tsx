@@ -15,7 +15,7 @@ const { Search } = Input;
 function CardSlide({ title, id, description, courses, source, setChildItems }: any) {
   const [abrirModal, setAbrirModal] = useState(false);
   const [dataModal, setDataModal] = useState({});
-
+  console.log('data modal: ',dataModal)
   const handleCloseModal = () => {
     setAbrirModal(false);
   };
@@ -151,7 +151,7 @@ function CardSlide({ title, id, description, courses, source, setChildItems }: a
             >
               {
                 displayItems.length > 0 && displayItems.map((item: any,key) => {
-                  // console.log(item)
+                  console.log('otem: ',item)
                   return <CardV key={key} itemData = {item} Image={item.cover} index={key}/>
                 })
               }
