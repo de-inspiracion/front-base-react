@@ -29,6 +29,7 @@ export const CourseEditor = (state: any) => {
   const [value, setValue] = useState(0); // integer state
   const [c_, setC_] = useState<any>([]);
   const [r_, setR_] = useState<any>([]);
+  const [t_, setT_] = useState<any>([]);
   const [videos, setVideos] = useState([]);
   const [img, setImg] = useState<any>([]);
   const [messageApi, contextHolder] = message.useMessage();
@@ -47,6 +48,7 @@ export const CourseEditor = (state: any) => {
       let res = await services.getInfo(idCourse);
       setC_(res[0]);
       setR_(res[1]);
+      setT_(res[3]);
       setCurrentState(res[2]);
       setTitleCourse(res[2]["name"]);
       setDescriptionCourse(res[2]["description"]);
@@ -192,7 +194,7 @@ export const CourseEditor = (state: any) => {
               onChange={(value: string) => {
                 setTags(value);
               }}
-              options={options}
+              options={t_}
             />
           </Col>
 
