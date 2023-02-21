@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Space, Table } from "antd";
+import { Button, message, Space, Table } from "antd";
 import axios from "axios";
 import services from "../../../services/http";
 import { useSelector } from "react-redux";
@@ -13,6 +13,22 @@ const DashboardDirective: React.FC = () => {
   const [includeExclude, setIncludeExclude] = useState<string>("include");
 
   const userInfo = useSelector((estado: any) => estado.userInfo);
+  const [messageApi, contextHolder] = message.useMessage();
+
+  const success = () => {
+    messageApi.open({
+      type: "success",
+      content: "Se registro en la base de datos",
+    });
+  };
+
+  const error = () => {
+    messageApi.open({
+      type: "error",
+      content:
+        "No se pudo registrar en la base de datos, intentelo de nuevo mas tarde",
+    });
+  };
 
   useEffect(() => {
     const getCoursesDirective = async (idDirective: string) => {
@@ -49,24 +65,27 @@ const DashboardDirective: React.FC = () => {
     const bodyPost = {
       course: idCourse,
     };
-    axios
-      .post(
-        `https://nestjs-virgo-production.up.railway.app/directive/${idDirective}/${variable}`,
-        bodyPost,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      )
-      .then((res) => {
-        console.log("se envio exclude");
-        console.log(res.data.payload);
-      })
-      .catch((err) => {
-        console.log(err);
-        console.log("no se envio");
-      });
+
+    if (idCourse) {
+      axios
+        .post(
+          `https://nestjs-virgo-production.up.railway.app/directive/${idDirective}/${variable}`,
+          bodyPost,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        )
+        .then((res) => {
+          console.log(res.data.payload);
+          success();
+        })
+        .catch((err) => {
+          console.log(err);
+          error();
+        });
+    }
   };
 
   useEffect(() => {
@@ -74,20 +93,23 @@ const DashboardDirective: React.FC = () => {
   }, [idCourse]);
 
   return (
-    <Table dataSource={getCourses}>
-      <Column title="Courses" dataIndex="name" key="firstName" />
-      <Column
-        title="Excluir"
-        key="excluir"
-        render={(course: any) => (
-          <Space size="middle">
-            <Button onClick={() => excludeIncludeCourse(course.id)}>
-              {course.exclude ? "Excluir" : "Incluir"}
-            </Button>
-          </Space>
-        )}
-      />
-    </Table>
+    <>
+      {contextHolder}
+      <Table dataSource={getCourses}>
+        <Column title="Courses" dataIndex="name" key="firstName" />
+        <Column
+          title="Excluir"
+          key="excluir"
+          render={(course: any) => (
+            <Space size="middle">
+              <Button onClick={() => excludeIncludeCourse(course.id)}>
+                {course.exclude ? "Incluir" : "Excluir"}
+              </Button>
+            </Space>
+          )}
+        />
+      </Table>
+    </>
   );
 };
 

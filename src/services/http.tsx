@@ -66,12 +66,21 @@ const getInfo = async (id: string | undefined) => {
   let category: any = await axios.get(`${base_url}/category`);
   let routes: any = await axios.get(`${base_url}/route`);
   let course: any = await axios.get(`${base_url}/courses/${id}`);
-
+  let tags: any =await axios.get(`${base_url}/tags/`);
+  
+  
   let r_ = [];
   let c_ = [];
+  let t_ = [];
+
   for (let i = 0; i < routes.data.payload.length; i++) {
     const element = routes.data.payload[i];
     r_.push({ value: element["id"], label: element["name"] });
+  }
+
+  for (let i = 0; i < tags.data.payload.length; i++) {
+    const element = tags.data.payload[i];
+    t_.push({ value: element["_id"], label: element["name"] });
   }
 
   for (let i = 0; i < category.data.payload.length; i++) {
@@ -89,10 +98,16 @@ const getInfo = async (id: string | undefined) => {
     aux2.push(course.data.payload.route[i]["_id"]);
   }
 
+  let aux3 = [];
+  for (let i = 0; i < course.data.payload.tags.length; i++) {
+    aux3.push(course.data.payload.tags[i]["_id"]);
+  }
+
+  
+
   course.data.payload.route = aux2;
   course.data.payload.category = aux;
-
-  return [c_, r_, course.data.payload];
+  return [c_, r_, course.data.payload,t_];
 };
 
 const editVideoInfo = async (id: string, body: any) => {
