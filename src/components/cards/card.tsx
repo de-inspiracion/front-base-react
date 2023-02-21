@@ -19,11 +19,13 @@ import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { newDataUser } from "../../store/user/userData";
 import { updateVideoTimeStamp } from "../../store/user/userData";
-const { Content } = Layout;
+import TestModal from "../shared/TestModal";
 
+const { Content } = Layout;
 const CardV: any = ({ itemData, Image, key, index }: any) => {
   const [open, setOpen] = useState(false);
   const [courseData, setCourseData] = useState([]);
+  
   if (Object.keys(itemData).includes("_id")) {
     itemData["id"] = itemData["_id"];
     delete itemData["_id"];
@@ -74,7 +76,6 @@ const CardV: any = ({ itemData, Image, key, index }: any) => {
 };
 
 const ModalCard = ({ data, Abierto, Cerrar }: any) => {
-  // console.log('data modal 1: ',data)
   const { user } = useAuth0();
   const [open, setOpen] = useState(Abierto);
   const [confirmLoading, setConfirmLoading] = useState(false);
@@ -86,7 +87,11 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
   const [videoTime, setVideoTime] = useState(0);
   const modalRef: any = useRef(null);
   const { Meta } = Card;
-
+  const [openTestModal, setOpenTestModal] = useState(false)
+  const [ dataTest, setDataTest ] = useState({})
+  const handleCloseTestModal = () => {
+    setOpenTestModal(false)
+  }
   const course_tags = data.tags;
   const course_videos = data.videos;
   const course_routes = data.route;
@@ -206,6 +211,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
       // height='1300px'
       style={{ maxWidth: "800px", overflowY: "auto" }}
     >
+      { openTestModal && <TestModal Data={dataTest} Abrir={openTestModal} Cerrar={handleCloseTestModal}/> }
       <Layout ref={modalRef} style={{ background: "#181818", padding: "0 0" }}>
         <Row
           style={{
@@ -253,6 +259,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
                 }}
                 onEnded={async () => {
                   //mandar data del video aca con un finished true
+                  setDataTest(course_videos[videoIndex -1 ])
                   let body = {
                     idVideo: course_videos[videoIndex - 1].id,
                     idCourse: data.id,
@@ -260,12 +267,12 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
                     finished: true,
                     num: videoIndex,
                   };
-
                   const res = await services.editUserVideoProgress(
                     userInfo.id,
                     body
                   );
-                  // console.log('termino')
+                  console.log('termino')
+                  setOpenTestModal(true)
                   // console.log('res',res)
                   // console.log(body)
                 }}
