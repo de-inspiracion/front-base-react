@@ -30,8 +30,10 @@ const CoursesInProgress: React.FC = () => {
         style={{ overflow: "hidden" }}
       >
 
-        <Col style={{margin:'2%'}}>
+        <Col style={{margin:'2%', width:'40%'}}>
           <Search
+          size="large"
+          enterButton
             placeholder="Buscar Curso"
             onChange={(event)=>{
               const e = event.target.value
