@@ -22,7 +22,7 @@ function CardSlide({
 }: any) {
   const [abrirModal, setAbrirModal] = useState(false);
   const [dataModal, setDataModal] = useState({});
-
+  console.log('data modal: ',dataModal)
   const handleCloseModal = () => {
     setAbrirModal(false);
   };
