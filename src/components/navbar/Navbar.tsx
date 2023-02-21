@@ -29,11 +29,11 @@ const onChange = (
 };
 
 const items: MenuProps["items"] = [
-  {
-    label: "Mis Datos",
-    key: "1",
-    icon: <UserOutlined />,
-  },
+  // {
+  //   label: "Mis Datos",
+  //   key: "1",
+  //   icon: <UserOutlined />,
+  // },
   {
     label: "Cerrar Session",
     key: "2",
@@ -112,7 +112,7 @@ const NavBarComponent: React.FC = () => {
           height: "74px",
         }}
       >
-        <Row justify={'space-between'} style={{ padding: "0" }}>
+        <Row justify={"space-between"} style={{ padding: "0" }}>
           <Col
             style={{
               display: "flex",
@@ -138,16 +138,26 @@ const NavBarComponent: React.FC = () => {
             </svg>
           </Col>
 
-          <Col xs={8} md={8} xl={8}>
+          <Col xs={10} md={10} xl={10}>
             <Menu
               onClick={({ key }) => {
                 navigate(key);
               }}
               theme="dark"
-              style={{ background: "#141414", border: "none" }}
+              style={{
+                background: "#141414",
+                border: "none",
+                fontSize: "1.3rem",
+              }}
               mode="horizontal"
               //poner tres tipos de menu dentro de items
-              items={userInfo.profile === 'directiva' ? menuDirectiva : (userInfo.profile === 'virgo' ? menuVirgo : menuProfesor)}
+              items={
+                userInfo.profile === "directiva"
+                  ? menuDirectiva
+                  : userInfo.profile === "virgo"
+                  ? menuVirgo
+                  : menuProfesor
+              }
             />
           </Col>
 
@@ -158,12 +168,12 @@ const NavBarComponent: React.FC = () => {
               style={{ width: "100%" }}
             />
           </Col> */}
-          <Col style={{ textAlign: "end"} } xs={2}>
+          <Col style={{ textAlign: "end" }} xs={2}>
             <Dropdown menu={menuProps}>
               <Avatar
                 size="small"
                 icon={<UserOutlined />}
-                style={{ backgroundColor: "#87d068"}}
+                style={{ backgroundColor: "#87d068" }}
               />
             </Dropdown>
           </Col>
