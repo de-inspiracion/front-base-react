@@ -20,6 +20,7 @@ import { useSelector } from "react-redux";
 import services from "../../services/http";
 import CourseInProgressModal from "./components/CourseInProgressModal";
 import { useEffect, useState } from "react";
+import { message } from 'antd';
 const { Meta } = Card;
 
 const { Content } = Layout;
@@ -59,6 +60,7 @@ const MiProgreso = () => {
   const [abrirModal, setAbrirModal] = useState(false);
   const [statistics, setStatistics] = useState<statisticData[] | any>([]);
   const [color, setColor] = useState("");
+  const [messageApi, contextHolder] = message.useMessage();
 
   const handleCloseModal = () => {
     setAbrirModal(false);
@@ -93,6 +95,11 @@ const MiProgreso = () => {
       render: (row) => (
         <a
           onClick={async () => {
+            messageApi.open({
+              type: 'loading',
+              content: 'Generando Certificado ...',
+              duration: 0,
+            });
             const body = {
               userName: userInfo.name,
               userId: userInfo.id,
@@ -101,6 +108,7 @@ const MiProgreso = () => {
               courseDate: row.date,
             };
             const res = await services.getCertificate(body);
+            setTimeout(messageApi.destroy, 0);
           }}
         >
           Descargar
@@ -112,6 +120,7 @@ const MiProgreso = () => {
 
   return (
     <ConfigProvider theme={{ algorithm: theme.darkAlgorithm }}>
+      {contextHolder}
       <Layout style={{ padding: "30px 30px" }}>
         <Content style={{ flexDirection: "column" }}>
           <Typography.Text style={{ fontSize: "18px" }} strong>
