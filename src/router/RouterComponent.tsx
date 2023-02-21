@@ -1,5 +1,9 @@
 import React, { useEffect } from "react";
-import { createBrowserRouter, RouterProvider, HashRouter } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  HashRouter,
+} from "react-router-dom";
 import { AccountPage } from "../pages/account/Account";
 import PublicRoute from "./PublicRoute";
 import PrivateRoute from "./PrivateRoute";
@@ -15,8 +19,8 @@ import { ConfigProvider, theme } from "antd";
 import AdminMain from "../pages/admin-virgo/pages/AdminMain";
 import Landing from "../pages/landing/Landing";
 import NoAccount from "../pages/NoAccount/NoAccount";
-import DirectiveMain from '../pages/directive/pages/DirectiveMain'
-import DashboardDirective from '../pages/directive/pages/DashboardDirective'
+import DirectiveMain from "../pages/directive/pages/DirectiveMain";
+import DashboardDirective from "../pages/directive/pages/DashboardDirective";
 
 export default function RouterComponent() {
   const { user, isAuthenticated, logout } = useAuth0();
@@ -103,26 +107,26 @@ export default function RouterComponent() {
       ],
     },
     {
-      path: "/director",
+      path: "/directive",
       element: (
         <PrivateRoute isAuthenticated={isAuthenticated} component={<Main />} />
       ),
       children: [
         {
-          path: "/director",
+          path: "/directive",
           element: (
             <PrivateRoute
               isAuthenticated={isAuthenticated}
-              component={<DirectiveMain/>}
+              component={<DirectiveMain />}
             />
           ),
         },
         {
-          path: "/director/courses",
+          path: "/directive/courses",
           element: (
             <PrivateRoute
               isAuthenticated={isAuthenticated}
-              component={<DashboardDirective/>}
+              component={<DashboardDirective />}
             />
           ),
         },

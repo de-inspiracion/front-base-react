@@ -90,12 +90,12 @@ const NavBarComponent: React.FC = () => {
   ];
   const menuDirectiva = [
     {
-      label: "Home",
-      key: "/director",
+      label: "Profesores",
+      key: "/directive",
     },
     {
-      label: "Dashboard",
-      key: "/director/courses",
+      label: "Cursos",
+      key: "/directive/courses",
     },
   ];
 

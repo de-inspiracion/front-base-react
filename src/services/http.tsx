@@ -1,6 +1,6 @@
 import axios from "axios";
-const base_url = import.meta.env.VITE_BASE_URL
-console.log(base_url)
+const base_url = import.meta.env.VITE_BASE_URL;
+console.log(base_url);
 const post = async (url: string) => {
   const result = await axios({
     method: "get",
@@ -11,21 +11,16 @@ const post = async (url: string) => {
 };
 
 const getUsers = async () => {
-  const res = await axios.get(
-    `${base_url}/user`
-  );
+  const res = await axios.get(`${base_url}/user`);
   return res.data;
 };
 
 const getCourses = async () => {
-  const courses_res = await axios.get(
-    base_url + "/courses",
-    {
-      headers: {
-        "Access-Control-Allow-Origin": true,
-      },
-    }
-  );
+  const courses_res = await axios.get(base_url + "/courses", {
+    headers: {
+      "Access-Control-Allow-Origin": true,
+    },
+  });
   return courses_res;
 };
 
@@ -43,14 +38,11 @@ const postScore = async (id: string, score: number) => {
 
 const getCourseVideos = async (courseId: String) => {
   try {
-    const res = await axios.get(
-      `${base_url}/courses/${courseId}`,
-      {
-        headers: {
-          "Access-Control-Allow-Origin": true,
-        },
-      }
-    );
+    const res = await axios.get(`${base_url}/courses/${courseId}`, {
+      headers: {
+        "Access-Control-Allow-Origin": true,
+      },
+    });
     return res.data;
   } catch (error) {
     return "ERROR AL TRAER VIDEOS PARA LAS CARDS";
@@ -58,9 +50,7 @@ const getCourseVideos = async (courseId: String) => {
 };
 
 const getUserInfo = async (email: String) => {
-  const res = await axios.get(
-    `${base_url}/user/${email}`
-  );
+  const res = await axios.get(`${base_url}/user/${email}`);
   return res.data.payload;
 };
 
@@ -68,23 +58,14 @@ const updateCourse = async (id: string, field: string, data: any) => {
   let body: any = {};
   body[field] = data;
   console.log(body);
-  const res = await axios.put(
-    `${base_url}/courses/${id}`,
-    body
-  );
+  const res = await axios.put(`${base_url}/courses/${id}`, body);
   return res;
 };
 
 const getInfo = async (id: string | undefined) => {
-  let category: any = await axios.get(
-    `${base_url}/category`
-  );
-  let routes: any = await axios.get(
-    `${base_url}/route`
-  );
-  let course: any = await axios.get(
-    `${base_url}/courses/${id}`
-  );
+  let category: any = await axios.get(`${base_url}/category`);
+  let routes: any = await axios.get(`${base_url}/route`);
+  let course: any = await axios.get(`${base_url}/courses/${id}`);
 
   let r_ = [];
   let c_ = [];
@@ -115,46 +96,34 @@ const getInfo = async (id: string | undefined) => {
 };
 
 const editVideoInfo = async (id: string, body: any) => {
-  const res = await axios.post(
-    `${base_url}/videos/${id}`,
-    body
-  );
+  const res = await axios.post(`${base_url}/videos/${id}`, body);
   // console.log(res.data)
   // window.location.reload();
   return res;
 };
 
 const editCourseCover = async (id: string, body: any) => {
-  const res = await axios.post(
-    `${base_url}/courses/${id}/uploadCover`,
-    body
-  );
-  return res.data.payload.url
+  const res = await axios.post(`${base_url}/courses/${id}/uploadCover`, body);
+  return res.data.payload.url;
 };
 
 const newCourse = async (name: string) => {
-  const res = await axios.post(
-    `${base_url}/courses`,
-    {
-      name: name,
-    }
-  );
+  const res = await axios.post(`${base_url}/courses`, {
+    name: name,
+  });
   return res.data;
 };
 
 const newVideo = async (id: string, body: any) => {
-  const res = await axios.post(
-    `${base_url}/courses/${id}/uploadVideo`,
-    body,
-    { timeout: 1800000, headers: { "Access-Control-Allow-Origin": "*" } }
-  );
+  const res = await axios.post(`${base_url}/courses/${id}/uploadVideo`, body, {
+    timeout: 1800000,
+    headers: { "Access-Control-Allow-Origin": "*" },
+  });
   return res.data;
 };
 
 const getRoutes = async () => {
-  const res = await axios.get(
-    `${base_url}/route`
-  );
+  const res = await axios.get(`${base_url}/route`);
   return res;
 };
 
@@ -172,10 +141,7 @@ const editUserVideoProgress = async (userId: String, body: any) => {
 };
 
 const getCertificate = async (body: any) => {
-  const res = await axios.post(
-    `${base_url}/user/courseCertificate`,
-    body
-  );
+  const res = await axios.post(`${base_url}/user/courseCertificate`, body);
   const base64String = res.data.toString("base64");
 
   const linkSource = `data:application/pdf;base64,${res.data}`;
@@ -186,64 +152,66 @@ const getCertificate = async (body: any) => {
 };
 
 const getStatistics = async (idUser: any) => {
-  const res = await axios.get(
-    `${base_url}/user/${idUser}/progressInfo`
-  );
+  const res = await axios.get(`${base_url}/user/${idUser}/progressInfo`);
   return res;
 };
 
 const getQuestions = async (idVideo: string) => {
-  const res = await axios.get(
-    `${base_url}/videos/${idVideo}/questions`
-  );
+  const res = await axios.get(`${base_url}/videos/${idVideo}/questions`);
   return res;
-}
+};
 
 const addQuestions = async (idVideo: string, body: any) => {
-  const bodyQuestion = { questions: body}
+  const bodyQuestion = { questions: body };
   const res = await axios.post(
     `${base_url}/videos/${idVideo}/questions`,
     bodyQuestion
-  );  
-  return res;
-}
-
-const getFiles = async (idVideo: string) => {
-  const res = await axios.get(
-    `${base_url}/videos/${idVideo}/files`
-  );
-  return res;
-}
-
-const deleteFile = async (idVideo: string, file: string) => {
-  const res = await axios.delete(
-    `${base_url}/videos/${idVideo}/file/${file}`
-  );
-  return res;
-}
-
-const getDirective = async () => {
-  const res = await axios.get(
-    `${base_url}/directive`
   );
   return res;
 };
 
-const validateAnswers = async( videoId: String, answers:any)=>{
+const getFiles = async (idVideo: string) => {
+  const res = await axios.get(`${base_url}/videos/${idVideo}/files`);
+  return res;
+};
 
+const deleteFile = async (idVideo: string, file: string) => {
+  const res = await axios.delete(`${base_url}/videos/${idVideo}/file/${file}`);
+  return res;
+};
+
+const getDirective = async () => {
+  const res = await axios.get(`${base_url}/directive`);
+  return res;
+};
+
+const getCoursesDirective = async (idDirective: string) => {
+  const res = await axios.get(`${base_url}/courses/directive/${idDirective}`);
+  return res;
+};
+
+const usersDirective = async (idDirective: string) => {
+  const res = await axios.get(`${base_url}/user/directive/${idDirective}`);
+  return res;
+};
+
+const validateAnswers = async (videoId: String, answers: any) => {
   let body = {
-    responses: answers.map((element:any)=> {
+    responses: answers.map((element: any) => {
       return {
         numberQuestion: element.number,
-        numberOption: element.option_number
-      }
-    })
-  }
-  const res = await axios.post(`${base_url}/videos/${videoId}/questions/verify`,body)
-  const verification = res.data.payload
-  
-  return verification
-}
+        numberOption: element.option_number,
+      };
+    }),
+  };
+  const res = await axios.post(
+    `${base_url}/videos/${videoId}/questions/verify`,
+    body
+  );
+  const verification = res.data.payload;
+
+  return verification;
+};
 
 export default {
   post,
@@ -267,5 +235,7 @@ export default {
   deleteFile,
   getUsers,
   getDirective,
-  validateAnswers
+  getCoursesDirective,
+  usersDirective,
+  validateAnswers,
 };

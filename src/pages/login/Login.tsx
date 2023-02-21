@@ -54,7 +54,7 @@ export const Login = () => {
   if (profile === "virgo") {
     return <Navigate to="/admin" />;
   } else if (profile === "directiva") {
-    return <Navigate to="/director" />;
+    return <Navigate to="/directive" />;
   } else if (profile === "profesor") {
     return <Navigate to="/home" />;
   } else {

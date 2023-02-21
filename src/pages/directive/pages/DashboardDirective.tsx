@@ -1,114 +1,77 @@
-import React, { useEffect, useState } from 'react';
-import { Button, Space, Table} from 'antd';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import { Button, Space, Table } from "antd";
+import axios from "axios";
 import services from "../../../services/http";
+import { useSelector } from "react-redux";
 
-const { Column} = Table;
-
-interface Directive {
-  _id: string;
-  idCourse: string;
-  idUser: string;
-  enable: boolean;
-}
-
-interface Directive {
-  id: string;
-  idCourse: string;
-  idUser: string;
-  enable: boolean;
-}
-
+const { Column } = Table;
 
 const DashboardDirective: React.FC = () => {
-  const [idCourse, setIdCourse] = useState<string>('');
-  const [idCourseInclude, setIdCourseInclude] = useState<string>('');
+  const [idCourse, setIdCourse] = useState<string>("");
   const [getCourses, setGetCourses] = useState<[]>([]);
-  const [getDirective, setGetDirective] = useState<Directive[]>([]);
+  const [enable, setEnable] = useState<boolean>(true);
+  const [includeExclude, setIncludeExclude] = useState<string>("include");
 
+  const userInfo = useSelector((estado: any) => estado.userInfo);
 
   useEffect(() => {
-    const getCourses = async () => {
-      // setIems(await services.getCourseVideos(courseData[0].id).payload)
-      let res = await services.getCourses();
+    const getCoursesDirective = async (idDirective: string) => {
+      const res = await services.getCoursesDirective(idDirective);
       setGetCourses(res.data.payload);
     };
-    const getDirective = async () => {
-      let res = await services.getDirective();
-      setGetDirective(res.data);
-    };
-    getDirective();
-    getCourses();
+    getCoursesDirective(userInfo.directive?.id);
   }, []);
 
-    console.log(getDirective);
-    console.log(getCourses);
-  const excludeCourse = (id: string) => {
+  const excludeIncludeCourse = (id: string) => {
     const newData = [...getCourses];
     const target: any = newData.find((item: any) => id === item.id);
     if (target) {
+      target.exclude = !target.exclude;
       setIdCourse(target.id);
+      setEnable(target.exclude);
     }
   };
+  console.log("idCourse", idCourse);
+  console.log(enable);
+
+  useEffect(() => {
+    if (enable === false) {
+      setIncludeExclude("include");
+    } else {
+      setIncludeExclude("exclude");
+    }
+  }, [enable]);
 
   const postToDB = () => {
-    const idDirective = getDirective[0]?._id;
-
-    console.log(idDirective);
+    const variable = includeExclude;
+    console.log(variable);
+    const idDirective = userInfo.directive?.id;
     const bodyPost = {
-      idCourse: idCourse,
+      course: idCourse,
     };
-    axios.post(`https://nestjs-virgo-production.up.railway.app/directive/${idDirective}/exclude`, bodyPost, {
-      headers: {
-        'Content-Type': 'application/json',
-        },
-        })
-      .then(res => {
-        console.log('se envio')
-        console.log(res.data.payload)
+    axios
+      .post(
+        `https://nestjs-virgo-production.up.railway.app/directive/${idDirective}/${variable}`,
+        bodyPost,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((res) => {
+        console.log("se envio exclude");
+        console.log(res.data.payload);
       })
-      .catch(err => {
-        console.log(err)
-        console.log('no se envio')
-      })
-  }
-
-
-  const includeCourse = (id: string) => {
-    const newData = [...getCourses];
-    const target: any = newData.find((item: any) => id === item.id);
-    if (target) {
-      setIdCourseInclude(target.id);
-    }
+      .catch((err) => {
+        console.log(err);
+        console.log("no se envio");
+      });
   };
 
-  const postToDBInclude = () => {
-    const idDirective = getDirective[0]?._id;
-    const bodyPost = {
-      idCourse: idCourseInclude,
-    };
-    axios.post(`https://nestjs-virgo-production.up.railway.app/directive/${idDirective}/include`, bodyPost, {
-      headers: {
-        'Content-Type': 'application/json',
-        },
-        })
-      .then(res => {
-        console.log('se envio')
-        console.log(res.data.payload)
-      })
-      .catch(err => {
-        console.log(err)
-        console.log('no se envio')
-      })
-  }
-
   useEffect(() => {
-    postToDB()
-  }, [idCourse])
-
-  useEffect(() => {
-    postToDBInclude()
-  }, [idCourseInclude])
+    postToDB();
+  }, [idCourse]);
 
   return (
     <Table dataSource={getCourses}>
@@ -118,16 +81,9 @@ const DashboardDirective: React.FC = () => {
         key="excluir"
         render={(course: any) => (
           <Space size="middle">
-            <Button onClick={() => excludeCourse(course.id)}>Excluir</Button>
-          </Space>
-        )}
-      />
-            <Column
-        title="Incluir"
-        key="incluir"
-        render={(course: any) => (
-          <Space size="middle">
-            <Button onClick={() => includeCourse(course.id)}>Incluir</Button>
+            <Button onClick={() => excludeIncludeCourse(course.id)}>
+              {course.exclude ? "Excluir" : "Incluir"}
+            </Button>
           </Space>
         )}
       />
