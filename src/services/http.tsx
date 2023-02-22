@@ -210,6 +210,10 @@ const usersDirective = async (idDirective: string) => {
   return res;
 };
 
+const verifyUploaded = async (idVideo: string) => {
+  const res = await axios.get(`${base_url}/videos/${idVideo}/verifyUpload`);
+  return res;
+};
 const validateAnswers = async (videoId: String, answers: any) => {
   let body = {
     responses: answers.map((element: any) => {
@@ -253,4 +257,5 @@ export default {
   getCoursesDirective,
   usersDirective,
   validateAnswers,
+  verifyUploaded,
 };

@@ -23,27 +23,27 @@ interface customProps{
 }
 redirect("/");
 const NewVideo = (props : any) => {
-
+    const [textBtn, setTextBtn] = useState<string>('ok')
+    const [confirmLoading, setConfirmLoading] = useState<boolean>(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [courseVideo,setCourseVideo] = useState<any>([])
     const [messageApi, contextHolder] = message.useMessage();
     const [loading,setLoading] = useState(false)
     const createVideo = async () => {
-            setLoading(true)
-            const formData = new FormData();
-            formData.append("video", courseVideo);
-            const res = await services.newVideo(props.id, formData);
-            console.log("rsponse vide :", res)
-            setLoading(false)
-            props.onAction(res.payload)
+            // setLoading(true)
+            // const formData = new FormData();
+            // formData.append("video", courseVideo);
+            // const res = await services.newVideo(props.id, formData);
+            // console.log("rsponse vide :", res)
+            // setLoading(false)
+            // props.onAction(res.payload)
             setIsModalOpen(false)
       }
 const cancel = () => {
 
   setIsModalOpen(false)
 }
-
-
+let interval:any = null;
 const propsFilesVideo: UploadProps = {
   name: "video",
   action: `${base_url}/courses/${props.id}/uploadVideo`,
@@ -58,13 +58,30 @@ const propsFilesVideo: UploadProps = {
       // setListFiles([...responseFile]);
       message.success(`${info.file.name} file uploaded successfully`);
       console.log('respuesta : ', responseFile)
-      props.onAction(responseFile)
-      setIsModalOpen(false)
+      setTextBtn('subiendo');
+      setConfirmLoading(true);
+      interval = setInterval(() => {
+        console.log('timeout')
+        verifyUploaded(responseFile)
+      }, 10000);
     } else if (info.file.status === "error") {
       message.error(`${info.file.name} file upload failed.`);
     }
   },
 };
+
+
+const verifyUploaded = async (responseFile: any) => {
+  console.log('revisando 1 ',  responseFile)
+  const res: any = await services.verifyUploaded(responseFile.id);
+  console.log('revisando ',  res)
+  if(res.data.payload === true) {
+    clearInterval(interval)
+    props.onAction(responseFile)
+    setIsModalOpen(false)
+  }
+}
+
 
   return (
 
@@ -81,14 +98,12 @@ const propsFilesVideo: UploadProps = {
         
             <Modal title="Subir Video" open={isModalOpen} 
                         onOk={createVideo} 
+                        confirmLoading={confirmLoading}
                         onCancel={()=>cancel()}
+                        okText={textBtn}
                         >
                     <Upload
-                        name="avatar"
-                        listType="picture-card"
-                        className="avatar-uploader"
-                        showUploadList={false}
-                        multiple={false}
+                        listType="picture"
                         accept="video/*"
                         maxCount={1} 
                         {...propsFilesVideo}
