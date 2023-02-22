@@ -25,7 +25,7 @@ interface customProps {
   videos: any;
   id: any;
 }
-
+let validateVideos = true;
 export const VideoEditor = (props: customProps) => {
   const { defaultAlgorithm, darkAlgorithm } = theme;
   const [open, setOpen] = useState(false);
@@ -34,6 +34,7 @@ export const VideoEditor = (props: customProps) => {
   const [currentVideoSelected, setcurrentVideoSelected] = useState("");
   const [listFiles, setListFiles] = useState([] as any);
   const [videos, setVideos] = useState([] as any[]);
+
   const questionsDefault = [
     {
       question: "una pregunta?",
@@ -102,9 +103,14 @@ export const VideoEditor = (props: customProps) => {
 
   useEffect(() => {
     const v: any[] = props.videos;
-    setVideos(v);
+    console.log(validateVideos)
+    if (validateVideos) {
+      console.log('validando videos.....')
+      setVideos(v);
+    }
+    validateVideos = false;
     console.log("videos useeffect: ", v);
-  }, props.videos || []);
+  });
   let questionForVideo: any[] = [];
   videos.forEach((questionVideo: any) => {
     return questionForVideo.push(questionsDefault);
