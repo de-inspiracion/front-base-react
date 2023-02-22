@@ -104,7 +104,7 @@ export const VideoEditor = (props: customProps) => {
     const v: any[] = props.videos;
     setVideos(v);
     console.log(v);
-  }, props.videos);
+  });
   let questionForVideo: any[] = [];
   videos.forEach((questionVideo: any) => {
     return questionForVideo.push(questionsDefault);
@@ -272,13 +272,13 @@ export const VideoEditor = (props: customProps) => {
         }}
       >
         {contextHolder}
-        <Row justify="space-around" align="middle">
+        <Row justify="center">
           {videos.map((value: any, index: any) => {
             return (
-              <Col style={{ padding: "50px" }} md={24} xl={24} xxl={24}>
+              <Col>
                 <Card
                   key={index}
-                  style={{ width: "100%" }}
+                  style={{ width: "70vw", marginBottom: '10px' }}
                   title={
                     <EditableText
                       text={value["name"]}
@@ -303,16 +303,14 @@ export const VideoEditor = (props: customProps) => {
                     />,
                   ]}
                 >
-                  <img src={value["thumbnail"]} style={{ width: "100%" }} />
 
-                  <span style={{ fontSize: 18 }}>
                     <EditableText
                       text={value["description"]}
                       func={(text: any) => {
                         editVideoInfo(value["id"], { description: text });
                       }}
                     />
-                  </span>
+
                 </Card>
               </Col>
             );
