@@ -101,15 +101,14 @@ export const VideoEditor = (props: customProps) => {
     },
   ];
 
-  useEffect(() => {
+  setTimeout(() => {
     const v: any[] = props.videos;
-    console.log(validateVideos)
-    if (validateVideos) {
-      console.log('validando videos.....')
-      setVideos(v);
-    }
-    validateVideos = false;
-    console.log("videos useeffect: ", v);
+    setVideos(v);
+  }, 3000);
+
+  useEffect(() => {
+
+
   });
   let questionForVideo: any[] = [];
   videos.forEach((questionVideo: any) => {
