@@ -103,8 +103,8 @@ export const VideoEditor = (props: customProps) => {
   useEffect(() => {
     const v: any[] = props.videos;
     setVideos(v);
-    console.log(v);
-  });
+    console.log("videos useeffect: ", v);
+  }, props.videos || []);
   let questionForVideo: any[] = [];
   videos.forEach((questionVideo: any) => {
     return questionForVideo.push(questionsDefault);
@@ -262,6 +262,8 @@ export const VideoEditor = (props: customProps) => {
     );
   };
   const handleAction = (newVideo: any) => {
+    console.log("handleAction", newVideo)
+    console.log("videos : ", videos)
     setVideos(videos.concat(newVideo));
   };
   return (
