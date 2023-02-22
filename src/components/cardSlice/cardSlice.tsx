@@ -97,13 +97,13 @@ function CardSlide({
               className="movieRow--title"
               style={{
                 color: "white",
-                fontSize: "3em",
+                fontSize: "2em",
                 fontWeight: "bold",
                 marginLeft: "0.8em",
                 marginBottom: "0.2em",
               }}
             >
-              <FieldTimeOutlined /> {title}
+              {title}
             </div>
             <div className="movieRow--left" onClick={handleLeftArrow}>
               <img src="https://img.icons8.com/ios-glyphs/50/FFFFFF/chevron-left.png" />
@@ -147,7 +147,7 @@ function CardSlide({
             className="movieRow--title"
             style={{
               color: "white",
-              fontSize: "3em",
+              fontSize: "2em",
               fontWeight: "bold",
               marginLeft: "0.8em",
             }}
@@ -184,13 +184,15 @@ function CardSlide({
           </div>
         </div>
       )}
-      {abrirModal && (
-        <CourseInProgressModal
-          Data={dataModal}
-          Open={abrirModal}
-          Cerrar={handleCloseModal}
-        />
-      )}
+      <div style={{ margin: "5px" }}>
+        {abrirModal && (
+          <CourseInProgressModal
+            Data={dataModal}
+            Open={abrirModal}
+            Cerrar={handleCloseModal}
+          />
+        )}
+      </div>
     </>
   );
 }

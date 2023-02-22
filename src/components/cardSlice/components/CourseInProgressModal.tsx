@@ -80,7 +80,7 @@ export default function CourseInProgressModal({ Open, Data, Cerrar }: any) {
         <Layout
           ref={modalRef}
           style={{
-            backgroundImage: "linear-gradient(120deg, #747474 0%, #000 100%)",
+            backgroundImage: "linear-gradient(120deg, #151b35 0%, #000 100%)",
             padding: "0 0",
           }}
         >
@@ -177,19 +177,17 @@ export default function CourseInProgressModal({ Open, Data, Cerrar }: any) {
                 display: "flex",
                 flexDirection: "column",
                 width: "100%",
-                height: "40vh",
-                justifyContent: "space-evenly",
               }}
             >
               <div
                 style={{
-                  background: "#101012e3",
-                  marginTop: "3%",
+                  background: "#121c35",
                   padding: "0 25px",
                   display: "flex",
                   flexDirection: "column",
                   width: "100%",
-                  height: "100%",
+                  height: "auto",
+                  borderRadius: "0 0 10px 10px",
                 }}
               >
                 <div style={{ display: "flex", alignItems: "center" }}>
@@ -235,41 +233,27 @@ export default function CourseInProgressModal({ Open, Data, Cerrar }: any) {
                   )}
                 </div>
                 {videoIndex === 0 ? (
-                  <h2 style={{ color: "grey", margin: "0" }}>
-                    <span style={{ padding: "0 5px" }}>
-                      <svg
-                        width="20"
-                        height="20"
-                        viewBox="0 0 20 20"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M15 0L16.5 1.5L18 0V7.13L16 9.13V2.91H2V17.09H7.5V18.5L6 20L4.5 18.5L3 20L1.5 18.5L0 20V0L1.5 1.5L3 0L4.5 1.5L6 0L7.5 1.5L9 0L10.5 1.5L12 0L13.5 1.5L15 0ZM10 17.96L16.13 11.83L18.17 13.87L12.04 20H10V17.96ZM16.83 11.13L17.81 10.15L17.83 10.13C17.88 10.09 17.94 10.05 18 10.03C18.0905 9.99677 18.1887 9.99042 18.2827 10.0117C18.3768 10.033 18.4626 10.081 18.53 10.15L19.85 11.47C20.05 11.67 20.05 12 19.85 12.19L18.87 13.17L16.83 11.13ZM15 10.13L14.13 11H3V9H15V10.13ZM12.13 13L10.13 15H3V13H12.13ZM15 7V5H3V7H15Z"
-                          fill="white"
-                        />
-                      </svg>
-                    </span>
+                  <div
+                    style={{
+                      color: "#59BD27",
+                      margin: "0",
+                      fontSize: "1.5rem",
+                      fontWeight: 900,
+                    }}
+                  >
                     {courseData.name}
-                  </h2>
+                  </div>
                 ) : (
-                  <h2 style={{ color: "grey", margin: "0" }}>
-                    <span style={{ padding: "0 5px" }}>
-                      <svg
-                        width="20"
-                        height="20"
-                        viewBox="0 0 20 20"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M15 0L16.5 1.5L18 0V7.13L16 9.13V2.91H2V17.09H7.5V18.5L6 20L4.5 18.5L3 20L1.5 18.5L0 20V0L1.5 1.5L3 0L4.5 1.5L6 0L7.5 1.5L9 0L10.5 1.5L12 0L13.5 1.5L15 0ZM10 17.96L16.13 11.83L18.17 13.87L12.04 20H10V17.96ZM16.83 11.13L17.81 10.15L17.83 10.13C17.88 10.09 17.94 10.05 18 10.03C18.0905 9.99677 18.1887 9.99042 18.2827 10.0117C18.3768 10.033 18.4626 10.081 18.53 10.15L19.85 11.47C20.05 11.67 20.05 12 19.85 12.19L18.87 13.17L16.83 11.13ZM15 10.13L14.13 11H3V9H15V10.13ZM12.13 13L10.13 15H3V13H12.13ZM15 7V5H3V7H15Z"
-                          fill="white"
-                        />
-                      </svg>
-                    </span>
+                  <div
+                    style={{
+                      color: "#59BD27",
+                      margin: "0",
+                      fontSize: "1.5rem",
+                      fontWeight: 900,
+                    }}
+                  >
                     {course_videos[videoIndex - 1].name}
-                  </h2>
+                  </div>
                 )}
                 {videoIndex === 0 ? (
                   <p
@@ -287,38 +271,43 @@ export default function CourseInProgressModal({ Open, Data, Cerrar }: any) {
               </div>
               <div
                 style={{
-                  background: "#101012e3",
-                  marginTop: "3%",
-                  padding: "0 25px",
                   display: "flex",
                   width: "100%",
                   maxWidth: "750px",
-                  height: "200px",
+                  height: "auto",
                   alignItems: "center",
+                  justifyContent: "space-between",
+                  marginTop: "3%",
+                  background: "#121c35",
+                  borderRadius: "15px",
+                  padding: "0 20px",
                 }}
               >
                 <div
                   style={{
                     display: "flex",
                     flexDirection: "column",
-                    width: "100%",
                     flexWrap: "wrap",
                     justifyContent: "center",
+                    background: "#121c35",
+                    padding: "10px 0",
                   }}
                 >
-                  <div
+                  <h2
                     style={{
-                      color: "white",
-                      fontSize: "2.3vh",
                       display: "flex",
-                      padding: "0 8px",
+                      padding: "0",
+                      fontSize: "1.2rem",
                       borderRadius: "15px",
+                      color: "#ffffff",
+                      margin: "0",
                     }}
                   >
                     <span
                       style={{
                         display: "flex",
                         alignItems: "center",
+                        padding: "0 5px 0 0",
                       }}
                     >
                       <svg
@@ -330,29 +319,30 @@ export default function CourseInProgressModal({ Open, Data, Cerrar }: any) {
                       >
                         <path
                           d="M0 0V2H22V18H8V20H26V18H24V0H0ZM4.002 3C2.94208 3.00369 1.9266 3.42623 1.17694 4.17553C0.427272 4.92482 0.00421639 5.94009 0 7C0 9.199 1.804 11 4.002 11C5.06138 10.9958 6.07615 10.5729 6.82506 9.82365C7.57398 9.07436 7.99631 8.05939 8 7C8 4.803 6.198 3 4.002 3ZM10 4V6H15V4H10ZM17 4V6H20V4H17ZM4.002 5C5.116 5 6 5.883 6 7C6 8.12 5.117 9 4.002 9C2.882 9 2 8.12 2 7C2 5.883 2.883 5 4.002 5ZM10 8V10H20V8H10ZM0 12V20H2V14H5V20H7V14.658L9.064 15.75C9.649 16.06 10.352 16.059 10.936 15.75V15.752L14.466 13.885L13.533 12.115L10.002 13.982L6.906 12.348C6.47391 12.1197 5.99268 12.0003 5.504 12H0Z"
-                          fill="green"
+                          fill="white"
                         />
                       </svg>
                     </span>
                     Experto
-                  </div>
-                  <div style={{ color: "white" }}>Nombre Completo Experto</div>
+                  </h2>
+                  <Tag style={{ color: "white", fontSize: "0.6rem" }}>
+                    Nombre Completo Experto
+                  </Tag>
                 </div>
                 <div
                   style={{
                     display: "flex",
                     flexDirection: "column",
-                    width: "100%",
-                    flexWrap: "wrap",
+                    background: "#121c35",
+                    padding: "10px 0",
                   }}
                 >
                   <div
                     style={{
                       color: "white",
-                      fontSize: "2.3vh",
+                      fontSize: "1.2rem",
                       display: "flex",
-                      justifyContent: "center",
-                      padding: "0 8px",
+                      padding: "0",
                       borderRadius: "15px",
                     }}
                   >
@@ -361,26 +351,27 @@ export default function CourseInProgressModal({ Open, Data, Cerrar }: any) {
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
+                        padding: "0 5px 0 0",
                       }}
                     >
                       <svg
-                        width="35"
-                        height="35"
+                        width="26"
+                        height="26"
                         viewBox="0 0 26 26"
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
                           d="M6.72806 6.54582C7.0699 6.20475 7.53212 6.01174 8.01499 6.00842L17.0872 6.01549C17.3191 6.01482 17.5441 6.09481 17.7236 6.24176L24.9573 12.231C25.0704 12.325 25.1613 12.4428 25.2237 12.5761C25.286 12.7093 25.3182 12.8546 25.3179 13.0017C25.3182 13.1488 25.286 13.2941 25.2237 13.4273C25.1613 13.5606 25.0704 13.6784 24.9573 13.7724L17.7236 19.7616C17.5441 19.9086 17.3191 19.9886 17.0872 19.9879L8.01499 19.995C7.53325 19.9943 7.07144 19.8026 6.73079 19.4619C6.39015 19.1213 6.19845 18.6595 6.19773 18.1777V7.82568C6.19887 7.34583 6.38947 6.88584 6.72806 6.54582ZM16.7053 8.03781L8.22006 8.03781L8.22006 18.008H16.7053L22.744 13.0017L16.7053 8.03781Z"
-                          fill="blue"
+                          fill="white"
                         />
                         <path
                           d="M15.475 11.941C14.8892 12.5268 14.8892 13.4766 15.475 14.0624C16.0608 14.6481 17.0105 14.6481 17.5963 14.0624C18.1821 13.4766 18.1821 12.5268 17.5963 11.941C17.0105 11.3553 16.0608 11.3553 15.475 11.941Z"
-                          fill="blue"
+                          fill="white"
                         />
                       </svg>
                     </span>
-                    Etiquetas
+                    Tags
                   </div>
                   <div
                     style={{
@@ -412,15 +403,15 @@ export default function CourseInProgressModal({ Open, Data, Cerrar }: any) {
             >
               <div
                 style={{
-                  padding: "0 25px",
-                  background: "#101012e3",
-                  display: "flex",
+                  padding: "5px 25px",
+                  background: "#59BD27",
                   width: "100%",
+                  borderRadius: "10px",
                 }}
               >
                 <p
                   style={{
-                    color: "white",
+                    color: "#474747",
                     fontWeight: "bold",
                     display: "flex",
                     justifyContent: "flex-start",
@@ -443,7 +434,7 @@ export default function CourseInProgressModal({ Open, Data, Cerrar }: any) {
                     >
                       <path
                         d="M8 4V12L15 8L8 4ZM20 0H2C0.9 0 0 0.9 0 2V14C0 15.1 0.9 16 2 16H7V18H15V16H20C21.1 16 22 15.1 22 14V2C22 0.9 21.1 0 20 0ZM20 14H2V2H20V14Z"
-                        fill="red"
+                        fill="#474747"
                       />
                     </svg>
                   </span>
@@ -476,6 +467,10 @@ export default function CourseInProgressModal({ Open, Data, Cerrar }: any) {
                       width: "100%",
                       height: "80px",
                       color: "white",
+                      maxHeight: "80px",
+                      background: "#121c35",
+                      padding: "10px 25px",
+                      margin: "5px 0",
                     }}
                   >
                     <div
@@ -539,8 +534,9 @@ export default function CourseInProgressModal({ Open, Data, Cerrar }: any) {
             >
               <div
                 style={{
-                  padding: "0 25px",
-                  background: "#101012e3",
+                  padding: "5px 25px",
+                  background: "#59BD27",
+                  borderRadius: "10px",
                   display: "flex",
                   flexDirection: "row",
                   width: "100%",
@@ -550,7 +546,7 @@ export default function CourseInProgressModal({ Open, Data, Cerrar }: any) {
               >
                 <p
                   style={{
-                    color: "white",
+                    color: "#474747",
                     fontWeight: "bold",
                     display: "flex",
                     margin: "0",
@@ -572,7 +568,7 @@ export default function CourseInProgressModal({ Open, Data, Cerrar }: any) {
                     >
                       <path
                         d="M19.7295 13.02C19.1495 12.44 18.5695 11.85 17.9795 11.27C17.8995 11.19 17.8195 11.1 17.7295 11.02C17.6837 10.9737 17.6292 10.9369 17.5691 10.9118C17.5091 10.8867 17.4446 10.8738 17.3795 10.8738C17.3144 10.8738 17.2499 10.8867 17.1898 10.9118C17.1298 10.9369 17.0753 10.9737 17.0295 11.02C16.9826 11.0665 16.9454 11.1218 16.92 11.1827C16.8947 11.2436 16.8816 11.309 16.8816 11.375C16.8816 11.441 16.8947 11.5064 16.92 11.5673C16.9454 11.6282 16.9826 11.6835 17.0295 11.73L18.1695 12.87H7.21949C6.63071 12.87 6.06604 12.6361 5.64971 12.2198C5.23338 11.8035 4.99949 11.2388 4.99949 10.65C4.99949 10.0612 5.23338 9.49656 5.64971 9.08023C6.06604 8.6639 6.63071 8.43001 7.21949 8.43001H10.2195C10.6417 8.43001 11.0598 8.34685 11.4498 8.18528C11.8399 8.02371 12.1943 7.78689 12.4928 7.48835C12.7914 7.18981 13.0282 6.83539 13.1898 6.44533C13.3513 6.05527 13.4345 5.63721 13.4345 5.21501C13.4345 4.79281 13.3513 4.37474 13.1898 3.98468C13.0282 3.59462 12.7914 3.2402 12.4928 2.94166C12.1943 2.64312 11.8399 2.4063 11.4498 2.24473C11.0598 2.08316 10.6417 2.00001 10.2195 2.00001H4.94949C4.82558 1.39298 4.4807 0.853594 3.98169 0.486407C3.48269 0.11922 2.86513 -0.0496039 2.24873 0.0126652C1.63233 0.0749344 1.061 0.363861 0.645521 0.823429C0.23004 1.283 0 1.88047 0 2.50001C0 3.11954 0.23004 3.71701 0.645521 4.17658C1.061 4.63615 1.63233 4.92508 2.24873 4.98735C2.86513 5.04961 3.48269 4.88079 3.98169 4.5136C4.4807 4.14642 4.82558 3.60703 4.94949 3.00001H10.2195C10.8069 3.00001 11.3703 3.23337 11.7857 3.64876C12.2011 4.06416 12.4345 4.62755 12.4345 5.21501C12.4345 5.80246 12.2011 6.36585 11.7857 6.78125C11.3703 7.19664 10.8069 7.43001 10.2195 7.43001H7.21949C6.79663 7.43001 6.37792 7.51329 5.98725 7.67511C5.59658 7.83693 5.24161 8.07412 4.94261 8.37312C4.6436 8.67213 4.40642 9.0271 4.2446 9.41776C4.08278 9.80843 3.99949 10.2271 3.99949 10.65C3.99949 11.0729 4.08278 11.4916 4.2446 11.8822C4.40642 12.2729 4.6436 12.6279 4.94261 12.9269C5.24161 13.2259 5.59658 13.4631 5.98725 13.6249C6.37792 13.7867 6.79663 13.87 7.21949 13.87H18.1795L17.2795 14.77C17.1895 14.85 17.1095 14.94 17.0295 15.02C16.9826 15.0665 16.9454 15.1218 16.92 15.1827C16.8947 15.2436 16.8816 15.309 16.8816 15.375C16.8816 15.441 16.8947 15.5064 16.92 15.5673C16.9454 15.6282 16.9826 15.6835 17.0295 15.73C17.1243 15.8191 17.2494 15.8687 17.3795 15.8687C17.5096 15.8687 17.6347 15.8191 17.7295 15.73L19.4795 13.98L19.7295 13.73C19.7764 13.6835 19.8136 13.6282 19.8389 13.5673C19.8643 13.5064 19.8774 13.441 19.8774 13.375C19.8774 13.309 19.8643 13.2436 19.8389 13.1827C19.8136 13.1218 19.7764 13.0665 19.7295 13.02ZM2.49949 4.00001C2.20282 4.00001 1.91281 3.91203 1.66613 3.74721C1.41946 3.58239 1.2272 3.34812 1.11367 3.07403C1.00014 2.79994 0.970434 2.49834 1.02831 2.20737C1.08619 1.9164 1.22905 1.64912 1.43883 1.43935C1.64861 1.22957 1.91588 1.08671 2.20685 1.02883C2.49783 0.97095 2.79943 1.00065 3.07351 1.11419C3.3476 1.22772 3.58187 1.41998 3.74669 1.66665C3.91152 1.91332 3.99949 2.20333 3.99949 2.50001C3.99949 2.89783 3.84145 3.27936 3.56015 3.56067C3.27885 3.84197 2.89731 4.00001 2.49949 4.00001Z"
-                        fill="orange"
+                        fill="#474747"
                       />
                     </svg>
                   </span>

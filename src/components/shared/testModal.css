@@ -1,8 +1,8 @@
-.ant-modal-content {
+/* .ant-modal-content {
     background-image: linear-gradient(120deg, #747474 0%, #000 100%);
-}
+} */
 
-@media screen and (max-width: 380px) {
+@media screen and (max-width: 580px) {
     .modalCourseInProgress {
         width: 100% !important;
         height: auto !important;
