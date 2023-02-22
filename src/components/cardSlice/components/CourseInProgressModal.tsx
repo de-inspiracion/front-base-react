@@ -41,7 +41,6 @@ export default function CourseInProgressModal({ Open, Data, Cerrar }: any) {
   const course_tags = courseData.tags;
   const course_videos: any = courseData.videos;
   const course_routes = courseData.route;
-  console.log(testModal);
   // console.log(`VIDEOS DEL CURSO ${Data._id}:`, course_videos)
   useEffect(() => {
     const getData = async () => {
@@ -119,20 +118,22 @@ export default function CourseInProgressModal({ Open, Data, Cerrar }: any) {
                   }
                   onTimeUpdate={async (evt: any) => {
                     let time = evt.target.currentTime;
-                    if (time - videoTime > 30) {
+                    if (time - videoTime > 5) {
                       setVideoTime(time);
                       let body = {
-                        idVideo: course_videos[videoIndex - 1].id,
+                        idVideo: videoIndex !== 0 ? course_videos[videoIndex - 1].id : data_video ? data_video['id']: course_videos[0].id,
                         idCourse: courseData.id,
                         progress: time,
                         finished: false,
                         num: videoIndex,
                       };
+                      // console.log('body:',body)
+
                       const res: any = await services.editUserVideoProgress(
                         userInfo.id,
                         body
                       );
-                      // console.log('DATA: ',res)
+                      console.log('DATA: ',res)
                       // console.log('se mando')
                       dispatch(
                         updateVideoTimeStamp(res.data.payload.inProgress)
@@ -443,6 +444,7 @@ export default function CourseInProgressModal({ Open, Data, Cerrar }: any) {
               </div>
               {course_videos.map((item: any) => {
                 return (
+                 <div style={{width:'100%'}}> 
                   <div
                     className="videoInfo"
                     onClick={() => {
@@ -518,6 +520,7 @@ export default function CourseInProgressModal({ Open, Data, Cerrar }: any) {
                       {item.duration} min.
                     </div>
                   </div>
+                </div>
                 );
               })}
             </div>

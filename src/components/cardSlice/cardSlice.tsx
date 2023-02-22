@@ -27,7 +27,6 @@ function CardSlide({
   };
   const userInfo = useSelector((estado: any) => estado.userInfo);
   const [items, setIems] = useState([]);
-
   const [displayItems, setDisplayItems] = useState([]);
 
   useEffect(() => {
@@ -123,7 +122,7 @@ function CardSlide({
                   return (
                     <Card
                       key={index}
-                      style={{ width: 240, cursor: "pointer" }}
+                      style={{ width: 160 ,cursor: "pointer",marginLeft:'30px' }}
                       cover={<img alt="cover" src={curso.course.cover} />}
                       onClick={() => {
                         setDataModal(curso);

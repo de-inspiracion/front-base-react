@@ -5,8 +5,12 @@ import Loading from '../Loading/Loading'
 import services from '../../services/http'
 import { CloseOutlined } from '@ant-design/icons'
 import './testModal.css'
+import { useSelector } from 'react-redux';
 export default function TestModal({Data, Abrir, Cerrar}:any) {
-  console.log('DATA MODAL: ',Data)
+  // console.log('DATA MODAL: ',Data)
+  const userInfo = useSelector( (state:any) => state.userInfo )
+  console.log('Inprogress: ',userInfo.inprogress)
+
   const [open, setOpen] = useState(Abrir)
   const [loading, setLoading] = useState(false)
   const [loadginMessage,setLoadingMessage] = useState('')
@@ -17,6 +21,7 @@ export default function TestModal({Data, Abrir, Cerrar}:any) {
     video: ''
   })
   const [onlyQuestions, setOnlyQuestions] = useState(Array<any>)
+
   const handleAnswer = (index: Number , ans_id: String,ans_number: Number ) => {
     let oldData: any[] = onlyQuestions
     oldData[Number(index)]["option_id"] = ans_id
@@ -117,7 +122,6 @@ export default function TestModal({Data, Abrir, Cerrar}:any) {
                 let flag = onlyQuestions.filter((item:any) => !item.option_id )
                 if(flag.length === 0){
                   const res = await services.validateAnswers(Data.id,onlyQuestions)
-                  console.log('RES',res)
                   let cont = 0
                   let oldData = onlyQuestions
                   oldData.forEach((element:any)=>{
@@ -125,12 +129,18 @@ export default function TestModal({Data, Abrir, Cerrar}:any) {
                     cont ++
                   })       
                   setOnlyQuestions([...oldData])
+                  console.log(onlyQuestions)
+                  let incorrectas = onlyQuestions.filter((item:any)=> item.correctness === false )
+                  console.log('incorrectas: ' , incorrectas.length)
+                  console.log('Data: ',Data)
                 }
                 else{
                   console.log('Debe contestar todas las preguntas para continuar')
                 }
                 setLoading(false)
                 setLoadingMessage('')
+
+
               }}>
                 Revisar Respuestas
               </Button>
