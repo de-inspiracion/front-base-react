@@ -20,7 +20,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { newDataUser } from "../../store/user/userData";
 import { updateVideoTimeStamp } from "../../store/user/userData";
 import TestModal from "../shared/TestModal";
-import ReactPlayer from 'react-player'
+import ReactPlayer from "react-player";
 
 const { Content } = Layout;
 const CardV: any = ({ itemData, Image, key, index }: any) => {
@@ -93,7 +93,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
   const handleCloseTestModal = () => {
     setOpenTestModal(false);
   };
-  const [autoPlay, setAutoPlay] = useState(false)
+  const [autoPlay, setAutoPlay] = useState(false);
   const course_tags = data.tags;
   const course_videos = data.videos;
   const course_routes = data.route;
@@ -191,8 +191,8 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
     }
   }, [rate]);
 
-  const videoRef = useRef()
-  console.log(autoPlay)
+  const videoRef = useRef();
+  console.log(autoPlay);
   return (
     <Modal
       className="modalCard"
@@ -244,17 +244,26 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
               //     ? data.cover
               //     : "https://image.tmdb.org/t/p/w300/20mOwAAPwZ1vLQkw0fvuQHiG7bO.jpg"
               // }
-              style={{ width: "100%", height: "100%", backgroundImage: `url("${data.cover}")`, backgroundSize: 'cover', backgroundPosition: '50% 50%' }}
-            > </div>
+              style={{
+                width: "100%",
+                height: "100%",
+                backgroundImage: `url("${data.cover}")`,
+                backgroundSize: "cover",
+                backgroundPosition: "50% 50%",
+              }}
+            >
+              {" "}
+            </div>
           ) : (
-            <div style={{ width: "100%", height: "100%" }}>
+            <div style={{ width: "100%", height: "auto" }}>
               <ReactPlayer
-                style={{width:'100%',height:'80%'}}
+                width={"100%"}
+                height={"100%"}
                 url={course_videos[videoIndex - 1].urlEmbed}
                 playing={true}
                 controls={true}
                 onProgress={async (evt: any) => {
-                  console.log(evt)
+                  console.log(evt);
                   let time = evt.playedSeconds;
                   if (time - videoTime > 5) {
                     setVideoTime(time);
@@ -265,12 +274,12 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
                       finished: false,
                       num: videoIndex,
                     };
-                    console.log(body)
+                    console.log(body);
                     const res: any = await services.editUserVideoProgress(
                       userInfo.id,
                       body
                     );
-                    console.log(res)
+                    console.log(res);
                     dispatch(updateVideoTimeStamp(res.data.payload.inProgress));
                   }
                 }}
@@ -594,91 +603,91 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
             </div>
             {course_videos.map((item: any, index: any) => {
               return (
-              <div style={{width:'100%'}}> 
-
-                <div
-                  key={index}
-                  className="videoInfo"
-                  onClick={() => {
-                    setVideoIndex(item.position);
-                    modalRef.current?.scrollIntoView({
-                      behavior: "smooth",
-                      block: "start",
-                    });
-
-                    // document.dispatchEvent(backspaceEvnt);
-                    // setTimeout(()=>{
-                    //   // setAutoPlay(false)
-
-                    //   // setVideoIndex(item.position);
-                    //   // modalRef.current?.scrollIntoView({
-                    //   //   behavior: "smooth",
-                    //   //   block: "start",
-                    //   // });
-                    //   setAutoPlay(true)
-                    //   setTimeout(()=>{
-                    //     document.dispatchEvent(backspaceEvnt);
-                        
-                    //   },500)
-                    // },1000)
-
-                  }}
-                  style={{
-                    cursor: "pointer",
-                    display: "flex",
-                    flexDirection: "row",
-                    width: "100%",
-                    height: "80px",
-                    color: "white",
-                    maxHeight: "80px",
-                    background: "#121c35",
-                    padding: "10px 25px",
-                    margin: "5px 0",
-                  }}
-                >
+                <div style={{ width: "100%" }}>
                   <div
+                    key={index}
+                    className="videoInfo"
+                    onClick={() => {
+                      setVideoIndex(item.position);
+                      modalRef.current?.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start",
+                      });
+
+                      // document.dispatchEvent(backspaceEvnt);
+                      // setTimeout(()=>{
+                      //   // setAutoPlay(false)
+
+                      //   // setVideoIndex(item.position);
+                      //   // modalRef.current?.scrollIntoView({
+                      //   //   behavior: "smooth",
+                      //   //   block: "start",
+                      //   // });
+                      //   setAutoPlay(true)
+                      //   setTimeout(()=>{
+                      //     document.dispatchEvent(backspaceEvnt);
+
+                      //   },500)
+                      // },1000)
+                    }}
                     style={{
-                      width: "10%",
-                      height: "100%",
+                      cursor: "pointer",
                       display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
+                      flexDirection: "row",
+                      width: "100%",
+                      height: "80px",
                       color: "white",
+                      maxHeight: "80px",
+                      background: "#121c35",
+                      padding: "10px 25px",
+                      margin: "5px 0",
                     }}
                   >
-                    {item.position}
+                    <div
+                      style={{
+                        width: "10%",
+                        height: "100%",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        color: "white",
+                      }}
+                    >
+                      {item.position}
+                    </div>
+                    <img
+                      src={item.thumbnail}
+                      width="20%"
+                      style={{ cursor: "pointer" }}
+                    />
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        width: "60%",
+                        height: "100%",
+                        color: "white",
+                        textAlign: "center",
+                      }}
+                    >
+                      <div>{item.name}</div>
+                      <div style={{ overflow: "scroll" }}>
+                        {item.decription}
+                      </div>
+                    </div>
+                    <div
+                      style={{
+                        width: "25%",
+                        display: "flex",
+                        flexDirection: "column",
+                        height: "100%",
+                        justifyContent: "center",
+                        textAlign: "center",
+                      }}
+                    >
+                      {item.duration} min.
+                    </div>
                   </div>
-                  <img
-                    src={item.thumbnail}
-                    width="20%"
-                    style={{ cursor: "pointer" }}
-                  />
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      width: "60%",
-                      height: "100%",
-                      color: "white",
-                      textAlign: "center",
-                    }}
-                  >
-                    <div>{item.name}</div>
-                    <div style={{ overflow: "scroll" }}>{item.decription}</div>
-                  </div>
-                  <div
-                    style={{
-                      width: "25%",
-                      display: "flex",
-                      flexDirection: "column",
-                      height: "100%",
-                      justifyContent: "center",
-                      textAlign: "center",
-                    }}
-                  >
-                    {item.duration} min.
-                  </div>
-                </div>
                 </div>
               );
             })}
