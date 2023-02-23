@@ -237,6 +237,20 @@ const validateAnswers = async (videoId: String, answers: any) => {
   return verification;
 };
 
+const getGeneralStatistics = async () => {
+  const res = await axios.get(
+    `${base_url}/user/info/professors`
+  )
+  return res.data;
+}
+
+
+const uploadUsers = async () => {
+  await await axios.get(
+    `${base_url}/user/load/fromFile`
+  )
+}
+
 export default {
   post,
   getCourses,
@@ -264,4 +278,6 @@ export default {
   validateAnswers,
   verifyUploaded,
   deleteVideo,
+  getGeneralStatistics,
+  uploadUsers
 };
