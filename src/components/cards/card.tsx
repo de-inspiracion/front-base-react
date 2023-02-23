@@ -238,15 +238,14 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
           }}
         >
           {videoIndex === 0 ? (
-            <img
-              src={
-                data
-                  ? data.cover
-                  : "https://image.tmdb.org/t/p/w300/20mOwAAPwZ1vLQkw0fvuQHiG7bO.jpg"
-              }
-              alt="foto curso"
-              style={{ width: "100%", height: "100%" }}
-            />
+            <div
+              // src={
+              //   data
+              //     ? data.cover
+              //     : "https://image.tmdb.org/t/p/w300/20mOwAAPwZ1vLQkw0fvuQHiG7bO.jpg"
+              // }
+              style={{ width: "100%", height: "100%", backgroundImage: `url("${data.cover}")`, backgroundSize: 'cover', backgroundPosition: '50% 50%' }}
+            > </div>
           ) : (
             <div style={{ width: "100%", height: "100%" }}>
               <ReactPlayer
