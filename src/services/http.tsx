@@ -195,6 +195,11 @@ const deleteFile = async (idVideo: string, file: string) => {
   return res;
 };
 
+const deleteVideo = async (idVideo: string, idCourse: string) => {
+  const res = await axios.delete(`${base_url}/courses/${idCourse}/video/${idVideo}`);
+  return res;
+};
+
 const getDirective = async () => {
   const res = await axios.get(`${base_url}/directive`);
   return res;
@@ -258,4 +263,5 @@ export default {
   usersDirective,
   validateAnswers,
   verifyUploaded,
+  deleteVideo,
 };

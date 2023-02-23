@@ -30,12 +30,12 @@ export const CourseEditor = (state: any) => {
   const [c_, setC_] = useState<any>([]);
   const [r_, setR_] = useState<any>([]);
   const [t_, setT_] = useState<any>([]);
-  const [videos, setVideos] = useState([]);
+  const [videos, setVideos] = useState<any>([]);
   const [img, setImg] = useState<any>([]);
   const [messageApi, contextHolder] = message.useMessage();
   const [open, setOpen] = useState(false);
   const [routes2, setRoutes2] = useState<any>([]);
-  const [expert, setExpert] = useState<any>('')
+  const [expert, setExpert] = useState<any>("");
 
   useEffect(() => {
     (async () => {
@@ -46,6 +46,7 @@ export const CourseEditor = (state: any) => {
 
   useEffect(() => {
     (async () => {
+
       let res = await services.getInfo(idCourse);
       setC_(res[0]);
       setR_(res[1]);
@@ -58,6 +59,14 @@ export const CourseEditor = (state: any) => {
       setCategory(res[2]["category"]);
       setVideos(res[2]["videos"]);
       setExpert(res[2]['expert'] || '');
+
+      messageApi.open({
+        type: 'loading',
+        content: 'Cargando Capsulas..',
+        duration: 0,
+      });
+      // Dismiss manually and asynchronously
+      setTimeout(messageApi.destroy, 3000);
     })();
   }, []);
 
@@ -74,6 +83,17 @@ export const CourseEditor = (state: any) => {
       type: "success",
       content: "Se realizó la acción de forma correcta.",
     });
+  };
+
+  const updateVideos = (videos: any[]) => {
+    setVideos([...videos])
+    messageApi.open({
+      type: 'loading',
+      content: 'Eliminando Capsula...',
+      duration: 0,
+    });
+    // Dismiss manually and asynchronously
+    setTimeout(messageApi.destroy, 3000);
   };
 
   return (
@@ -120,8 +140,11 @@ export const CourseEditor = (state: any) => {
               onClick={async () => {
                 const formData = new FormData();
                 formData.append("cover", img);
-                const url = await services.editCourseCover(currentState.id, formData);
-                setCurrentState({...currentState,cover:url})
+                const url = await services.editCourseCover(
+                  currentState.id,
+                  formData
+                );
+                setCurrentState({ ...currentState, cover: url });
               }}
             >
               Subir Imagen
@@ -281,7 +304,7 @@ export const CourseEditor = (state: any) => {
             open={open}
             setOpen={setOpen}
             routes={routes2}
-            state={{state:currentState}}
+            state={{ state: currentState }}
           />
         </Row>
 
@@ -290,7 +313,11 @@ export const CourseEditor = (state: any) => {
           justify="center"
           align="middle"
         >
-          <VideoEditor videos={videos} id={idCourse} />
+          <VideoEditor
+            videos={videos}
+            id={idCourse}
+            onAction={(data: any) => updateVideos(data)}
+          />
         </Row>
       </ConfigProvider>
     </div>

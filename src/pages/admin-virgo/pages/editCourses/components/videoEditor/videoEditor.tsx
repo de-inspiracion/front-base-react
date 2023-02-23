@@ -24,6 +24,7 @@ const base_url = import.meta.env.VITE_BASE_URL;
 interface customProps {
   videos: any;
   id: any;
+  onAction: any;
 }
 let validateVideos = true;
 export const VideoEditor = (props: customProps) => {
@@ -31,10 +32,11 @@ export const VideoEditor = (props: customProps) => {
   const [open, setOpen] = useState(false);
   const [openModalFiles, setOpenModalFiles] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
+  const [messageApiDelete, contextHolderDelete] = message.useMessage();
   const [currentVideoSelected, setcurrentVideoSelected] = useState("");
   const [listFiles, setListFiles] = useState([] as any);
   const [videos, setVideos] = useState([] as any[]);
-
+  
   const questionsDefault = [
     {
       question: "una pregunta?",
@@ -106,10 +108,6 @@ export const VideoEditor = (props: customProps) => {
     setVideos(v);
   }, 3000);
 
-  useEffect(() => {
-
-
-  });
   let questionForVideo: any[] = [];
   videos.forEach((questionVideo: any) => {
     return questionForVideo.push(questionsDefault);
@@ -211,6 +209,16 @@ export const VideoEditor = (props: customProps) => {
     }
   };
 
+  const deleteVideo = async (video: string) => {
+    const result = await services.deleteVideo(video, props.id);
+    if (result?.data?.payload) {
+      const newVideos = videos.filter((video) => {
+        return video.id !== result?.data?.payload._id;
+      })
+      props.onAction(newVideos)
+    }
+  };
+
   const deleteFile = async (file: string, index: number) => {
     const result = await services.deleteFile(currentVideoSelected, file);
 
@@ -306,6 +314,12 @@ export const VideoEditor = (props: customProps) => {
                       key="files"
                       onClick={() => {
                         handleOpenModalFiles(value["id"], index);
+                      }}
+                    />,
+                    <DeleteOutlined
+                      key="video"
+                      onClick={() => {
+                        deleteVideo(value["id"]);
                       }}
                     />,
                   ]}
