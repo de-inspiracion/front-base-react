@@ -120,20 +120,30 @@ function CardSlide({
               >
                 {displayItems.map((curso: any, index: any) => {
                   return (
-                    <Card
+                    <div
                       key={index}
-                      style={{ width: 160 ,cursor: "pointer",marginLeft:'30px' }}
-                      cover={<img alt="cover" src={curso.course.cover} />}
+                      style={{
+                        width: 160,
+                        cursor: "pointer",
+                        marginLeft: "30px",
+                      }}
+                      // cover={<img alt="cover" src={curso.course.cover} />}
                       onClick={() => {
                         setDataModal(curso);
                         setAbrirModal(true);
                       }}
                     >
+                      <img
+                        width={180}
+                        height={280}
+                        src={curso.course.cover}
+                        alt="cover"
+                      />
                       <Meta
                         style={{ textAlign: "center" }}
                         title={curso.course.name}
                       />
-                    </Card>
+                    </div>
                   );
                 })}
               </div>
