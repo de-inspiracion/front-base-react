@@ -24,6 +24,7 @@
     "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^18.2.0",
     "react-netflix-player": "^1.2.0",
+    "react-player": "^2.11.2",
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.4.5",
     "react-swipeable": "^7.0.0",

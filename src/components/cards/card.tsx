@@ -20,6 +20,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { newDataUser } from "../../store/user/userData";
 import { updateVideoTimeStamp } from "../../store/user/userData";
 import TestModal from "../shared/TestModal";
+import ReactPlayer from 'react-player'
 
 const { Content } = Layout;
 const CardV: any = ({ itemData, Image, key, index }: any) => {
@@ -92,10 +93,10 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
   const handleCloseTestModal = () => {
     setOpenTestModal(false);
   };
+  const [autoPlay, setAutoPlay] = useState(false)
   const course_tags = data.tags;
   const course_videos = data.videos;
   const course_routes = data.route;
-
   const cerrarModal = () => {
     Cerrar(false);
     setOpen(false);
@@ -189,6 +190,9 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
       console.log("no post");
     }
   }, [rate]);
+
+  const videoRef = useRef()
+  console.log(autoPlay)
   return (
     <Modal
       className="modalCard"
@@ -245,13 +249,15 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
             />
           ) : (
             <div style={{ width: "100%", height: "100%" }}>
-              <ReactNetflixPlayer
-                src={course_videos[videoIndex - 1].urlEmbed}
-                autoPlay={true}
-                fullPlayer={false}
-                onTimeUpdate={async (evt: any) => {
-                  let time = evt.target.currentTime;
-                  if (time - videoTime > 30) {
+              <ReactPlayer
+                style={{width:'100%',height:'80%'}}
+                url={course_videos[videoIndex - 1].urlEmbed}
+                playing={true}
+                controls={true}
+                onProgress={async (evt: any) => {
+                  console.log(evt)
+                  let time = evt.playedSeconds;
+                  if (time - videoTime > 5) {
                     setVideoTime(time);
                     let body = {
                       idVideo: course_videos[videoIndex - 1].id,
@@ -260,12 +266,12 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
                       finished: false,
                       num: videoIndex,
                     };
-                    // console.log(body)
+                    console.log(body)
                     const res: any = await services.editUserVideoProgress(
                       userInfo.id,
                       body
                     );
-                    // console.log(res)
+                    console.log(res)
                     dispatch(updateVideoTimeStamp(res.data.payload.inProgress));
                   }
                 }}
@@ -600,6 +606,23 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
                       behavior: "smooth",
                       block: "start",
                     });
+
+                    // document.dispatchEvent(backspaceEvnt);
+                    // setTimeout(()=>{
+                    //   // setAutoPlay(false)
+
+                    //   // setVideoIndex(item.position);
+                    //   // modalRef.current?.scrollIntoView({
+                    //   //   behavior: "smooth",
+                    //   //   block: "start",
+                    //   // });
+                    //   setAutoPlay(true)
+                    //   setTimeout(()=>{
+                    //     document.dispatchEvent(backspaceEvnt);
+                        
+                    //   },500)
+                    // },1000)
+
                   }}
                   style={{
                     cursor: "pointer",
