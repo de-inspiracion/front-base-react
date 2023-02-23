@@ -106,6 +106,7 @@ export const VideoEditor = (props: customProps) => {
   setTimeout(() => {
     const v: any[] = props.videos;
     setVideos(v);
+    console.log("---------- settimeooooout")
   }, 3000);
 
   let questionForVideo: any[] = [];
@@ -277,7 +278,8 @@ export const VideoEditor = (props: customProps) => {
   const handleAction = (newVideo: any) => {
     console.log("handleAction", newVideo)
     console.log("videos : ", videos)
-    setVideos(videos.concat(newVideo));
+    props.onAction(videos.concat(newVideo))
+    // setVideos(videos.concat(newVideo));
   };
   return (
     <>
