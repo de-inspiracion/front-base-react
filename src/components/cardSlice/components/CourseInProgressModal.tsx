@@ -55,6 +55,13 @@ export default function CourseInProgressModal({ Open, Data, Cerrar }: any) {
   let data_video = course_videos.filter(
     (video: any) => video.id === Data.video
   )[0];
+  let playerRef = useRef(null)
+ 
+  useEffect(()=>{
+    if(playerRef.current){
+      console.log(playerRef.current.seekTo(videoIndex !== 0 ? 0 : Data.progress ? Data.progress : 0))
+    }
+  },[courseData])
   return (
     <Modal
       style={{ maxWidth: "800px", overflowY: "auto" }}
@@ -105,6 +112,7 @@ export default function CourseInProgressModal({ Open, Data, Cerrar }: any) {
             ) : (
               <div style={{ width: "100%", height: "100%" }}>
                 <ReactPlayer
+                  ref={playerRef}
                   url={
                     videoIndex !== 0
                       ? course_videos[videoIndex - 1].urlEmbed
