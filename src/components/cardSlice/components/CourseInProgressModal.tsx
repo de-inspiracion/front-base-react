@@ -7,6 +7,7 @@ import { ReactNetflixPlayer } from "react-netflix-player";
 import { useSelector, useDispatch } from "react-redux";
 import { updateVideoTimeStamp } from "../../../store/user/userData";
 import TestModal from "../../shared/TestModal";
+import ReactPlayer from "react-player";
 const { Content } = Layout;
 import "./CourseInProgressModal.css";
 
@@ -103,21 +104,20 @@ export default function CourseInProgressModal({ Open, Data, Cerrar }: any) {
               />
             ) : (
               <div style={{ width: "100%", height: "100%" }}>
-                <ReactNetflixPlayer
-                  src={
+                <ReactPlayer
+                  url={
                     videoIndex !== 0
                       ? course_videos[videoIndex - 1].urlEmbed
                       : data_video
                       ? data_video["urlEmbed"]
                       : course_videos[0].urlEmbed
                   }
-                  autoPlay={false}
-                  fullPlayer={false}
-                  startPosition={
-                    videoIndex !== 0 ? 0 : Data.progress ? Data.progress : 0
-                  }
-                  onTimeUpdate={async (evt: any) => {
-                    let time = evt.target.currentTime;
+                  width={"100%"}
+                  height={"100%"}
+                  playing={true}
+                  controls={true}
+                  onProgress={async (evt: any) => {
+                    let time = evt.playedSeconds;
                     if (time - videoTime > 5) {
                       setVideoTime(time);
                       let body = {

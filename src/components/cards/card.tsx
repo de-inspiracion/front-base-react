@@ -265,7 +265,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
                 onProgress={async (evt: any) => {
                   console.log(evt);
                   let time = evt.playedSeconds;
-                  if (time - videoTime > 5) {
+                  if (time - videoTime > 30) {
                     setVideoTime(time);
                     let body = {
                       idVideo: course_videos[videoIndex - 1].id,
