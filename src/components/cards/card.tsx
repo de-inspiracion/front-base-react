@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { CloseOutlined } from "@ant-design/icons";
+import { CloseOutlined, DownloadOutlined } from "@ant-design/icons";
 import {
   Rate,
   Modal,
@@ -90,6 +90,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
   const { Meta } = Card;
   const [openTestModal, setOpenTestModal] = useState(false);
   const [dataTest, setDataTest] = useState({});
+  const [fileUrl, setFileUrl] = useState("");
   const handleCloseTestModal = () => {
     setOpenTestModal(false);
   };
@@ -191,8 +192,26 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
     }
   }, [rate]);
 
-  const videoRef = useRef();
-  console.log(autoPlay);
+  const downloadVideo = () => {
+    const videoUrl = course_videos[videoIndex - 1]?.urlEmbed;
+    const element = document.createElement("a");
+    element.href = videoUrl;
+    element.download = course_videos[videoIndex - 1]?.name;
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+  };
+
+  const downloadFile = () => {
+    const urlFile = fileUrl;
+    const element = document.createElement("a");
+    element.href = urlFile;
+    element.download = "File"; // nombre del archivo que deseas descargar
+    document.body.appendChild(element); // necesario para Firefox
+    element.click();
+    document.body.removeChild(element); // limpiar
+  };
+
   return (
     <Modal
       className="modalCard"
@@ -258,7 +277,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
             <div style={{ width: "100%", height: "auto" }}>
               <ReactPlayer
                 width={"100%"}
-                height={"100%"}
+                height={"auto"}
                 url={course_videos[videoIndex - 1].urlEmbed}
                 playing={true}
                 controls={true}
@@ -547,6 +566,94 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
                     })}
                 </div>
               </div>
+            </div>
+          </div>
+
+          <div
+            style={{
+              display: "flex",
+              width: "100%",
+              maxWidth: "750px",
+              height: "auto",
+              flexDirection: "column",
+              marginTop: "3%",
+              background: "#121c35",
+              borderRadius: "15px",
+              padding: "0 20px",
+            }}
+          >
+            <h3>Descargar</h3>
+            <div
+              style={{
+                display: "flex",
+                margin: "2%",
+                justifyContent: "space-evenly",
+              }}
+            >
+              <Space direction="vertical" style={{ textAlign: "center" }}>
+                Descargar Video
+                {!videoIndex ? (
+                  <button
+                    disabled
+                    style={{
+                      borderRadius: "15px",
+                      padding: "8px",
+                      background: "#59BD27",
+                      cursor: "not-allowed",
+                    }}
+                  >
+                    <DownloadOutlined
+                      style={{
+                        fontSize: "25px",
+                        color: "#474747",
+                      }}
+                    />
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => {
+                      downloadVideo();
+                    }}
+                    style={{
+                      borderRadius: "15px",
+                      padding: "8px",
+                      background: "#59BD27",
+                      cursor: "pointer",
+                    }}
+                  >
+                    <DownloadOutlined
+                      style={{
+                        fontSize: "25px",
+                        color: "#474747",
+                      }}
+                    />
+                  </button>
+                )}
+              </Space>
+              <Space direction="vertical" style={{ textAlign: "center" }}>
+                Descargar Archivos
+                {course_videos[videoIndex - 1]?.files.map((file: any) => {
+                  return (
+                    <button
+                      key={file.url}
+                      onClick={() => {
+                        downloadFile();
+                        setFileUrl(file.url);
+                      }}
+                      style={{
+                        fontSize: "25px",
+                      }}
+                    >
+                      <DownloadOutlined
+                        style={{
+                          fontSize: "25px",
+                          background: "none",
+                        }}
+                      />
+                    </button>
+                  );
+                })}
+              </Space>
             </div>
           </div>
 
