@@ -53,13 +53,13 @@ export default function CourseInProgressModal({ Open, Data, Cerrar }: any) {
     getData();
   }, []);
   let data_video = course_videos.filter(
-    (video: any) => video.id === Data.video
+    (video: any) => {video.id === Data.video._id}
   )[0];
-  let playerRef = useRef(null)
- 
+  let playerRef = useRef<any>(null)
+  
   useEffect(()=>{
     if(playerRef.current){
-      console.log(playerRef.current.seekTo(videoIndex !== 0 ? 0 : Data.progress ? Data.progress : 0))
+      playerRef.current.seekTo(videoIndex !== 0 ? 0 : Data.progress ? Data.progress : 0)
     }
   },[courseData])
   return (
@@ -117,7 +117,7 @@ export default function CourseInProgressModal({ Open, Data, Cerrar }: any) {
                     videoIndex !== 0
                       ? course_videos[videoIndex - 1].urlEmbed
                       : data_video
-                      ? data_video["urlEmbed"]
+                      ? data_video["url"]
                       : course_videos[0].urlEmbed
                   }
                   width={"100%"}
@@ -126,7 +126,7 @@ export default function CourseInProgressModal({ Open, Data, Cerrar }: any) {
                   controls={true}
                   onProgress={async (evt: any) => {
                     let time = evt.playedSeconds;
-                    if (time - videoTime > 5) {
+                    if (time - videoTime > 30) {
                       setVideoTime(time);
                       let body = {
                         idVideo: videoIndex !== 0 ? course_videos[videoIndex - 1].id : data_video ? data_video['id']: course_videos[0].id,
@@ -141,7 +141,6 @@ export default function CourseInProgressModal({ Open, Data, Cerrar }: any) {
                         userInfo.id,
                         body
                       );
-                      console.log('DATA: ',res)
                       // console.log('se mando')
                       dispatch(
                         updateVideoTimeStamp(res.data.payload.inProgress)
@@ -155,7 +154,7 @@ export default function CourseInProgressModal({ Open, Data, Cerrar }: any) {
                         videoIndex !== 0
                           ? course_videos[videoIndex - 1].id
                           : data_video
-                          ? data_video.id
+                          ? data_video._id
                           : course_videos[0].id,
                       idCourse: courseData.id,
                       progress: videoTime,
