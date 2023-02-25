@@ -30,7 +30,7 @@ export default function RouterComponent() {
     useAuth0();
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div></div>;
   }
   if (error) {
     return <div>Oops... {error.message}</div>;
