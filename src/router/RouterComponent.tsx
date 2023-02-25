@@ -1,8 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   createBrowserRouter,
   RouterProvider,
   HashRouter,
+  createHashRouter,
 } from "react-router-dom";
 import { AccountPage } from "../pages/account/Account";
 import PublicRoute from "./PublicRoute";
@@ -21,11 +22,46 @@ import Landing from "../pages/landing/Landing";
 import NoAccount from "../pages/NoAccount/NoAccount";
 import DirectiveMain from "../pages/directive/pages/DirectiveMain";
 import DashboardDirective from "../pages/directive/pages/DashboardDirective";
-
+import services from "../services/http"; 
+import { newDataUser } from "../store/user/userData";
+import { useDispatch } from "react-redux";
 export default function RouterComponent() {
-  const { user, isAuthenticated, logout } = useAuth0();
+  const { isLoading, isAuthenticated, error, user, loginWithRedirect, logout } =
+    useAuth0();
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+  if (error) {
+    return <div>Oops... {error.message}</div>;
+  }  
+  const dispatch = useDispatch();
+  const [profile, setProfile] = useState("");
+  const getData = async () => {
+    try {
+      let res = await services.getUserInfo(String(user?.email));
+      dispatch(
+        newDataUser({
+          id: res.id,
+          name: res.nombre,
+          email: res.email,
+          directive: res.directive,
+          profile: res.perfil,
+          authenticated: isAuthenticated,
+          age: res.age,
+          inprogress: res.inprogress,
+          finished: res.finished,
+          scored: res.scored,
+        })
+      );
+      setProfile(res.perfil);
+    } catch (err) {
+      // navigate("/accountnotfound");
+    }
+  };
+  getData();
   // console.log('EN ROUTER 2', isAuthenticated,user,isLoading)
-  const router = createBrowserRouter([
+  const router = createHashRouter([
     {
       path: "/",
       element: (
