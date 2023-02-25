@@ -95,6 +95,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
     setOpenTestModal(false);
   };
   const [autoPlay, setAutoPlay] = useState(false);
+  const [videoSelected, setVideoSelected] = useState(false);
   const course_tags = data.tags;
   const course_videos = data.videos;
   const course_routes = data.route;
@@ -252,8 +253,8 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
           style={{
             width: "100%",
             maxWidth: "750px",
-            height: "45vh",
-            maxHeight: "550px",
+            height: videoSelected ? null : '45vh' as any,
+            // maxHeight: "550px",
           }}
         >
           {videoIndex === 0 ? (
@@ -716,6 +717,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
                     className="videoInfo"
                     onClick={() => {
                       setVideoIndex(item.position);
+                      setVideoSelected(true)
                       modalRef.current?.scrollIntoView({
                         behavior: "smooth",
                         block: "start",
