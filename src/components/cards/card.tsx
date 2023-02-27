@@ -277,6 +277,20 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
           ) : (
             <div style={{ width: "100%", height: "auto" }}>
               <ReactPlayer
+              // config={{
+              //   file: {
+              //     tracks: [
+              //       {
+              //         kind: "subtitles",
+              //         src:
+              //           "http://localhost:3000/public/sub.vtt",
+              //         srcLang: "es",
+              //         default: false,
+              //         label: ''
+              //       },
+              //     ]
+              //   }
+              // }}
                 width={"100%"}
                 height={"auto"}
                 url={course_videos[videoIndex - 1].urlEmbed}
@@ -781,7 +795,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
                     >
                       <div>{item.name}</div>
                       <div style={{ overflow: "scroll" }}>
-                        {item.decription}
+                        {item.description === 'sin descripcion' ? '...': item.description} 
                       </div>
                     </div>
                     <div
@@ -794,7 +808,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
                         textAlign: "center",
                       }}
                     >
-                      {item.duration} min.
+                      {item.duration / 60} min.
                     </div>
                   </div>
                 </div>
