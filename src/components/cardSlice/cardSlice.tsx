@@ -118,29 +118,43 @@ function CardSlide({
                   marginLeft: scrollX,
                 }}
               >
-                {displayItems.map((curso: any, index: any) => {
-                  return (
-                    <div
-                      key={index}
-                      style={{
-                        width: 160,
-                        cursor: "pointer",
-                      }}
-                      // cover={<img alt="cover" src={curso.course.cover} />}
-                      onClick={() => {
-                        setDataModal(curso);
-                        setAbrirModal(true);
-                      }}
-                    >
-                      <img
-                        className="imgInProgres"
-                        style={{ width: "150px", height: "230px" }}
-                        src={curso.course.cover}
-                        alt="cover"
+                {displayItems.length > 0 &&
+                  displayItems.map((curso: any, index: any) => {
+                    console.log("curso ", curso);
+                    const courseExt = JSON.parse(JSON.stringify(curso.course));
+                    return (
+                      <CardV
+                        key={index}
+                        itemData={courseExt}
+                        Image={curso.course.cover}
+                        index={index}
                       />
-                    </div>
-                  );
-                })}
+                      // <div
+                      //   key={index}
+                      //   style={{
+                      //     width: 160,
+                      //     cursor: "pointer",
+                      //     marginLeft: "30px",
+                      //   }}
+                      //   // cover={<img alt="cover" src={curso.course.cover} />}
+                      //   onClick={() => {
+                      //     setDataModal(curso);
+                      //     setAbrirModal(true);
+                      //   }}
+                      // >
+                      //   <img
+                      //     width={180}
+                      //     height={280}
+                      //     src={curso.course.cover}
+                      //     alt="cover"
+                      //   />
+                      //   <Meta
+                      //     style={{ textAlign: "center" }}
+                      //     title={curso.course.name}
+                      //   />
+                      // </div>
+                    );
+                  })}
               </div>
             </div>
           </div>

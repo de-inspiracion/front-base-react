@@ -2,6 +2,7 @@ import axios from "axios";
 
 const getCoursesById = async (id:String) => {
     try {
+        console.log(id)
         const res = await axios.get(`https://nestjs-virgo-production.up.railway.app/category/${id}/courses`)
         return res
     } catch (error) {

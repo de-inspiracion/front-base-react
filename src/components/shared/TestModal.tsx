@@ -1,5 +1,5 @@
 import React,{ useState, useEffect } from 'react'
-import { Modal, Button, Card, Radio } from 'antd'
+import { Modal, Button, Card, Radio, Alert } from 'antd'
 import type { RadioChangeEvent } from 'antd';
 import Loading from '../Loading/Loading'
 import services from '../../services/http'
@@ -9,11 +9,11 @@ import { useSelector } from 'react-redux';
 export default function TestModal({Data, Abrir, Cerrar}:any) {
   // console.log('DATA MODAL: ',Data)
   const userInfo = useSelector( (state:any) => state.userInfo )
-  console.log('Inprogress: ',userInfo.inprogress)
-
+  // console.log('Inprogress: ',userInfo.inprogress)
   const [open, setOpen] = useState(Abrir)
   const [loading, setLoading] = useState(false)
   const [loadginMessage,setLoadingMessage] = useState('')
+  const [noPreguntas, setNoPreguntas] = useState(false)
   const [questionsData, setQuestionsData] = useState({
     createdAt: '',
     questions: [],
@@ -43,15 +43,23 @@ export default function TestModal({Data, Abrir, Cerrar}:any) {
       setLoadingMessage('Obteniendo Preguntas')
 
       setLoading(true)
-
       const res:any = await services.getQuestions(Data.id)
-      res.data.payload.questions.forEach((element:any) => {
-        element.option_id = ''
-        element.option_number = -1
-        element.correctness = -1
-      });
+
+      console.log(res.data.payload)
+      if(res.data.payload){
+  
+        res.data.payload.questions.forEach((element:any) => {
+          element.option_id = ''
+          element.option_number = -1
+          element.correctness = -1
+        });
       setQuestionsData(res.data.payload)
       setOnlyQuestions(res.data.payload.questions)
+      }
+      else{
+        console.log('no hay preguntas')
+        setNoPreguntas(true)
+      }
       setLoading(false)
       setLoadingMessage('')
 
@@ -59,13 +67,16 @@ export default function TestModal({Data, Abrir, Cerrar}:any) {
     }
     getData()
   },[])
+  const [alert,setAlert] = useState(false)
+  const onCloseAlert =  ( ) => {
+    setAlert(false)
+  }
 
   return (
     <Modal
       open={open}
       onCancel={handleClose}
       footer={false}
-      style={{border:'1px solid white'}}
       closeIcon={
           <CloseOutlined
           style={{
@@ -85,7 +96,16 @@ export default function TestModal({Data, Abrir, Cerrar}:any) {
         <Loading  text={loadginMessage} open={loading} indicator='' /> 
         :
         <div style={{display:'flex',flexDirection:'column',alignItems:'center'}}>
-          <h4>Sección de Preguntas</h4>
+          {
+            noPreguntas && <h4>No hay preguntas para el video</h4>
+          }
+          {alert && <Alert
+            message="Debe Contestar Todas las preguntas antes de revisar"
+            type="warning"
+            closable
+            onClose={onCloseAlert}
+          />}
+          { !noPreguntas && <h4>Sección de Preguntas</h4>}
           <div style={{display:'flex',flexDirection:'column',width:'90%',alignItems:'center'}}>
             {
               onlyQuestions.map( (question:any,index) => {
@@ -116,7 +136,7 @@ export default function TestModal({Data, Abrir, Cerrar}:any) {
             }
           </div>
           <div style={{display:'flex',flexDirection:'row',width:'100%',justifyContent:'space-evenly',marginTop:'5%'}}>
-              <Button onClick={async ()=> {
+          { !noPreguntas && <Button onClick={async ()=> {
                 setLoadingMessage('Revisando Respuestas')
                 setLoading(true)
                 let flag = onlyQuestions.filter((item:any) => !item.option_id )
@@ -136,6 +156,7 @@ export default function TestModal({Data, Abrir, Cerrar}:any) {
                 }
                 else{
                   console.log('Debe contestar todas las preguntas para continuar')
+                  setAlert(true)
                 }
                 setLoading(false)
                 setLoadingMessage('')
@@ -143,8 +164,10 @@ export default function TestModal({Data, Abrir, Cerrar}:any) {
 
               }}>
                 Revisar Respuestas
-              </Button>
-              <Button>Botón 2</Button>
+              </Button>}
+              <Button onClick={()=> {
+                handleClose()
+              }}>Salir</Button>
           </div>
         </div>
       }
