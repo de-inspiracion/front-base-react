@@ -229,7 +229,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
         }
       });
     });
-
+    console.log("encontrado : ", currentInProgress)
     if(currentInProgress) {
       setVideoIndex(currentInProgress.num);
       setVideoSelected(true)
@@ -333,6 +333,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
                 onProgress={async (evt: any) => {
                   console.log(evt);
                   let time = evt.playedSeconds;
+                  console.log("videotime :", videoTime)
                   if (time - videoTime > 30) {
                     setVideoTime(time);
                     let body = {
@@ -767,6 +768,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
                     onClick={() => {
                       setVideoIndex(item.position);
                       setVideoSelected(true)
+                      setVideoTime(0)
                       modalRef.current?.scrollIntoView({
                         behavior: "smooth",
                         block: "start",
@@ -796,7 +798,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
                       height: "80px",
                       color: "white",
                       maxHeight: "80px",
-                      background: "#121c35",
+                      background: index === videoIndex - 1? 'green' : "#121c35" ,
                       padding: "10px 25px",
                       margin: "5px 0",
                     }}
