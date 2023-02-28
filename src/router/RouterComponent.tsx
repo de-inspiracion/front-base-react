@@ -22,7 +22,7 @@ import Landing from "../pages/landing/Landing";
 import NoAccount from "../pages/NoAccount/NoAccount";
 import DirectiveMain from "../pages/directive/pages/DirectiveMain";
 import DashboardDirective from "../pages/directive/pages/DashboardDirective";
-import services from "../services/http"; 
+import services from "../services/http";
 import { newDataUser } from "../store/user/userData";
 import { useDispatch } from "react-redux";
 export default function RouterComponent() {
@@ -34,7 +34,7 @@ export default function RouterComponent() {
   }
   if (error) {
     return <div>Oops... {error.message}</div>;
-  }  
+  }
   const dispatch = useDispatch();
   const [profile, setProfile] = useState("");
   const getData = async () => {
@@ -204,6 +204,7 @@ export default function RouterComponent() {
         algorithm: theme.darkAlgorithm,
         token: {
           colorPrimary: "#ffd45a",
+          fontFamily: "'Open Sans', sans-serif",
         },
       }}
     >

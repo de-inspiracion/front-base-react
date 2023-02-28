@@ -147,7 +147,7 @@ const NavBarComponent: React.FC = () => {
               style={{
                 background: "#141414",
                 border: "none",
-                fontSize: "1.3rem",
+                fontSize: "1rem",
               }}
               mode="horizontal"
               //poner tres tipos de menu dentro de items

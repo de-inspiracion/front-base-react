@@ -96,9 +96,9 @@ function CardSlide({
               className="movieRow--title"
               style={{
                 color: "white",
-                fontSize: "2em",
+                fontSize: "1em",
                 fontWeight: "bold",
-                marginLeft: "0.8em",
+                marginLeft: "2em",
                 marginBottom: "0.2em",
               }}
             >
@@ -125,7 +125,6 @@ function CardSlide({
                       style={{
                         width: 160,
                         cursor: "pointer",
-                        marginLeft: "30px",
                       }}
                       // cover={<img alt="cover" src={curso.course.cover} />}
                       onClick={() => {
@@ -134,14 +133,10 @@ function CardSlide({
                       }}
                     >
                       <img
-                        width={180}
-                        height={280}
+                        className="imgInProgres"
+                        style={{ width: "150px", height: "230px" }}
                         src={curso.course.cover}
                         alt="cover"
-                      />
-                      <Meta
-                        style={{ textAlign: "center" }}
-                        title={curso.course.name}
                       />
                     </div>
                   );
@@ -156,9 +151,9 @@ function CardSlide({
             className="movieRow--title"
             style={{
               color: "white",
-              fontSize: "2em",
+              fontSize: "1em",
               fontWeight: "bold",
-              marginLeft: "0.8em",
+              marginLeft: "2em",
             }}
           >
             {title}

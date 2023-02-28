@@ -1,5 +1,5 @@
 .movieRow {
-  margin: 30px 0;
+  margin: 0px 0;
 }
 
 .movieRow--listarea {
@@ -8,8 +8,7 @@
 }
 
 .movieRow--list {
-  display: flex;
-  
+  display: flex; 
   width: 99999px;
   transition: all ease 0.3s;
 }
@@ -34,7 +33,7 @@
 .movieRow--right {
   position: absolute;
   width: 40px;
-  height: 300px;
+  height: 230px;
   background-color: rgba(0, 0, 0, 0.6);
   z-index: 99;
   display: flex;
@@ -69,11 +68,25 @@
     margin-right: 1vh;
   }
   .movieRow--title {
-    font-size: 1.6rem !important;
+    /* font-size: 1.6rem ; */
   }
 }
 @media screen and (max-width: 380px) {
-  .movieRow--title {
-    font-size: 1.2rem !important;
+  .movieRow--item img {
+    width: 125px;
+    height: 192px !important;
+  }
+  .movieRow--item {
+    width: 125px !important;
+    height: 200px !important;
+  }
+  .movieRow--left,
+  .movieRow--right {
+  height: 200px;
+
+  }
+  .imgInProgres{
+  width: 125px  !important;
+  height: 192px !important;
   }
 }

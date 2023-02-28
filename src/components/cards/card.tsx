@@ -12,7 +12,7 @@ import {
   Tag,
 } from "antd";
 import services from "../../services/http";
-import { ReactNetflixPlayer } from "react-netflix-player";
+import ReactPlayer from "react-player";
 import "./card.css";
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
@@ -20,7 +20,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { newDataUser } from "../../store/user/userData";
 import { updateVideoTimeStamp } from "../../store/user/userData";
 import TestModal from "../shared/TestModal";
-import ReactPlayer from "react-player";
 
 const { Content } = Layout;
 const CardV: any = ({ itemData, Image, key, index }: any) => {
@@ -51,7 +50,7 @@ const CardV: any = ({ itemData, Image, key, index }: any) => {
     <div
       key={key}
       className="movieRow--item"
-      style={{ overflow: "auto", height: "300px" }}
+      style={{ overflow: "auto", width: "150px", height: "230px" }}
     >
       {open && (
         <ModalCard
@@ -253,7 +252,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
           style={{
             width: "100%",
             maxWidth: "750px",
-            height: videoSelected ? null : '45vh' as any,
+            height: videoSelected ? null : ("45vh" as any),
             // maxHeight: "550px",
           }}
         >
@@ -717,7 +716,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
                     className="videoInfo"
                     onClick={() => {
                       setVideoIndex(item.position);
-                      setVideoSelected(true)
+                      setVideoSelected(true);
                       modalRef.current?.scrollIntoView({
                         behavior: "smooth",
                         block: "start",
