@@ -89,4 +89,7 @@
   width: 125px  !important;
   height: 192px !important;
   }
+  .movieRow--title {
+    font-size: 1rem !important;
+  }
 }

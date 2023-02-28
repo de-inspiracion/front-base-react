@@ -96,7 +96,7 @@ function CardSlide({
               className="movieRow--title"
               style={{
                 color: "white",
-                fontSize: "1em",
+                fontSize: "1.6em",
                 fontWeight: "bold",
                 marginLeft: "2em",
                 marginBottom: "0.2em",
@@ -165,7 +165,7 @@ function CardSlide({
             className="movieRow--title"
             style={{
               color: "white",
-              fontSize: "1em",
+              fontSize: "1.6em",
               fontWeight: "bold",
               marginLeft: "2em",
             }}

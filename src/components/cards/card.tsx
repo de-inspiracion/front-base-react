@@ -50,7 +50,7 @@ const CardV: any = ({ itemData, Image, key, index }: any) => {
     <div
       key={key}
       className="movieRow--item"
-      style={{ overflow: "auto", width: "150px", height: "230px" }}
+      style={{ overflow: "auto", width: "195px", height: "300px" }}
     >
       {open && (
         <ModalCard
