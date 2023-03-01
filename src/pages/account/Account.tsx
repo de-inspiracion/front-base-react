@@ -5,7 +5,7 @@ import "./account.css";
 export const AccountPage = () => {
 
   const onFinish = (values: any) => {
-    console.log('Received values of form: ', values);
+    // console.log('Received values of form: ', values);
   }
   return (
     <>

@@ -47,8 +47,6 @@ const DashboardDirective: React.FC = () => {
       setEnable(target.exclude);
     }
   };
-  console.log("idCourse", idCourse);
-  console.log(enable);
 
   useEffect(() => {
     if (enable === false) {
@@ -60,7 +58,6 @@ const DashboardDirective: React.FC = () => {
 
   const postToDB = () => {
     const variable = includeExclude;
-    console.log(variable);
     const idDirective = userInfo.directive?.id;
     const bodyPost = {
       course: idCourse,
@@ -78,11 +75,9 @@ const DashboardDirective: React.FC = () => {
           }
         )
         .then((res) => {
-          console.log(res.data.payload);
           success();
         })
         .catch((err) => {
-          console.log(err);
           error();
         });
     }

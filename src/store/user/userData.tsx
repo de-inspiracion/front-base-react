@@ -30,7 +30,6 @@ export const UserData = createSlice({
     },
     updateVideoTimeStamp: (state: any, newdata) => {
       // state.inprogress[newdata.payload.index].progress = newdata.payload.timestamp 
-      console.log("nueva data", newdata)
       state.inprogress = newdata.payload
       // esto updatea la lista completa del
     }

@@ -8,9 +8,7 @@ import './testModal.css'
 import { useSelector } from 'react-redux';
 import RadioTest from './RadioTest';
 export default function TestModal({Data, Abrir, Cerrar}:any) {
-  // console.log('DATA MODAL: ',Data)
   const userInfo = useSelector( (state:any) => state.userInfo )
-  // console.log('Inprogress: ',userInfo.inprogress)
   const [open, setOpen] = useState(Abrir)
   const [loading, setLoading] = useState(false)
   const [loadginMessage,setLoadingMessage] = useState('')
@@ -27,7 +25,6 @@ export default function TestModal({Data, Abrir, Cerrar}:any) {
     let oldData: any[] = onlyQuestions
     oldData[Number(index)]["option_id"] = ans_id
     oldData[Number(index)]["option_number"] = ans_number
-    // console.log(oldData[Number(index)])
     setOnlyQuestions([...oldData])
   }
   const getIndex = (value:String) => {
@@ -46,7 +43,6 @@ export default function TestModal({Data, Abrir, Cerrar}:any) {
       setLoading(true)
       const res:any = await services.getQuestions(Data.id)
 
-      console.log(res.data.payload)
       if(res.data.payload){
   
         res.data.payload.questions.forEach((element:any) => {
@@ -58,7 +54,6 @@ export default function TestModal({Data, Abrir, Cerrar}:any) {
       setOnlyQuestions(res.data.payload.questions)
       }
       else{
-        console.log('no hay preguntas')
         setNoPreguntas(true)
       }
       setLoading(false)
@@ -126,12 +121,10 @@ export default function TestModal({Data, Abrir, Cerrar}:any) {
                       let indice = getIndex(question._id)
                       let answer = e.target.value
                       let number = question.options.filter( (option:any) => option._id === answer )[0].number
-                      console.log('Indice: ',indice,' Answer: ',answer, ' Question : ',number)                      
                       handleAnswer(indice,answer, number)
                     }} 
                     style={{display:'flex',flexDirection:'column',alignItems:'flex-start'}}>
                       {question.options.map( (option:any,radIndex:Number) => {
-                        console.log(radIndex,option._id === onlyQuestions[index].option_id )
                         return <RadioTest id={option._id} index={radIndex} value={option._id} mark={option._id === onlyQuestions[index].option_id && onlyQuestions[index].correctness === true} lock={ onlyQuestions[index].correctness && onlyQuestions[index].correctness  }   text={option.option}/>
                         
                       } )}
@@ -154,13 +147,9 @@ export default function TestModal({Data, Abrir, Cerrar}:any) {
                     cont ++
                   })       
                   setOnlyQuestions([...oldData])
-                  console.log(onlyQuestions)
                   let incorrectas = onlyQuestions.filter((item:any)=> item.correctness === false )
-                  console.log('incorrectas: ' , incorrectas.length)
-                  console.log('Data: ',Data)
                 }
                 else{
-                  console.log('Debe contestar todas las preguntas para continuar')
                   window.alert("debe contestar todas las preguntas")
                   setAlert(true)
                 }

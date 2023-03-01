@@ -49,7 +49,6 @@ const items: MenuItem[] = [
 const SideBarComponent: React.FC = () => {
   const navigate = useNavigate();
   const onClick: MenuProps['onClick'] = (e) => {
-    console.log('click ', e.key);
     navigate(e.key);
     // return redirect('/account');
   };
