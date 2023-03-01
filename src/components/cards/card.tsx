@@ -12,7 +12,7 @@ import {
   Tag,
 } from "antd";
 import services from "../../services/http";
-import { ReactNetflixPlayer } from "react-netflix-player";
+import ReactPlayer from "react-player";
 import "./card.css";
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
@@ -20,7 +20,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { newDataUser } from "../../store/user/userData";
 import { updateVideoTimeStamp } from "../../store/user/userData";
 import TestModal from "../shared/TestModal";
-import ReactPlayer from "react-player";
 
 const { Content } = Layout;
 const CardV: any = ({ itemData, Image, key, index }: any) => {
@@ -51,7 +50,7 @@ const CardV: any = ({ itemData, Image, key, index }: any) => {
     <div
       key={key}
       className="movieRow--item"
-      style={{ overflow: "auto", height: "300px" }}
+      style={{ overflow: "auto", width: "195px", height: "300px" }}
     >
       {open && (
         <ModalCard
@@ -77,7 +76,7 @@ const CardV: any = ({ itemData, Image, key, index }: any) => {
 };
 
 const ModalCard = ({ data, Abierto, Cerrar }: any) => {
-  let playerRef = useRef<any>(null)
+  let playerRef = useRef<any>(null);
   const { user } = useAuth0();
   const [open, setOpen] = useState(Abierto);
   const [confirmLoading, setConfirmLoading] = useState(false);
@@ -214,28 +213,31 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
     document.body.removeChild(element); // limpiar
   };
 
-  const [timeInProgress, setTimeInProgress] = useState(0)
+  const [timeInProgress, setTimeInProgress] = useState(0);
 
   useEffect(() => {
-    console.log("userInfo", userInfo)
-    console.log(data)
+    console.log("userInfo", userInfo);
+    console.log(data);
     const inProgress = userInfo.inprogress;
     const currentVideos = data.videos;
     let currentInProgress: any = null;
     inProgress.forEach((inprogress: any) => {
       currentVideos.forEach((video: any) => {
-        if ((inprogress.video === video.id ) || (inprogress.video._id === video.id)) {
-          currentInProgress = inprogress
+        if (
+          inprogress.video === video.id ||
+          inprogress.video._id === video.id
+        ) {
+          currentInProgress = inprogress;
         }
       });
     });
-    console.log("encontrado : ", currentInProgress)
-    if(currentInProgress) {
+    console.log("encontrado : ", currentInProgress);
+    if (currentInProgress) {
       setVideoIndex(currentInProgress.num);
-      setVideoSelected(true)
-      setTimeInProgress(currentInProgress.progress)
+      setVideoSelected(true);
+      setTimeInProgress(currentInProgress.progress);
       setTimeout(() => {
-       playerRef.current.seekTo(currentInProgress.progress)
+        playerRef.current.seekTo(currentInProgress.progress);
       }, 100);
     }
 
@@ -243,7 +245,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
       behavior: "smooth",
       block: "start",
     });
-  }, [])
+  }, []);
 
   const currentIndexCourses = () => {
     let currentIndexCourse = -1;  
@@ -298,7 +300,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
           style={{
             width: "100%",
             maxWidth: "750px",
-            height: videoSelected ? null : '45vh' as any,
+            height: videoSelected ? null : ("45vh" as any),
             // maxHeight: "550px",
           }}
         >
@@ -322,20 +324,20 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
           ) : (
             <div style={{ width: "100%", height: "auto" }}>
               <ReactPlayer
-              // config={{
-              //   file: {
-              //     tracks: [
-              //       {
-              //         kind: "subtitles",
-              //         src:
-              //           "http://localhost:3000/public/sub.vtt",
-              //         srcLang: "es",
-              //         default: false,
-              //         label: ''
-              //       },
-              //     ]
-              //   }
-              // }}
+                // config={{
+                //   file: {
+                //     tracks: [
+                //       {
+                //         kind: "subtitles",
+                //         src:
+                //           "http://localhost:3000/public/sub.vtt",
+                //         srcLang: "es",
+                //         default: false,
+                //         label: ''
+                //       },
+                //     ]
+                //   }
+                // }}
                 ref={playerRef}
                 width={"100%"}
                 height={"auto"}
@@ -345,7 +347,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
                 onProgress={async (evt: any) => {
                   console.log(evt);
                   let time = evt.playedSeconds;
-                  console.log("videotime :", videoTime)
+                  console.log("videotime :", videoTime);
                   if (time - videoTime > 30) {
                     setVideoTime(time);
                     let body = {
@@ -373,7 +375,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
                     dispatch(updateVideoTimeStamp(res.data.payload.inProgress));
                   }
                 }}
-                onSeek={(seek) => console.log('seek: ', seek)}
+                onSeek={(seek) => console.log("seek: ", seek)}
                 onEnded={async () => {
                   //mandar data del video aca con un finished true
                   setDataTest(course_videos[videoIndex - 1]);
@@ -788,8 +790,8 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
                     className="videoInfo"
                     onClick={() => {
                       setVideoIndex(item.position);
-                      setVideoSelected(true)
-                      setVideoTime(0)
+                      setVideoSelected(true);
+                      setVideoTime(0);
                       modalRef.current?.scrollIntoView({
                         behavior: "smooth",
                         block: "start",
@@ -819,7 +821,8 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
                       height: "80px",
                       color: "white",
                       maxHeight: "80px",
-                      background: index === videoIndex - 1? 'green' : "#121c35" ,
+                      background:
+                        index === videoIndex - 1 ? "green" : "#121c35",
                       padding: "10px 25px",
                       margin: "5px 0",
                     }}
@@ -853,7 +856,9 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
                     >
                       <div>{item.name}</div>
                       <div style={{ overflow: "scroll" }}>
-                        {item.description === 'sin descripcion' ? '...': item.description} 
+                        {item.description === "sin descripcion"
+                          ? "..."
+                          : item.description}
                       </div>
                     </div>
                     <div
