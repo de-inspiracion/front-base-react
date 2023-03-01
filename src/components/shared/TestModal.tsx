@@ -6,6 +6,7 @@ import services from '../../services/http'
 import { CloseOutlined } from '@ant-design/icons'
 import './testModal.css'
 import { useSelector } from 'react-redux';
+import RadioTest from './RadioTest';
 export default function TestModal({Data, Abrir, Cerrar}:any) {
   // console.log('DATA MODAL: ',Data)
   const userInfo = useSelector( (state:any) => state.userInfo )
@@ -110,6 +111,7 @@ export default function TestModal({Data, Abrir, Cerrar}:any) {
             {
               onlyQuestions.map( (question:any,index) => {
                 return <Card 
+                id={question.id}
                 style={{
                   textAlign:'center',
                   marginTop:'5%',
@@ -118,19 +120,22 @@ export default function TestModal({Data, Abrir, Cerrar}:any) {
                 }}
                 title={`Pregunta ${question.number}`}>
                   <p>{question.question}</p>
-                  <Radio.Group 
-                   onChange={(e)=>{
+                  <fieldset 
+                  id={question.id}
+                   onChange={(e:any)=>{
                       let indice = getIndex(question._id)
                       let answer = e.target.value
                       let number = question.options.filter( (option:any) => option._id === answer )[0].number
-                      // console.log('Indice: ',indice,' Answer: ',answer, ' Question : ',number)                      
+                      console.log('Indice: ',indice,' Answer: ',answer, ' Question : ',number)                      
                       handleAnswer(indice,answer, number)
                     }} 
                     style={{display:'flex',flexDirection:'column',alignItems:'flex-start'}}>
-                      {question.options.map( (option:any) => {
-                        return <Radio  value={option._id}>{option.option}</Radio>
+                      {question.options.map( (option:any,radIndex:Number) => {
+                        console.log(radIndex,option._id === onlyQuestions[index].option_id )
+                        return <RadioTest id={option._id} index={radIndex} value={option._id} mark={option._id === onlyQuestions[index].option_id && onlyQuestions[index].correctness === true} lock={ onlyQuestions[index].correctness && onlyQuestions[index].correctness  }   text={option.option}/>
+                        
                       } )}
-                  </Radio.Group>
+                  </fieldset>
                 </Card>
               } )
             }
@@ -156,6 +161,7 @@ export default function TestModal({Data, Abrir, Cerrar}:any) {
                 }
                 else{
                   console.log('Debe contestar todas las preguntas para continuar')
+                  window.alert("debe contestar todas las preguntas")
                   setAlert(true)
                 }
                 setLoading(false)
