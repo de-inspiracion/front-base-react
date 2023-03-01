@@ -34,7 +34,7 @@ export default function RouterComponent() {
     return <div></div>;
   }
   if (error) {
-    return <Unauthorized error={error}/>
+    return <Unauthorized error={error} user={user}/>
   }
   const dispatch = useDispatch();
   const [profile, setProfile] = useState("");

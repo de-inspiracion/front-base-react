@@ -1,6 +1,9 @@
+import { useAuth0 } from "@auth0/auth0-react";
 import { Button, ConfigProvider, Result, theme } from "antd";
 
-export const Unauthorized = ({ error }: any) => {
+export const Unauthorized = ({ error, user }: any) => {
+  const { logout } = useAuth0();
+  console.log(user)
   return (
     <ConfigProvider
       theme={{
@@ -17,7 +20,10 @@ export const Unauthorized = ({ error }: any) => {
           color: "white",
         }}
         extra={
-          <Button type="primary" key="console" onClick={() => window.location.assign('/')}>
+          <Button type="primary" key="console" onClick={() => {
+            logout({ returnTo: window.location.origin });
+          }}>
+
             Intentalo de nuevo
           </Button>
         }
