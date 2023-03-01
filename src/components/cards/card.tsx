@@ -97,9 +97,9 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
   };
   const [autoPlay, setAutoPlay] = useState(false);
   const [videoSelected, setVideoSelected] = useState(false);
-  const course_tags = data.tags;
-  const course_videos = data.videos;
-  const course_routes = data.route;
+  const course_tags = data?.tags;
+  const course_videos = data?.videos;
+  const course_routes = data?.route;
   const cerrarModal = () => {
     Cerrar(false);
     setOpen(false);
@@ -127,7 +127,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
       return;
     }
     user.scored.forEach((score: any) => {
-      if (score.video == currentVideo?.id) {
+      if (score?.video == currentVideo?.id) {
         scoredVideo = true;
         scoredNow = score.scored;
       } else {
@@ -147,7 +147,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
   };
 
   useEffect(() => {
-    const idVideo = data.videos[videoIndex - 1]?.id;
+    const idVideo = data?.videos[videoIndex - 1]?.id;
     //aqui usamos el ID del usuario
     const user = userInfo;
 
@@ -245,6 +245,18 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
     });
   }, [])
 
+  const currentIndexCourses = () => {
+    let currentIndexCourse = -1;  
+    const inProgress = userInfo.inprogress; // _id
+    const course = data; // id
+    inProgress.forEach((ip: any, index: number) => {
+      if(ip.course._id === course.id) {
+        currentIndexCourse = index
+      }
+    });
+    console.log("currentIndexCourse : ", currentIndexCourse)
+    return currentIndexCourse;
+  }
   return (
     <Modal
       className="modalCard"
@@ -300,7 +312,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
               style={{
                 width: "100%",
                 height: "100%",
-                backgroundImage: `url("${data.cover}")`,
+                backgroundImage: `url("${data?.cover}")`,
                 backgroundSize: "cover",
                 backgroundPosition: "50% 50%",
               }}
@@ -348,7 +360,16 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
                       userInfo.id,
                       body
                     );
-                    console.log(res);
+                    // res.data.payload.inProgress[videoIndex - 1]['course'] = data;
+                    const currentIndex = currentIndexCourses()
+                    // console.log("currentIndex: ", currentIndex)
+                    // const inProgress = res.data.payload.inProgress;
+                    // if(currentIndex < 0) {
+                    //   inProgress['course'] = data
+                    //   userInfo.inprogress.concat(inProgress)
+                    // }
+                    // res.data.payload.inProgress[currentIndex]['course'] = data
+                    console.log("reees : ", res.data.payload.inProgress);
                     dispatch(updateVideoTimeStamp(res.data.payload.inProgress));
                   }
                 }}

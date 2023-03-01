@@ -28,6 +28,7 @@ function CardSlide({
   const userInfo = useSelector((estado: any) => estado.userInfo);
   const [items, setIems] = useState([]);
   const [displayItems, setDisplayItems] = useState([]);
+  const [displayItemsIP, setDisplayItemsIP] = useState([]);
 
   useEffect(() => {
     const getData = async () => {
@@ -47,15 +48,19 @@ function CardSlide({
         return prev.concat([newItem]);
       });
     } else if (source === "En Progreso") {
-      setDisplayItems(userInfo.inprogress);
+      setDisplayItemsIP(userInfo.inprogress);
       setChildItems((prev: any) => {
-        const newItem = [userInfo.inprogress, setDisplayItems, source];
+        const newItem = [userInfo.inprogress, setDisplayItemsIP, source];
         return prev.concat([newItem]);
       });
     } else {
       getData();
     }
   }, []);
+
+  useEffect(() => {
+    setDisplayItemsIP(userInfo.inprogress);
+  }, [userInfo.inprogress])
 
   const [scrollX, setScrollX] = useState(0);
 
@@ -118,13 +123,12 @@ function CardSlide({
                   marginLeft: scrollX,
                 }}
               >
-                {displayItems.length > 0 &&
-                displayItems.map((curso: any, index: any) => {
-                  console.log("curso ", curso)
+                {displayItemsIP.length > 0 &&
+                displayItemsIP.map((curso: any, index: any) => {
                   const courseExt = JSON.parse(JSON.stringify(curso.course))
                   return (
                     <CardV
-                      key={index}
+                      key={curso._id}
                       itemData={courseExt}
                       Image={curso.course.cover}
                       index={index}
@@ -188,7 +192,6 @@ function CardSlide({
             >
               {displayItems.length > 0 &&
                 displayItems.map((item: any, key) => {
-                  // console.log(item)
                   return (
                     <CardV
                       key={key}
