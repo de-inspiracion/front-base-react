@@ -18,7 +18,7 @@ function CardSlide({
   description,
   courses,
   source,
-  setChildItems,
+  setChildItems
 }: any) {
   const [abrirModal, setAbrirModal] = useState(false);
   const [dataModal, setDataModal] = useState({});
@@ -26,13 +26,14 @@ function CardSlide({
     setAbrirModal(false);
   };
   const userInfo = useSelector((estado: any) => estado.userInfo);
+  const excludeCourses = userInfo.directive.excludeCourses
   const [items, setIems] = useState([]);
   const [displayItems, setDisplayItems] = useState([]);
   const [displayItemsIP, setDisplayItemsIP] = useState([]);
 
   useEffect(() => {
     const getData = async () => {
-      const res: any = await services.getCoursesById(id);
+      const res: any = await services.getCoursesById(id,excludeCourses);
       setIems(res.data);
       setDisplayItems(res.data);
       setChildItems((prev: any) => {
