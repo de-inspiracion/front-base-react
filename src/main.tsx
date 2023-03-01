@@ -9,10 +9,10 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <Provider store={store}>
       <Auth0Provider
-        domain="rsolar.auth0.com"
-        clientId="7SjPwqvKDTavRF21bMLFjkWymTSOIAnn"
+        domain="dev-c8vybwj64p8pklc8.us.auth0.com"
+        clientId="m4054I2v2MDayQt1HLXph0ffX3JARW93"
         redirectUri={window.location.origin}
-        audience="https://rsolar.auth0.com/api/v2/"
+        // audience="https://rsolar.auth0.com/api/v2/"
         scope="read:users update:current_user_metadata "
       >
         {/* <RouterProvider router={router} /> */}
