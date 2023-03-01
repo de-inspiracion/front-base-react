@@ -16,7 +16,7 @@ import { AdminCourses } from "../pages/admin-virgo/pages/editCourses/AdminCourse
 import { ViewCourses } from "../pages/admin-virgo/pages/editCourses/ViewCourses";
 import MiProgreso from "../pages/mi-progreso/MiProgreso";
 import RutasDeAprendizaje from "../pages/rutas-aprendizaje/RutasDeAprendizaje";
-import { ConfigProvider, theme } from "antd";
+import { Button, ConfigProvider, Empty, Result, theme } from "antd";
 import AdminMain from "../pages/admin-virgo/pages/AdminMain";
 import Landing from "../pages/landing/Landing";
 import NoAccount from "../pages/NoAccount/NoAccount";
@@ -25,6 +25,7 @@ import DashboardDirective from "../pages/directive/pages/DashboardDirective";
 import services from "../services/http";
 import { newDataUser } from "../store/user/userData";
 import { useDispatch } from "react-redux";
+import { Unauthorized } from "./unauthorized.component";
 export default function RouterComponent() {
   const { isLoading, isAuthenticated, error, user, loginWithRedirect, logout } =
     useAuth0();
@@ -33,7 +34,7 @@ export default function RouterComponent() {
     return <div></div>;
   }
   if (error) {
-    return <div>Oops... {error.message}</div>;
+    return <Unauthorized error={error}/>
   }
   const dispatch = useDispatch();
   const [profile, setProfile] = useState("");
