@@ -83,7 +83,6 @@ function CardSlide({
 
   const handlers = useSwipeable({
     onSwiped: (eventData) => {
-      console.log("User Swiped!", eventData);
       if (eventData.dir === "Right") {
         handleLeftArrow();
       } else {

@@ -44,7 +44,6 @@ export default function CourseInProgressModal({ Open, Data, Cerrar }: any) {
   const course_routes = courseData.route;
   const [trackLang, setTrackLang] = useState();
 
-  // console.log(`VIDEOS DEL CURSO ${Data._id}:`, course_videos)
   useEffect(() => {
     const getData = async () => {
       setCargando(true);
@@ -60,7 +59,6 @@ export default function CourseInProgressModal({ Open, Data, Cerrar }: any) {
   let playerRef = useRef<any>(null)
   
   useEffect(()=>{
-    console.log("-------- ", playerRef)
     if(playerRef.current){
       playerRef.current.seekTo(videoIndex !== 0 ? 0 : Data.progress ? Data.progress : 0)
     }
@@ -128,7 +126,7 @@ export default function CourseInProgressModal({ Open, Data, Cerrar }: any) {
                   height={"100%"}
                   playing={true}
                   controls={true}
-                  onSeek={(seek) => console.log('seek: ', seek)}
+                  // onSeek={(seek) => console.log('seek: ', seek)}
                   onProgress={async (evt: any) => {
                     let time = evt.playedSeconds;
                     if (time - videoTime > 30) {
@@ -171,7 +169,6 @@ export default function CourseInProgressModal({ Open, Data, Cerrar }: any) {
                       body
                     );
                     dispatch(updateVideoTimeStamp(res.data.payload.inProgress));
-                    console.log("ended");
                     setTestModal(true);
                   }}
                 />

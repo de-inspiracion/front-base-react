@@ -60,7 +60,6 @@ export default function RouterComponent() {
     }
   };
   getData();
-  // console.log('EN ROUTER 2', isAuthenticated,user,isLoading)
   const router = createHashRouter([
     {
       path: "/",

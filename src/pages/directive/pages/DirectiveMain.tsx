@@ -65,13 +65,11 @@ const DirectorMain: React.FC = () => {
           `https://nestjs-virgo-production.up.railway.app/user/${IDuser}/enable/${state}`
         )
         .then((res) => {
-          console.log("se envio");
-          console.log(res);
+
           success();
         })
         .catch((err) => {
-          console.log(err);
-          console.log("no se envio");
+
           error();
         });
     }

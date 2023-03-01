@@ -17,7 +17,6 @@ const CoursesInProgress: React.FC = () => {
   useEffect(() => {
     const getData = async () => {
       const res = await services.getCategories();
-      console.log(res.data);
       setCategories(res.data.payload);
     };
     getData();
@@ -40,7 +39,6 @@ const CoursesInProgress: React.FC = () => {
               for (let i = 0; i < childItems.length; i++) {
                 const childItem = childItems[i];
                 const items = childItem[0];
-                console.log(childItem[2]);
                 let displayItems: any = [];
                 if (e.length === 0) {
                   displayItems = items;

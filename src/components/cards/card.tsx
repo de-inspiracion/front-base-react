@@ -129,9 +129,10 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
       if (score?.video == currentVideo?.id) {
         scoredVideo = true;
         scoredNow = score.scored;
-      } else {
-        console.log("el score es false");
-      }
+      } 
+      // else {
+      //   console.log("el score es false");
+      // }
     });
     return (
       <Rate
@@ -166,7 +167,6 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
         )
         .then((res) => {
           // changeSetRate(rate);
-          console.log(res, "se envio a la base de datos");
           const us = JSON.parse(JSON.stringify(user));
           us.scored.push({ video: idVideo, scored: rate });
           // data.videos[videoIndex - 1].score.averageScore = rate;
@@ -186,10 +186,8 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
           GetRateComponent();
         })
         .catch((error) => {
-          console.log(error, "error al enviar la calificacion");
         });
     } else {
-      console.log("no post");
     }
   }, [rate]);
 
@@ -216,8 +214,6 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
   const [timeInProgress, setTimeInProgress] = useState(0);
 
   useEffect(() => {
-    console.log("userInfo", userInfo);
-    console.log(data);
     const inProgress = userInfo.inprogress;
     const currentVideos = data.videos;
     let currentInProgress: any = null;
@@ -231,7 +227,6 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
         }
       });
     });
-    console.log("encontrado : ", currentInProgress);
     if (currentInProgress) {
       setVideoIndex(currentInProgress.num);
       setVideoSelected(true);
@@ -256,7 +251,6 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
         currentIndexCourse = index
       }
     });
-    console.log("currentIndexCourse : ", currentIndexCourse)
     return currentIndexCourse;
   }
   return (
@@ -345,9 +339,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
                 playing={true}
                 controls={true}
                 onProgress={async (evt: any) => {
-                  console.log(evt);
                   let time = evt.playedSeconds;
-                  console.log("videotime :", videoTime);
                   if (time - videoTime > 30) {
                     setVideoTime(time);
                     let body = {
@@ -357,7 +349,6 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
                       finished: false,
                       num: videoIndex,
                     };
-                    console.log(body);
                     const res: any = await services.editUserVideoProgress(
                       userInfo.id,
                       body
@@ -371,11 +362,10 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
                     //   userInfo.inprogress.concat(inProgress)
                     // }
                     // res.data.payload.inProgress[currentIndex]['course'] = data
-                    console.log("reees : ", res.data.payload.inProgress);
                     dispatch(updateVideoTimeStamp(res.data.payload.inProgress));
                   }
                 }}
-                onSeek={(seek) => console.log("seek: ", seek)}
+                // onSeek={(seek) => console.log("seek: ", seek)}
                 onEnded={async () => {
                   //mandar data del video aca con un finished true
                   setDataTest(course_videos[videoIndex - 1]);
@@ -390,7 +380,6 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
                     userInfo.id,
                     body
                   );
-                  console.log("termino");
                   setOpenTestModal(true);
                   // console.log('res',res)
                   // console.log(body)
