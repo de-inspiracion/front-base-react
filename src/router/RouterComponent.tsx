@@ -41,6 +41,10 @@ export default function RouterComponent() {
   const getData = async () => {
     try {
       let res = await services.getUserInfo(String(user?.email));
+      if(res.perfil == 'profesor'){
+        const excloudedCourses = res.directive.excludeCourses
+        res.inprogress = res.inprogress.filter((course:any) => !excloudedCourses.includes(course.course._id))
+      }
       dispatch(
         newDataUser({
           id: res.id,
