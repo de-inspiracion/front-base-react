@@ -17,6 +17,14 @@ export const Login = () => {
     const getData = async () => {
       try {
         let res = await services.getUserInfo(String(user?.email));
+        if(res.perfil == 'profesor'){
+          try {
+            const excloudedCourses = res.directive.excludeCourses
+            res.inprogress = res.inprogress.filter((course:any) => !excloudedCourses.includes(course.course._id))
+          } catch (error) {
+            
+          }
+        }
         dispatch(
           newDataUser({
             id: res.id,
