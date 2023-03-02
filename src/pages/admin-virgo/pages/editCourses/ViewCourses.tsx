@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from "react";
 
 import { useNavigate } from "react-router-dom";
-import { Divider } from "antd";
+import { Divider, Input, Space, Table, Tag } from "antd";
 import { Avatar, Button, List, Typography } from "antd";
 import { ConfigProvider, theme, Card } from "antd";
 import services from "../../../../services/http";
 const { Text, Link } = Typography;
 import "./viewCourses.css";
-import axios from "axios";
-
 import NewCourse from "./NewCourse";
-import NavBarComponent from "../../../../components/navbar/Navbar";
+import logoYellow from "../../../../assets/virgoYellow.jpg";
 
 interface courseData {
   name: string;
@@ -23,14 +21,10 @@ interface courseData {
 }
 
 export const ViewCourses = () => {
-  const { defaultAlgorithm, darkAlgorithm } = theme;
-  const count = 3;
-  const fakeDataUrl = `https://randomuser.me/api/?results=${count}&inc=name,gender,email,nat,picture&noinfo`;
-  const [initLoading, setInitLoading] = useState(true);
   const [loading, setLoading] = useState(false);
-
   const [courses, setCourses] = useState<courseData[]>([]);
-
+  const [searchedText, setSearchedText] = useState<string>("");
+  const { Search } = Input;
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -50,49 +44,47 @@ export const ViewCourses = () => {
     });
   };
 
-  return (
-    <ConfigProvider
-      theme={{
-        algorithm: darkAlgorithm,
-      }}
-    >
-      <div>
-        <Divider>Vista de cursos</Divider>
+  console.log(courses);
 
-        <div style={{ padding: "10px" }}>
-          <List
-            itemLayout="horizontal"
-            dataSource={courses}
-            renderItem={(item) => (
-              <List.Item
-                actions={[
-                  <a
-                    key="list-loadmore-edit"
-                    onClick={() => {
-                      editCourse(item.id, item);
-                    }}
-                  >
-                    Editar
-                  </a>,
-                ]}
-              >
-                <List.Item.Meta
-                  avatar={
-                    <Avatar
-                      src="https://www.w3schools.com/howto/img_avatar.png"
-                      shape="square"
-                      size={64}
-                    />
-                  }
-                  title={item.name}
-                  description={item.description}
-                />
-              </List.Item>
-            )}
-          />
-        </div>
-        <NewCourse />
-      </div>
-    </ConfigProvider>
+  const onSearch = (value: string) => {
+    setSearchedText(value);
+  };
+  return (
+    <div>
+      <Divider>Vista de cursos</Divider>
+      <NewCourse />
+      <Search
+        placeholder="Busca lo que necesites"
+        onSearch={onSearch}
+        enterButton
+      />
+      <Table
+        columns={[
+          {
+            title: "Imagen",
+            dataIndex: "image",
+            key: "image",
+            render: (image: string) => (
+              <Avatar shape="square" size={64} src={logoYellow} />
+            ),
+          },
+          {
+            title: "Nombre",
+            dataIndex: "name",
+            key: "name",
+            filteredValue: [searchedText],
+            onFilter: (value: any, record: any) => record.name.includes(value),
+          },
+          {
+            title: "Editar",
+            key: "editar",
+            render: (item: any) => (
+              <a onClick={() => editCourse(item.id, item)}>Editar</a>
+            ),
+          },
+        ]}
+        dataSource={courses}
+      ></Table>
+    </div>
   );
 };
