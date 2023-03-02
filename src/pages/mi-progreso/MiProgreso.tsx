@@ -230,37 +230,6 @@ const MiProgreso = () => {
             />
           </Space>
         </Space>
-        {userInfo.inprogress.length > 0 && (
-          <Space direction="vertical">
-            <Typography.Title level={3}>Cursos en Progreso</Typography.Title>
-            <Space direction="horizontal">
-              {userInfo.inprogress.map((curso: any) => {
-                return (
-                  <Card
-                    style={{ width: 240, cursor: "pointer" }}
-                    cover={<img alt="cover" src={curso.course.cover} />}
-                    onClick={() => {
-                      setDataModal(curso);
-                      setAbrirModal(true);
-                    }}
-                  >
-                    <Meta
-                      style={{ textAlign: "center" }}
-                      title={curso.course.name}
-                    />
-                  </Card>
-                );
-              })}
-            </Space>
-          </Space>
-        )}
-        {abrirModal && (
-          <CourseInProgressModal
-            Data={dataModal}
-            Open={abrirModal}
-            Cerrar={handleCloseModal}
-          />
-        )}
         <Space direction="vertical">
           <Typography.Title level={3}>Certificados</Typography.Title>
           <Table

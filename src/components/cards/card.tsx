@@ -233,6 +233,9 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
       setTimeInProgress(currentInProgress.progress);
       setTimeout(() => {
         playerRef.current.seekTo(currentInProgress.progress);
+        const playerMobile = document.getElementsByTagName('video')[0] 
+        playerMobile.currentTime = currentInProgress.progress
+        playerMobile.play()
       }, 100);
     }
 
