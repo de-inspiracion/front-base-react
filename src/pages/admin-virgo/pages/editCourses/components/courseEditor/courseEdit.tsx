@@ -1,7 +1,7 @@
 import { Button, Col, Input, Row, Select, SelectProps } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import { Divider, Radio, Typography } from "antd";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ConfigProvider, theme, Card } from "antd";
 import { useNavigate } from 'react-router'
 import UploadImage from "../upload/uploadImage";
@@ -18,6 +18,7 @@ import ModalRoutes from "./ModalRoutes/ModalRoutes";
 
 export const CourseEditor = (state: any) => {
   const navigate = useNavigate()
+  const modalRef: any = useRef(null);
   const [loading, setLoading] = useState(false);
   let idCourse: string | undefined = useParams()["idCourse"];
   const { defaultAlgorithm, darkAlgorithm } = theme;
@@ -67,8 +68,12 @@ export const CourseEditor = (state: any) => {
         content: 'Cargando Capsulas..',
         duration: 0,
       });
+
       // Dismiss manually and asynchronously
       setTimeout(messageApi.destroy, 3000);
+      setTimeout(() => {
+        window.scrollTo(0, 0)
+      }, 3100);
     })();
   }, []);
 
@@ -94,12 +99,13 @@ export const CourseEditor = (state: any) => {
       content: 'Eliminando Capsula...',
       duration: 0,
     });
+    
     // Dismiss manually and asynchronously
     setTimeout(messageApi.destroy, 3000);
   };
 
   return (
-    <div style={{ backgroundColor: "black", color: "white" }}>
+    <div ref={modalRef} style={{ backgroundColor: "black", color: "white" }}>
       <ConfigProvider
         theme={{
           algorithm: darkAlgorithm,
@@ -140,6 +146,9 @@ export const CourseEditor = (state: any) => {
           <Col>
             <Button
               onClick={async () => {
+                setTimeout(() => {
+                  window.scrollTo(0, 0)
+                }, 10);
                 setCurrentState({ ...currentState, cover: '' });
                 const formData = new FormData();
                 formData.append("cover", img);
@@ -154,7 +163,10 @@ export const CourseEditor = (state: any) => {
                   });
                 });
                 // navigate(0)
+               
+               
                 setCurrentState({ ...currentState, cover: url });
+
               }}
             >
               Subir Imagen
