@@ -76,6 +76,7 @@ const CardV: any = ({ itemData, Image, key, index }: any) => {
 };
 
 const ModalCard = ({ data, Abierto, Cerrar }: any) => {
+  // console.log('CardV Modal: ',data)
   let playerRef = useRef<any>(null);
   const { user } = useAuth0();
   const [open, setOpen] = useState(Abierto);
@@ -91,9 +92,13 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
   const [openTestModal, setOpenTestModal] = useState(false);
   const [dataTest, setDataTest] = useState({});
   const [fileUrl, setFileUrl] = useState("");
-  const handleCloseTestModal = () => {
+  const handleCloseTestModal = (value:any) => {
     setOpenTestModal(false);
   };
+  const handleCloseTestModal2 = (value:any) => {
+    setVideoIndex(value + 2 )
+    setOpenTestModal(false)
+  }
   const [autoPlay, setAutoPlay] = useState(false);
   const [videoSelected, setVideoSelected] = useState(false);
   const course_tags = data?.tags;
@@ -282,8 +287,10 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
       {openTestModal && (
         <TestModal
           Data={dataTest}
+          DataModalPadre = {data}
           Abrir={openTestModal}
           Cerrar={handleCloseTestModal}
+          Cerrar2 = {handleCloseTestModal2}
         />
       )}
       <Layout

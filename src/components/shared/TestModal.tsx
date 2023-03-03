@@ -7,12 +7,16 @@ import { CloseOutlined } from '@ant-design/icons'
 import './testModal.css'
 import { useSelector } from 'react-redux';
 import RadioTest from './RadioTest';
-export default function TestModal({Data, Abrir, Cerrar}:any) {
+import CertificadoModal from './CertificadoModal';
+export default function TestModal({Data, Abrir, Cerrar, Cerrar2,DataModalPadre}:any) {
+  // console.log('Data Padre',DataModalPadre)
+  // console.log('Data Test',Data)
   const userInfo = useSelector( (state:any) => state.userInfo )
   const [open, setOpen] = useState(Abrir)
   const [loading, setLoading] = useState(false)
   const [loadginMessage,setLoadingMessage] = useState('')
   const [noPreguntas, setNoPreguntas] = useState(false)
+  const [incorrectas,setIncorrectas] = useState(true)
   const [questionsData, setQuestionsData] = useState({
     createdAt: '',
     questions: [],
@@ -20,7 +24,7 @@ export default function TestModal({Data, Abrir, Cerrar}:any) {
     video: ''
   })
   const [onlyQuestions, setOnlyQuestions] = useState(Array<any>)
-
+  const [mostrarResult, setMostrarResult] = useState(false)
   const handleAnswer = (index: Number , ans_id: String,ans_number: Number ) => {
     let oldData: any[] = onlyQuestions
     oldData[Number(index)]["option_id"] = ans_id
@@ -67,7 +71,13 @@ export default function TestModal({Data, Abrir, Cerrar}:any) {
   const onCloseAlert =  ( ) => {
     setAlert(false)
   }
-
+  const handleCloseResult = ()=> {
+    setMostrarResult(false)
+  }
+  const handleClose2 = (value:any) => {
+    Cerrar2(value)
+  }
+  // console.log('Incorrectas: ',incorrectas,' resultado: ', mostrarResult)
   return (
     <Modal
       open={open}
@@ -96,7 +106,7 @@ export default function TestModal({Data, Abrir, Cerrar}:any) {
             noPreguntas && <h4>No hay preguntas para el video</h4>
           }
           {alert && <Alert
-            message="Debe Contestar Todas las preguntas antes de revisar"
+            message="Debe contestar todas las preguntas antes de revisar"
             type="warning"
             closable
             onClose={onCloseAlert}
@@ -110,11 +120,13 @@ export default function TestModal({Data, Abrir, Cerrar}:any) {
                 style={{
                   textAlign:'center',
                   marginTop:'5%',
-                  width:'70%',
+                  width:'100%',
                   border: question.correctness === -1 ? 'none': question.correctness === true ? '1px solid green': '1px solid red'
                 }}
                 title={`Pregunta ${question.number}`}>
+                  
                   <p>{question.question}</p>
+                  <form>
                   <fieldset 
                   id={question.id}
                    onChange={(e:any)=>{
@@ -123,12 +135,18 @@ export default function TestModal({Data, Abrir, Cerrar}:any) {
                       let number = question.options.filter( (option:any) => option._id === answer )[0].number
                       handleAnswer(indice,answer, number)
                     }} 
-                    style={{display:'flex',flexDirection:'column',alignItems:'flex-start'}}>
+                    style={{display:'flex',flexDirection:'column',alignItems:'flex-start',border:'none'}}>
                       {question.options.map( (option:any,radIndex:Number) => {
-                        return <RadioTest id={option._id} index={radIndex} value={option._id} mark={option._id === onlyQuestions[index].option_id && onlyQuestions[index].correctness === true} lock={ onlyQuestions[index].correctness && onlyQuestions[index].correctness  }   text={option.option}/>
+                        return <RadioTest name={question.question} id={option._id} index={radIndex} value={option._id} mark={option._id === onlyQuestions[index].option_id && onlyQuestions[index].correctness === true} lock={ onlyQuestions[index].correctness && onlyQuestions[index].correctness  }   text={option.option}/>
                         
                       } )}
                   </fieldset>
+                  </form>
+                  {question.correctness === -1 ? <></>: question.correctness === true ? 
+                    <h3 style={{color:'green'}}>Correcto</h3>
+                    :
+                    <h3 style={{color:'red'}}>Incorrecto</h3>
+                   }
                 </Card>
               } )
             }
@@ -148,9 +166,11 @@ export default function TestModal({Data, Abrir, Cerrar}:any) {
                   })       
                   setOnlyQuestions([...oldData])
                   let incorrectas = onlyQuestions.filter((item:any)=> item.correctness === false )
+                  if(incorrectas.length === 0){
+                    setIncorrectas(false)
+                  }
                 }
                 else{
-                  window.alert("debe contestar todas las preguntas")
                   setAlert(true)
                 }
                 setLoading(false)
@@ -158,14 +178,31 @@ export default function TestModal({Data, Abrir, Cerrar}:any) {
 
 
               }}>
-                Revisar Respuestas
+                Enviar y Revisar
               </Button>}
               <Button onClick={()=> {
-                handleClose()
+                let videos_padre = DataModalPadre.videos
+                let id_video_actual = Data.id
+                // console.log(videos_padre,id_video_actual)
+                let indice_video = videos_padre.findIndex((item:any) => item.id === id_video_actual)
+                if( indice_video === videos_padre.length -1 && incorrectas === false ){
+                  // console.log('mostrar alerta de felicitaciones y descargar certificado si se responden las preguntas correctamente')
+                  setMostrarResult(true)
+                }else{
+                  if(indice_video === videos_padre.length -1){
+                    console.log('No quedan mas videos')
+                  }else{
+                    // console.log('pasar al siguiente video',indice_video)
+                    handleClose2(indice_video)
+                  }
+                }
+                // handleClose()
               }}>Salir</Button>
           </div>
         </div>
       }
+    { mostrarResult && <CertificadoModal Abrir={mostrarResult} Cerrar={handleCloseResult}/> }
+
     </Modal>
   )
 }
