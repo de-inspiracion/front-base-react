@@ -3,6 +3,7 @@ import TextArea from "antd/es/input/TextArea";
 import { Divider, Radio, Typography } from "antd";
 import { useState, useEffect } from "react";
 import { ConfigProvider, theme, Card } from "antd";
+import { useNavigate } from 'react-router'
 import UploadImage from "../upload/uploadImage";
 import services from "../../../../../../services/http";
 const { Paragraph } = Typography;
@@ -16,6 +17,7 @@ import { Space } from "antd";
 import ModalRoutes from "./ModalRoutes/ModalRoutes";
 
 export const CourseEditor = (state: any) => {
+  const navigate = useNavigate()
   const [loading, setLoading] = useState(false);
   let idCourse: string | undefined = useParams()["idCourse"];
   const { defaultAlgorithm, darkAlgorithm } = theme;
@@ -145,8 +147,13 @@ export const CourseEditor = (state: any) => {
                   currentState.id,
                   formData
                 );
-                
-                setCurrentState({ ...currentState, cover: url });
+                caches.keys().then((names) => {
+                  names.forEach((name) => {
+                    caches.delete(name);
+                  });
+                });
+                navigate(0)
+                // setCurrentState({ ...currentState, cover: url });
               }}
             >
               Subir Imagen

@@ -20,7 +20,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { newDataUser } from "../../store/user/userData";
 import { updateVideoTimeStamp } from "../../store/user/userData";
 import TestModal from "../shared/TestModal";
-
+const base_url = import.meta.env.VITE_BASE_URL;
 const { Content } = Layout;
 const CardV: any = ({ itemData, Image, key, index }: any) => {
   const [open, setOpen] = useState(false);
@@ -65,7 +65,7 @@ const CardV: any = ({ itemData, Image, key, index }: any) => {
         src={
           Image
             ? Image
-            : "https://image.tmdb.org/t/p/w300/20mOwAAPwZ1vLQkw0fvuQHiG7bO.jpg"
+            : ""
         }
         onClick={() => {
           showModal();
@@ -166,7 +166,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
     if (rate > 0 && videoIndex > 0) {
       axios
         .post(
-          `https://nestjs-virgo-production.up.railway.app/videos/${idVideo}/score`,
+          `${base_url}/videos/${idVideo}/score`,
           userScore,
           { headers: headers }
         )
