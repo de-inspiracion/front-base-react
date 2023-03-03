@@ -261,6 +261,18 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
     });
     return currentIndexCourse;
   }
+
+  const padTo2Digits = (num: any)  => {
+    return num.toString().padStart(2, '0');
+  }
+  const secToMin = (totalSeconds: any) => { 
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    const result = `${padTo2Digits(minutes)}:${padTo2Digits(Math.trunc(seconds))}`;
+    console.log(result); // 👉️ "09:25"
+    return result;
+   }
+
   return (
     <Modal
       className="modalCard"
@@ -870,7 +882,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
                         textAlign: "center",
                       }}
                     >
-                      {item.duration / 60} min.
+                      {secToMin(item.duration)} min.
                     </div>
                   </div>
                 </div>
