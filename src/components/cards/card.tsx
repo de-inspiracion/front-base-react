@@ -803,10 +803,10 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
                       setVideoIndex(item.position);
                       setVideoSelected(true);
                       setVideoTime(0);
-                      modalRef.current?.scrollIntoView({
-                        behavior: "smooth",
-                        block: "start",
-                      });
+                      // modalRef.current?.scrollIntoView({
+                      //   behavior: "smooth",
+                      //   block: "start",
+                      // });
 
                       // document.dispatchEvent(backspaceEvnt);
                       // setTimeout(()=>{

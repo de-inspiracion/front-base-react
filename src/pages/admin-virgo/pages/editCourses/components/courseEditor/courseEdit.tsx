@@ -143,17 +143,18 @@ export const CourseEditor = (state: any) => {
                 setCurrentState({ ...currentState, cover: '' });
                 const formData = new FormData();
                 formData.append("cover", img);
-                const url = await services.editCourseCover(
+                let url = await services.editCourseCover(
                   currentState.id,
                   formData
                 );
+                url = `${url}?v=${Math.floor(Math.random() * 9999)}`
                 caches.keys().then((names) => {
                   names.forEach((name) => {
                     caches.delete(name);
                   });
                 });
-                navigate(0)
-                // setCurrentState({ ...currentState, cover: url });
+                // navigate(0)
+                setCurrentState({ ...currentState, cover: url });
               }}
             >
               Subir Imagen
