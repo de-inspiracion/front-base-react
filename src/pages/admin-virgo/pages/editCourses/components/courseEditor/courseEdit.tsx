@@ -123,7 +123,7 @@ export const CourseEditor = (state: any) => {
               name="avatar"
               listType="picture-card"
               className="avatar-uploader"
-              showUploadList={false}
+              showUploadList={true}
               maxCount={1}
               accept="image/*"
               // action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
@@ -138,12 +138,14 @@ export const CourseEditor = (state: any) => {
           <Col>
             <Button
               onClick={async () => {
+                setCurrentState({ ...currentState, cover: '' });
                 const formData = new FormData();
                 formData.append("cover", img);
                 const url = await services.editCourseCover(
                   currentState.id,
                   formData
                 );
+                
                 setCurrentState({ ...currentState, cover: url });
               }}
             >
