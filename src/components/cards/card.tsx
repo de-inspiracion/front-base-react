@@ -20,7 +20,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { newDataUser } from "../../store/user/userData";
 import { updateVideoTimeStamp } from "../../store/user/userData";
 import TestModal from "../shared/TestModal";
-
+const base_url = import.meta.env.VITE_BASE_URL;
 const { Content } = Layout;
 const CardV: any = ({ itemData, Image, key, index }: any) => {
   const [open, setOpen] = useState(false);
@@ -65,7 +65,7 @@ const CardV: any = ({ itemData, Image, key, index }: any) => {
         src={
           Image
             ? Image
-            : "https://image.tmdb.org/t/p/w300/20mOwAAPwZ1vLQkw0fvuQHiG7bO.jpg"
+            : ""
         }
         onClick={() => {
           showModal();
@@ -166,7 +166,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
     if (rate > 0 && videoIndex > 0) {
       axios
         .post(
-          `https://nestjs-virgo-production.up.railway.app/videos/${idVideo}/score`,
+          `${base_url}/videos/${idVideo}/score`,
           userScore,
           { headers: headers }
         )
@@ -261,6 +261,18 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
     });
     return currentIndexCourse;
   }
+
+  const padTo2Digits = (num: any)  => {
+    return num.toString().padStart(2, '0');
+  }
+  const secToMin = (totalSeconds: any) => { 
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    const result = `${padTo2Digits(minutes)}:${padTo2Digits(Math.trunc(seconds))}`;
+    console.log(result); // 👉️ "09:25"
+    return result;
+   }
+
   return (
     <Modal
       className="modalCard"
@@ -791,10 +803,10 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
                       setVideoIndex(item.position);
                       setVideoSelected(true);
                       setVideoTime(0);
-                      modalRef.current?.scrollIntoView({
-                        behavior: "smooth",
-                        block: "start",
-                      });
+                      // modalRef.current?.scrollIntoView({
+                      //   behavior: "smooth",
+                      //   block: "start",
+                      // });
 
                       // document.dispatchEvent(backspaceEvnt);
                       // setTimeout(()=>{
@@ -870,7 +882,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
                         textAlign: "center",
                       }}
                     >
-                      {item.duration / 60} min.
+                      {secToMin(item.duration)} min.
                     </div>
                   </div>
                 </div>

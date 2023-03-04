@@ -1,11 +1,11 @@
-import React,{useState} from 'react'
+import React,{useRef, useState} from 'react'
 import { FloatButton } from 'antd';
 import {
   PlusCircleOutlined
 } from '@ant-design/icons';
 import { Button, Modal } from 'antd';
 import { message } from 'antd';
-import { Input } from 'antd';
+import ReactPlayer from "react-player";
 import services from '../../../../../../services/http'
 import { redirect, useNavigate} from "react-router-dom";
 import { PlusOutlined } from '@ant-design/icons';
@@ -23,12 +23,15 @@ interface customProps{
 }
 redirect("/");
 const NewVideo = (props : any) => {
+    let playerRef = useRef<any>(null);
     const [textBtn, setTextBtn] = useState<string>('ok')
     const [confirmLoading, setConfirmLoading] = useState<boolean>(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [courseVideo,setCourseVideo] = useState<any>([])
     const [messageApi, contextHolder] = message.useMessage();
     const [loading,setLoading] = useState(false)
+    const [url, setUrl] = useState('')
+    const [idVideo, setIdVideo] = useState('')
     const createVideo = async () => {
             // setLoading(true)
             // const formData = new FormData();
@@ -55,6 +58,7 @@ const propsFilesVideo: UploadProps = {
     if (info.file.status === "done") {
       console.log("info file: ", info);
       const responseFile = info.file.response.payload;
+      setIdVideo(responseFile.id)
       // setListFiles([...responseFile]);
       message.success(`${info.file.name} file uploaded successfully`);
       console.log('respuesta : ', responseFile)
@@ -76,6 +80,7 @@ const verifyUploaded = async (responseFile: any) => {
   const res: any = await services.verifyUploaded(responseFile.id);
   console.log('revisando ',  res)
   if(res.data.payload === true) {
+    setUrl(responseFile.url)
     clearInterval(interval)
     props.onAction(responseFile)
     setIsModalOpen(false)
@@ -87,6 +92,18 @@ const verifyUploaded = async (responseFile: any) => {
 
     
     <div>
+
+      <div style={{ 'display': 'none'}}>
+      <ReactPlayer
+                ref={playerRef}
+                width={"100%"}
+                height={"auto"}
+                url={url}
+                onDuration={(duration: any) => {
+                  services.editVideoInfo(idVideo, { duration})
+                } }
+              />
+      </div>
         <Loading text = 'Subiendo Video' open = {loading} />
         <FloatButton 
                 tooltip={<div>Agregar Video</div>} 

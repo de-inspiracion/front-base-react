@@ -1,10 +1,7 @@
-import { Routes, Route, useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import { Divider } from "antd";
 import { CourseEditor } from "./components/courseEditor/courseEdit";
-import { VideoEditor } from "./components/videoEditor/videoEditor";
-
 import "./adminCourses.css";
-import NavBarComponent from "../../../../components/navbar/Navbar";
 export const AdminCourses = () => {
   let { idCourse } = useParams();
   let { state } = useLocation();

@@ -1,6 +1,6 @@
 import { Button, Descriptions, List, Upload } from "antd";
 import Paragraph from "antd/es/typography/Paragraph";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { ConfigProvider, theme } from "antd";
 import { Card, Space, Grid, Row, Col } from "antd";
 import { Divider, Radio, Typography, Popover, Modal } from "antd";
@@ -15,6 +15,7 @@ import {
   FilePdfOutlined,
   UploadOutlined,
 } from "@ant-design/icons";
+import ReactPlayer from "react-player";
 import services from "../../../../../../services/http";
 import NewVideo from "./NewVideo";
 import { message } from "antd";
@@ -28,6 +29,7 @@ interface customProps {
 }
 let validateVideos = true;
 export const VideoEditor = (props: customProps) => {
+  let playerRef = useRef<any>(null);
   const { defaultAlgorithm, darkAlgorithm } = theme;
   const [open, setOpen] = useState(false);
   const [openModalFiles, setOpenModalFiles] = useState(false);
@@ -36,7 +38,7 @@ export const VideoEditor = (props: customProps) => {
   const [currentVideoSelected, setcurrentVideoSelected] = useState("");
   const [listFiles, setListFiles] = useState([] as any);
   const [videos, setVideos] = useState([] as any[]);
-  
+  const [url, setUrl] = useState('')
   const questionsDefault = [
     {
       question: "una pregunta?",
@@ -275,6 +277,8 @@ export const VideoEditor = (props: customProps) => {
     );
   };
   const handleAction = (newVideo: any) => {
+    console.log("newVideo :", newVideo)
+    setUrl(newVideo.url)
     props.onAction(videos.concat(newVideo))
   };
   return (
