@@ -1,11 +1,7 @@
-import React, { useEffect, useState } from "react";
-
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Divider, Input, Space, Table, Tag } from "antd";
-import { Avatar, Button, List, Typography } from "antd";
-import { ConfigProvider, theme, Card } from "antd";
+import { Divider, Input, Avatar, Table } from "antd";
 import services from "../../../../services/http";
-const { Text, Link } = Typography;
 import "./viewCourses.css";
 import NewCourse from "./NewCourse";
 import logoYellow from "../../../../assets/virgoYellow.jpg";
@@ -64,9 +60,7 @@ export const ViewCourses = () => {
             title: "Imagen",
             dataIndex: "image",
             key: "image",
-            render: (image: string) => (
-              <Avatar shape="square" size={64} src={logoYellow} />
-            ),
+            render: () => <Avatar shape="square" size={64} src={logoYellow} />,
           },
           {
             title: "Nombre",

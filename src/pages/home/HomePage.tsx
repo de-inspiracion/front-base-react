@@ -5,14 +5,9 @@ import "./home.css";
 export const HomePage = () => {
   const { isAuthenticated } = useAuth0();
 
-
   return (
     <Content className="homePage">
-      {isAuthenticated && (
-        <div>
-
-        </div>
-      )}
+      {isAuthenticated && <div></div>}
       <CoursesInProgress></CoursesInProgress>
     </Content>
   );
