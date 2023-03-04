@@ -97,6 +97,10 @@ const NavBarComponent: React.FC = () => {
       label: "Cursos",
       key: "/directive/courses",
     },
+    {
+      label: "Estadisticas",
+      key: "/directive/statistics",
+    },
   ];
 
   return (

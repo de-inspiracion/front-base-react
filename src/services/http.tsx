@@ -236,11 +236,15 @@ const validateAnswers = async (videoId: String, answers: any) => {
   return verification;
 };
 
-const getGeneralStatistics = async () => {
+const getGeneralStatistics = async (directives:any) => {
   const res = await axios.get(
-    `${base_url}/user/info/professors`
+    `${base_url}/user/info/professors`,
   )
-  return res.data;
+  if(directives.length > 0){
+    const validData = res.data.filter((row:any)=>directives.includes(row.school))
+    return validData;
+  }
+  return res.data
 }
 
 

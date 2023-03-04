@@ -26,6 +26,7 @@ import services from "../services/http";
 import { newDataUser } from "../store/user/userData";
 import { useDispatch } from "react-redux";
 import { Unauthorized } from "./unauthorized.component";
+import ViewStatistics from "../pages/directive/pages/ViewStatistics";
 export default function RouterComponent() {
   const { isLoading, isAuthenticated, error, user, loginWithRedirect, logout } =
     useAuth0();
@@ -172,6 +173,15 @@ export default function RouterComponent() {
             <PrivateRoute
               isAuthenticated={isAuthenticated}
               component={<DashboardDirective />}
+            />
+          ),
+        },
+        {
+          path: "/directive/statistics",
+          element: (
+            <PrivateRoute
+              isAuthenticated={isAuthenticated}
+              component={<ViewStatistics />}
             />
           ),
         },

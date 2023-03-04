@@ -30,7 +30,7 @@ const AdminMain = () => {
       content: 'Generando Archivo ...',
       duration: 0,
     });
-    const data = await http.getGeneralStatistics()
+    const data = await http.getGeneralStatistics([])
     const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
     const fileExtension = '.xlsx';
     const fileName = "generalStatistics"
