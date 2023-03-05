@@ -71,7 +71,7 @@
     /* font-size: 1.6rem ; */
   }
 }
-@media screen and (max-width: 380px) {
+@media screen and (max-width: 500px) {
   .movieRow--item img {
     width: 125px;
     height: 192px !important;
