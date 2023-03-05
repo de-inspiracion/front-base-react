@@ -508,7 +508,7 @@ export default function CourseInProgressModal({ Open, Data, Cerrar }: any) {
                         width: "60%",
                         height: "100%",
                         color: "white",
-                        textAlign: "center",
+                        textAlign: "left",
                       }}
                     >
                       <div>{item.name}</div>
