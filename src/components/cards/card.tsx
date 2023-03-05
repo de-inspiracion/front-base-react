@@ -575,7 +575,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
                   </h2>
                 </div>
                 <Tag style={{ color: "white", fontSize: "0.6rem" }}>
-                  Nombre Completo del Experto
+                  {data?.expert}
                 </Tag>
               </div>
               <div
@@ -645,7 +645,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
                           key={index}
                           style={{ color: "white", fontSize: "0.6rem" }}
                         >
-                          {item}
+                          {item.name}
                         </Tag>
                       );
                     })}
@@ -850,11 +850,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
                     >
                       {item.position}
                     </div>
-                    <img
-                      src={item.thumbnail}
-                      width="20%"
-                      style={{ cursor: "pointer" }}
-                    />
+
                     <div
                       style={{
                         display: "flex",
