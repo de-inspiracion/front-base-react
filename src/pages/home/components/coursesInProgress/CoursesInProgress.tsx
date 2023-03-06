@@ -69,8 +69,7 @@ const CoursesInProgress: React.FC = () => {
           />
         </Col>
 
-        {
-        userInfo.inprogress.length > 0 && (
+        {userInfo.inprogress.length > 0 && (
           <CardSlice
             title="Cursos en Progreso"
             id="progreso"

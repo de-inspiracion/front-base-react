@@ -62,11 +62,7 @@ const CardV: any = ({ itemData, Image, key, index }: any) => {
       )}
       <img
         style={{ height: "100%" }}
-        src={
-          Image
-            ? Image
-            : ""
-        }
+        src={Image ? Image : ""}
         onClick={() => {
           showModal();
         }}
@@ -91,14 +87,13 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
   const { Meta } = Card;
   const [openTestModal, setOpenTestModal] = useState(false);
   const [dataTest, setDataTest] = useState({});
-  const [fileUrl, setFileUrl] = useState("");
-  const handleCloseTestModal = (value:any) => {
+  const handleCloseTestModal = (value: any) => {
     setOpenTestModal(false);
   };
-  const handleCloseTestModal2 = (value:any) => {
-    setVideoIndex(value + 2 )
-    setOpenTestModal(false)
-  }
+  const handleCloseTestModal2 = (value: any) => {
+    setVideoIndex(value + 2);
+    setOpenTestModal(false);
+  };
   const [autoPlay, setAutoPlay] = useState(false);
   const [videoSelected, setVideoSelected] = useState(false);
   const course_tags = data?.tags;
@@ -134,7 +129,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
       if (score?.video == currentVideo?.id) {
         scoredVideo = true;
         scoredNow = score.scored;
-      } 
+      }
       // else {
       //   console.log("el score es false");
       // }
@@ -165,11 +160,9 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
 
     if (rate > 0 && videoIndex > 0) {
       axios
-        .post(
-          `${base_url}/videos/${idVideo}/score`,
-          userScore,
-          { headers: headers }
-        )
+        .post(`${base_url}/videos/${idVideo}/score`, userScore, {
+          headers: headers,
+        })
         .then((res) => {
           // changeSetRate(rate);
           const us = JSON.parse(JSON.stringify(user));
@@ -190,8 +183,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
           );
           GetRateComponent();
         })
-        .catch((error) => {
-        });
+        .catch((error) => {});
     } else {
     }
   }, [rate]);
@@ -206,14 +198,14 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
     document.body.removeChild(element);
   };
 
-  const downloadFile = () => {
-    const urlFile = fileUrl;
-    const element = document.createElement("a");
-    element.href = urlFile;
-    element.download = "File"; // nombre del archivo que deseas descargar
-    document.body.appendChild(element); // necesario para Firefox
-    element.click();
-    document.body.removeChild(element); // limpiar
+  const downloadFile = (fileUrl: any) => {
+    const link = document.createElement("a");
+    link.href = fileUrl;
+    link.setAttribute("download", "");
+    link.style.display = "none";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   const [timeInProgress, setTimeInProgress] = useState(0);
@@ -238,9 +230,9 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
       setTimeInProgress(currentInProgress.progress);
       setTimeout(() => {
         playerRef.current.seekTo(currentInProgress.progress);
-        const playerMobile = document.getElementsByTagName('video')[0] 
-        playerMobile.currentTime = currentInProgress.progress
-        playerMobile.play()
+        const playerMobile = document.getElementsByTagName("video")[0];
+        playerMobile.currentTime = currentInProgress.progress;
+        playerMobile.play();
       }, 100);
     }
 
@@ -251,27 +243,29 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
   }, []);
 
   const currentIndexCourses = () => {
-    let currentIndexCourse = -1;  
+    let currentIndexCourse = -1;
     const inProgress = userInfo.inprogress; // _id
     const course = data; // id
     inProgress.forEach((ip: any, index: number) => {
-      if(ip.course._id === course.id) {
-        currentIndexCourse = index
+      if (ip.course._id === course.id) {
+        currentIndexCourse = index;
       }
     });
     return currentIndexCourse;
-  }
+  };
 
-  const padTo2Digits = (num: any)  => {
-    return num.toString().padStart(2, '0');
-  }
-  const secToMin = (totalSeconds: any) => { 
+  const padTo2Digits = (num: any) => {
+    return num.toString().padStart(2, "0");
+  };
+  const secToMin = (totalSeconds: any) => {
     const minutes = Math.floor(totalSeconds / 60);
     const seconds = totalSeconds % 60;
-    const result = `${padTo2Digits(minutes)}:${padTo2Digits(Math.trunc(seconds))}`;
+    const result = `${padTo2Digits(minutes)}:${padTo2Digits(
+      Math.trunc(seconds)
+    )}`;
     console.log(result); // 👉️ "09:25"
     return result;
-   }
+  };
 
   return (
     <Modal
@@ -299,10 +293,10 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
       {openTestModal && (
         <TestModal
           Data={dataTest}
-          DataModalPadre = {data}
+          DataModalPadre={data}
           Abrir={openTestModal}
           Cerrar={handleCloseTestModal}
-          Cerrar2 = {handleCloseTestModal2}
+          Cerrar2={handleCloseTestModal2}
         />
       )}
       <Layout
@@ -376,7 +370,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
                       body
                     );
                     // res.data.payload.inProgress[videoIndex - 1]['course'] = data;
-                    const currentIndex = currentIndexCourses()
+                    const currentIndex = currentIndexCourses();
                     // console.log("currentIndex: ", currentIndex)
                     // const inProgress = res.data.payload.inProgress;
                     // if(currentIndex < 0) {
@@ -480,7 +474,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
               {videoIndex === 0 ? (
                 <div
                   style={{
-                    color: "#59BD27",
+                    color: "#fff",
                     margin: "0",
                     fontSize: "1.5rem",
                     fontWeight: 900,
@@ -491,7 +485,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
               ) : (
                 <div
                   style={{
-                    color: "#59BD27",
+                    color: "#fff",
                     margin: "0",
                     fontSize: "1.5rem",
                     fontWeight: 900,
@@ -683,7 +677,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
                     style={{
                       borderRadius: "15px",
                       padding: "8px",
-                      background: "#59BD27",
+                      background: "#fff",
                       cursor: "not-allowed",
                     }}
                   >
@@ -702,7 +696,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
                     style={{
                       borderRadius: "15px",
                       padding: "8px",
-                      background: "#59BD27",
+                      background: "#fff",
                       cursor: "pointer",
                     }}
                   >
@@ -722,19 +716,13 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
                     <button
                       key={file.url}
                       onClick={() => {
-                        downloadFile();
-                        setFileUrl(file.url);
+                        downloadFile(file.url);
                       }}
                       style={{
-                        fontSize: "25px",
+                        fontSize: "15px",
                       }}
                     >
-                      <DownloadOutlined
-                        style={{
-                          fontSize: "25px",
-                          background: "none",
-                        }}
-                      />
+                      {file.name}
                     </button>
                   );
                 })}
@@ -756,7 +744,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
             <div
               style={{
                 padding: "5px 25px",
-                background: "#59BD27",
+                background: "#fff",
                 width: "100%",
                 borderRadius: "10px",
               }}
@@ -833,7 +821,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
                       color: "white",
                       maxHeight: "80px",
                       background:
-                        index === videoIndex - 1 ? "green" : "#121c35",
+                        index === videoIndex - 1 ? "#a8a8a8" : "#121c35",
                       padding: "10px 25px",
                       margin: "5px 0",
                     }}
@@ -898,7 +886,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
             <div
               style={{
                 padding: "5px 25px",
-                background: "#59BD27",
+                background: "#fff",
                 borderRadius: "10px",
                 display: "flex",
                 flexDirection: "row",
