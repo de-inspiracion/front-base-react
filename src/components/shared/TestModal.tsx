@@ -118,14 +118,13 @@ export default function TestModal({Data, Abrir, Cerrar, Cerrar2,DataModalPadre}:
                 return <Card 
                 id={question.id}
                 style={{
-                  textAlign:'center',
                   marginTop:'5%',
                   width:'100%',
                   border: question.correctness === -1 ? 'none': question.correctness === true ? '1px solid green': '1px solid red'
                 }}
                 title={`Pregunta ${question.number}`}>
                   
-                  <p>{question.question}</p>
+                  <p style={{textAlign:'center'}}>{question.question}</p>
                   <form>
                   <fieldset 
                   id={question.id}
