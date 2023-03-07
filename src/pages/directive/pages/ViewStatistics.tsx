@@ -7,19 +7,31 @@ import { message } from 'antd';
 import * as XLSX from 'xlsx';
 import { useSelector } from "react-redux";
 import { EyeOutlined } from '@ant-design/icons';
+import { Select } from 'antd';
 
 const ViewStatistics = () => {
     const [messageApi, contextHolder] = message.useMessage();
     const [columns,setColumns] = useState<any>([])
     const [rows,setRows] = useState<any>([])
+    const [displayRows,setDisplayRows] = useState<any>([])
     const [disableDownloadStatistics,setDisableDownloadStatistics] = useState(false)
     const userInfo = useSelector((state: any) => state.userInfo);
-    const directives = userInfo.profile === 'directiva' ? [userInfo.directive.name] : []
+    const directives = userInfo.profile === 'directiva' ? [userInfo.directive.name]: userInfo.profile === 'sostenedor' ? userInfo.directives : []
+    const directivesOp = userInfo.profile === 'directiva' ? [] : [{ value: 'Mostrar Todo', label: 'Mostrar Todo' }].concat(userInfo.directives.map((v:string)=>{
+        return { value: v, label: v }
+    }))
     const [showCourses,setShowCourses] = useState(false)
+    const [selectedSchool,setSelectedSchool] = useState('')
 
     useEffect( () => {
         const getData = async ()=>{
+            messageApi.open({
+                type: 'loading',
+                content: 'Obteniendo Datos ...',
+                duration: 0,
+              });
             const data = await http.getGeneralStatistics(directives)
+            
             const row_ = []
             for (let i = 0; i < data.length; i++) {
                 const element = data[i];
@@ -27,6 +39,7 @@ const ViewStatistics = () => {
                 row_.push(element)
             }
             setRows(row_)
+            setDisplayRows(row_)
             const cols = Object.keys(data[0])
             const columns:any = []
             for (let i = 0; i < cols.length; i++) {
@@ -78,10 +91,13 @@ const ViewStatistics = () => {
                 }
                 columns.push($)
             }
-            console.log(columns)
+            
             setColumns(columns)
+            setTimeout(messageApi.destroy, 0);
         }
+
         getData()
+        
         
     }, [showCourses])
     
@@ -110,18 +126,47 @@ const ViewStatistics = () => {
         setDisableDownloadStatistics(false)
       }
 
+
+    const filterSchool = (e:string) => {
+        messageApi.open({
+            type: 'loading',
+            content: 'Filtrando Datos ...',
+            duration: 0,
+          });
+        setSelectedSchool(e)
+        const r_ = rows.filter((row:any)=>row.school === e)
+        setDisplayRows(r_)
+        console.log(e)
+        if(e ==='Mostrar Todo') {
+            setDisplayRows([...rows])
+        }
+        setTimeout(messageApi.destroy, 0);
+    }
+    
     return (
         
     <div style = {{marginTop:20,display:'flex',gap:10,flexDirection:'column',margin:20}}>
         {contextHolder}
-        <Button 
-            style={{width:'fit-content'}}
-            disabled = {disableDownloadStatistics}
-            onClick={generateStatisticsFile}>
-          Descargar Estadísticas
-        </Button>
+        <div style = {{display:'flex',gap:10}}>
+            <Button 
+                style={{width:'fit-content'}}
+                disabled = {disableDownloadStatistics}
+                onClick={generateStatisticsFile}>
+            Descargar Estadísticas
+            </Button>
+            {userInfo.profile === 'sostenedor' &&
+            <Select
+                defaultValue='Seleccionar Colegio ..'
+                style={{ width: 'fit-content' }}
+                onChange={filterSchool}
+                options={directivesOp}
+            />
+            }
+
+        </div>
+
         
-        <Table style={{lineBreak:'auto',whiteSpace:'normal'}} columns={columns} dataSource={rows} />
+        <Table style={{lineBreak:'auto',whiteSpace:'normal'}} columns={columns} dataSource={displayRows} />
     </div>
     )
 }

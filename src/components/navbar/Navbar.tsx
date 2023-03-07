@@ -156,7 +156,7 @@ const NavBarComponent: React.FC = () => {
               mode="horizontal"
               //poner tres tipos de menu dentro de items
               items={
-                userInfo.profile === "directiva"
+                userInfo.profile === "directiva" || userInfo.profile === "sostenedor" 
                   ? menuDirectiva
                   : userInfo.profile === "virgo"
                   ? menuVirgo
