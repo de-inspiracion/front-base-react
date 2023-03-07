@@ -3,7 +3,6 @@
   display: flex;
   justify-content: end;
   align-items: center;
-  background: #141414;
 }
 
 .ant-input-group-addon button svg {
@@ -23,3 +22,11 @@
   background: none;
   height: 65px;
 }
+
+@media screen and (max-width: 575px) {
+  .section-user,
+  .section-search {
+    display: none;
+  }
+}
+  
