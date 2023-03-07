@@ -27,7 +27,7 @@ const CoursesInProgress: React.FC = () => {
         gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
         style={{ overflow: "hidden" }}
       >
-        <Col xs={22} sm={8} lg={8} style={{ margin: "2%", width: "40vw" }}>
+        <Col className="search-course-in-progress" xs={22} sm={8} lg={8} style={{ margin: "2%", width: "40vw" }}>
           <Search
             size="large"
             enterButton
