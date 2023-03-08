@@ -87,6 +87,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
   const { Meta } = Card;
   const [openTestModal, setOpenTestModal] = useState(false);
   const [dataTest, setDataTest] = useState({});
+  const [finishedCourse, setFinishedCourse] = useState<boolean>(false);
   const handleCloseTestModal = (value: any) => {
     setOpenTestModal(false);
   };
@@ -297,6 +298,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
           Abrir={openTestModal}
           Cerrar={handleCloseTestModal}
           Cerrar2={handleCloseTestModal2}
+          finished={finishedCourse}
         />
       )}
       <Layout
@@ -392,10 +394,13 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
                     finished: true,
                     num: videoIndex,
                   };
-                  const res = await services.editUserVideoProgress(
+                  const res: any = await services.editUserVideoProgress(
                     userInfo.id,
                     body
                   );
+                  console.log("res.payload? ", res.data.payload?.finishedNow?.finished)
+                  const finisheCourseNow = res.data.payload?.finishedNow?.finished
+                  setFinishedCourse(finisheCourseNow)
                   setOpenTestModal(true);
                   // console.log('res',res)
                   // console.log(body)

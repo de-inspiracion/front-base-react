@@ -8,7 +8,7 @@ import './testModal.css'
 import { useSelector } from 'react-redux';
 import RadioTest from './RadioTest';
 import CertificadoModal from './CertificadoModal';
-export default function TestModal({Data, Abrir, Cerrar, Cerrar2,DataModalPadre}:any) {
+export default function TestModal({Data, Abrir, Cerrar, Cerrar2,DataModalPadre, finished}:any) {
   // console.log('Data Padre',DataModalPadre)
   // console.log('Data Test',Data)
   const userInfo = useSelector( (state:any) => state.userInfo )
@@ -73,7 +73,9 @@ export default function TestModal({Data, Abrir, Cerrar, Cerrar2,DataModalPadre}:
     setAlert(false)
   }
   const handleCloseResult = ()=> {
+    console.log("cerrar")
     setMostrarResult(false)
+    handleClose()
   }
   const handleClose2 = (value:any) => {
     Cerrar2(value)
@@ -199,17 +201,22 @@ export default function TestModal({Data, Abrir, Cerrar, Cerrar2,DataModalPadre}:
                 let id_video_actual = Data.id
                 // console.log(videos_padre,id_video_actual)
                 let indice_video = videos_padre.findIndex((item:any) => item.id === id_video_actual)
-                if( indice_video === videos_padre.length -1 && incorrectas === false ){
-                  // console.log('mostrar alerta de felicitaciones y descargar certificado si se responden las preguntas correctamente')
-                  setMostrarResult(true)
+                console.log("finisheeed ", finished)
+
+                // if( indice_video === videos_padre.length -1 && incorrectas === false ){
+                //   // console.log('mostrar alerta de felicitaciones y descargar certificado si se responden las preguntas correctamente')
+                  
+                // }else{
+                 
+                // }
+                if(indice_video === videos_padre.length -1){
+                  console.log('No quedan mas videos')
                 }else{
-                  if(indice_video === videos_padre.length -1){
-                    console.log('No quedan mas videos')
-                  }else{
-                    // console.log('pasar al siguiente video',indice_video)
-                    handleClose2(indice_video)
-                  }
+                  // console.log('pasar al siguiente video',indice_video)
+                  // handleClose2(indice_video)
                 }
+
+                setMostrarResult(finished)
                 // handleClose()
               }}>Salir</Button>
           </div>
