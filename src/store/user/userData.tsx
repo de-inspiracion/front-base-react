@@ -5,6 +5,7 @@ const initialState = {
   name: null,
   email: null,
   directive: null,
+  directives: null,
   profile: null,
   age: null,
   authenticated: null,
@@ -21,6 +22,7 @@ export const UserData = createSlice({
       state.name = newdata.payload.name
       state.email = newdata.payload.email,
       state.directive = newdata.payload.directive
+      state.directives = newdata.payload.directives
       state.profile = newdata.payload.profile
       state.authenticated = newdata.payload.authenticated
       state.age = newdata.payload.age

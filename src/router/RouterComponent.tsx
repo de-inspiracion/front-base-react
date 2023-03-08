@@ -57,6 +57,7 @@ export default function RouterComponent() {
           name: res.nombre,
           email: res.email,
           directive: res.directive,
+          directives:res.directives || [],
           profile: res.perfil,
           authenticated: isAuthenticated,
           age: res.age,

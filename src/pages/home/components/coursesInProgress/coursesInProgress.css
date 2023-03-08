@@ -1,23 +1,5 @@
-/* .infoCardCoursesInProgress{
-  font-size: 10px;
+@media screen and (min-width: 575px) {
+  .search-course-in-progress {
+    display: none;
+  }
 }
-
-.videoCard {
-  height: 200px;
-  width: 120px;
-  background-color: black;
-  padding: 0;
-  margin: 0;
-}
-
-.videoCard  img{
-  height: 200px;
-  width: 120px;
-  overflow: hidden;
-}
-
-.titleV {
-  color: rgb(255, 255, 255);
-} */
-
-

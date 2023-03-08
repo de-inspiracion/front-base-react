@@ -17,6 +17,7 @@ export const Login = () => {
     const getData = async () => {
       try {
         let res = await services.getUserInfo(String(user?.email));
+        console.log(res)
         if(res.perfil == 'profesor'){
           try {
             const excloudedCourses = res.directive.excludeCourses
@@ -31,6 +32,7 @@ export const Login = () => {
             name: res.nombre,
             email: res.email,
             directive: res.directive,
+            directives:res.directives || [],
             profile: res.perfil,
             authenticated: isAuthenticated,
             age: res.age,
@@ -59,9 +61,12 @@ export const Login = () => {
   //   <Navigate to="/home" />
   // );
   // Login para 3 usuarios
+  console.log(profile)
   if (profile === "virgo") {
     return <Navigate to="/admin" />;
-  } else if (profile === "directiva") {
+  } else if (profile === "directiva" ) {
+    return <Navigate to="/directive" />;
+  }else if (profile === "sostenedor" ) {
     return <Navigate to="/directive" />;
   } else if (profile === "profesor") {
     return <Navigate to="/home" />;
