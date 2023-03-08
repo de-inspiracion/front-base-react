@@ -17,10 +17,8 @@ const ViewStatistics = () => {
     const [disableDownloadStatistics,setDisableDownloadStatistics] = useState(false)
     const userInfo = useSelector((state: any) => state.userInfo);
     const directives = userInfo.profile === 'directiva' ? [userInfo.directive.name]: userInfo.profile === 'sostenedor' ? userInfo.directives : []
-    const directivesOp = userInfo.profile === 'directiva' ? [] : [{ value: 'Mostrar Todo', label: 'Mostrar Todo' }].concat(userInfo.directives.map((v:string)=>{
-        return { value: v, label: v }
-    }))
-    const [showCourses,setShowCourses] = useState(false)
+    const [directivesOp,setDirectivesOp] = useState<any>(userInfo.profile === 'directiva' ? [] : userInfo.profile === 'sostenedor' ? [{ value: 'Mostrar Todo', label: 'Mostrar Todo' }].concat(userInfo.directives.map((v:string)=>{return { value: v, label: v }})) : []
+    )
     const [selectedSchool,setSelectedSchool] = useState('')
 
     useEffect( () => {
@@ -30,8 +28,16 @@ const ViewStatistics = () => {
                 content: 'Obteniendo Datos ...',
                 duration: 0,
               });
-            const data = await http.getGeneralStatistics(directives)
-            
+            const data:any[] = await http.getGeneralStatistics(directives)
+            if(userInfo.profile === 'virgo'){
+
+                let schools:any = data.map((row:any)=>{
+                    return { value: row.school, label: row.school }
+                })
+                let key = 'value';
+                const unique:any = [...new Map(schools.map((item:any) => [item[key], item])).values()]
+                setDirectivesOp([{ value: 'Mostrar Todo', label: 'Mostrar Todo' }].concat(unique))
+            }
             const row_ = []
             for (let i = 0; i < data.length; i++) {
                 const element = data[i];
@@ -83,7 +89,7 @@ const ViewStatistics = () => {
         getData()
         
         
-    }, [showCourses])
+    }, [])
     
     const generateStatisticsFile = async ()=>{
         setDisableDownloadStatistics(true)
@@ -156,7 +162,7 @@ const ViewStatistics = () => {
                 onClick={generateStatisticsFile}>
             Descargar Estadísticas
             </Button>
-            {userInfo.profile === 'sostenedor' &&
+            {(userInfo.profile === 'sostenedor' || userInfo.profile === 'virgo') &&
             <Select
                 defaultValue='Seleccionar Colegio ..'
                 style={{ width: 'fit-content' }}

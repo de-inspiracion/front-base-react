@@ -60,11 +60,11 @@ const AdminMain = () => {
           gap: "40px",
         }}
       >
-        <Button 
+        {/* <Button 
           disabled = {disableDownloadStatistics}
           onClick={generateStatisticsFile}>
           Descargar Estadistica
-        </Button>
+        </Button> */}
         <Button 
           disabled = {disableUploadUsers}
           onClick={uploadUsers}>
