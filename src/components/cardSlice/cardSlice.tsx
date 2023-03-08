@@ -26,7 +26,7 @@ function CardSlide({
     setAbrirModal(false);
   };
   const userInfo = useSelector((estado: any) => estado.userInfo);
-  const excludeCourses = userInfo.directive.excludeCourses;
+  const excludeCourses = userInfo.directive?.excludeCourses;
   const [items, setIems] = useState([]);
   const [displayItems, setDisplayItems] = useState([]);
   const [displayItemsIP, setDisplayItemsIP] = useState([]);

@@ -17,6 +17,7 @@ export default function TestModal({Data, Abrir, Cerrar, Cerrar2,DataModalPadre}:
   const [loadginMessage,setLoadingMessage] = useState('')
   const [noPreguntas, setNoPreguntas] = useState(false)
   const [incorrectas,setIncorrectas] = useState(true)
+  const [verifyQuestion,setVerifyQuestion] = useState(false)
   const [questionsData, setQuestionsData] = useState({
     createdAt: '',
     questions: [],
@@ -136,7 +137,20 @@ export default function TestModal({Data, Abrir, Cerrar, Cerrar2,DataModalPadre}:
                     }} 
                     style={{display:'flex',flexDirection:'column',alignItems:'flex-start',border:'none'}}>
                       {question.options.map( (option:any,radIndex:Number) => {
-                        return <RadioTest name={question.question} id={option._id} index={radIndex} value={option._id} mark={option._id === onlyQuestions[index].option_id && onlyQuestions[index].correctness === true} lock={ onlyQuestions[index].correctness && onlyQuestions[index].correctness  }   text={option.option}/>
+                        return <RadioTest 
+                        name={question.question} 
+                        id={option._id} 
+                        index={radIndex} 
+                        value={option._id} 
+                        mark={
+                          option._id === onlyQuestions[index].option_id
+                          //  && onlyQuestions[index].correctness === true
+                          } 
+                        lock= { 
+                          verifyQuestion
+                        }   
+                          text={option.option}
+                          />
                         
                       } )}
                   </fieldset>
@@ -154,6 +168,7 @@ export default function TestModal({Data, Abrir, Cerrar, Cerrar2,DataModalPadre}:
           { !noPreguntas && <Button onClick={async ()=> {
                 setLoadingMessage('Revisando Respuestas')
                 setLoading(true)
+                setVerifyQuestion(true)
                 let flag = onlyQuestions.filter((item:any) => !item.option_id )
                 if(flag.length === 0){
                   const res = await services.validateAnswers(Data.id,onlyQuestions)
