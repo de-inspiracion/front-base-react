@@ -30,21 +30,14 @@ const CardV: any = ({ itemData, Image, key, index }: any) => {
     itemData["id"] = itemData["_id"];
     delete itemData["_id"];
   }
-  const showModal = () => {
+  const showModal = async () => {
+    let res = await services.getCourseVideos(itemData.id);
+    setCourseData(res.payload);
     setOpen(true);
   };
   const handleClose = () => {
     setOpen(false);
   };
-
-  useEffect(() => {
-    const getData = async () => {
-      // setIems(await services.getCourseVideos(courseData[0].id).payload)
-      let res = await services.getCourseVideos(itemData.id);
-      setCourseData(res.payload);
-    };
-    getData();
-  }, []);
 
   return (
     <div
