@@ -31,6 +31,7 @@ const CardV: any = ({ itemData, Image, key, index }: any) => {
     delete itemData["_id"];
   }
   const showModal = async () => {
+    setOpen(true);
     let res = await services.getCourseVideos(itemData.id);
     let resGetCourseVideosFinished = await services.getCourseVideosFinished(
       itemData.id,
@@ -48,7 +49,7 @@ const CardV: any = ({ itemData, Image, key, index }: any) => {
     console.log("resGetCourseVideosFinished", resGetCourseVideosFinished);
     console.log("res", res);
     setCourseData(res.payload);
-    setOpen(true);
+
   };
   const handleClose = () => {
     setOpen(false);
