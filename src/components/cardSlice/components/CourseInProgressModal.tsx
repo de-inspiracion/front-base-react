@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Modal, Layout, Row, Tag, Card } from "antd";
 const { Meta } = Card;
 import { CloseOutlined } from "@ant-design/icons";
 import services from "../../../services/http";
-import { ReactNetflixPlayer } from "react-netflix-player";
 import { useSelector, useDispatch } from "react-redux";
 import { updateVideoTimeStamp } from "../../../store/user/userData";
 import TestModal from "../../shared/TestModal";
@@ -53,16 +52,18 @@ export default function CourseInProgressModal({ Open, Data, Cerrar }: any) {
     };
     getData();
   }, []);
-  let data_video = course_videos.filter(
-    (video: any) => {video.id === Data.video._id}
-  )[0];
-  let playerRef = useRef<any>(null)
-  
-  useEffect(()=>{
-    if(playerRef.current){
-      playerRef.current.seekTo(videoIndex !== 0 ? 0 : Data.progress ? Data.progress : 0)
+  let data_video = course_videos.filter((video: any) => {
+    video.id === Data.video._id;
+  })[0];
+  let playerRef = useRef<any>(null);
+
+  useEffect(() => {
+    if (playerRef.current) {
+      playerRef.current.seekTo(
+        videoIndex !== 0 ? 0 : Data.progress ? Data.progress : 0
+      );
     }
-  },[courseData])
+  }, [courseData]);
 
   return (
     <Modal
@@ -132,7 +133,12 @@ export default function CourseInProgressModal({ Open, Data, Cerrar }: any) {
                     if (time - videoTime > 30) {
                       setVideoTime(time);
                       let body = {
-                        idVideo: videoIndex !== 0 ? course_videos[videoIndex - 1].id : data_video ? data_video['id']: course_videos[0].id,
+                        idVideo:
+                          videoIndex !== 0
+                            ? course_videos[videoIndex - 1].id
+                            : data_video
+                            ? data_video["id"]
+                            : course_videos[0].id,
                         idCourse: courseData.id,
                         progress: time,
                         finished: false,
@@ -453,83 +459,83 @@ export default function CourseInProgressModal({ Open, Data, Cerrar }: any) {
               </div>
               {course_videos.map((item: any) => {
                 return (
-                 <div style={{width:'100%'}}> 
-                  <div
-                    className="videoInfo"
-                    onClick={() => {
-                      setVideoIndex(item.position);
+                  <div style={{ width: "100%" }}>
+                    <div
+                      className="videoInfo"
+                      onClick={() => {
+                        setVideoIndex(item.position);
 
-                      try {
-                        setVideoTime(
-                          userInfo.inprogress[item.position - 1].progress
-                        );
-                      } catch (error) {
-                        setVideoTime(0);
-                      }
-                      modalRef.current?.scrollIntoView({
-                        behavior: "smooth",
-                        block: "start",
-                      });
-                    }}
-                    style={{
-                      cursor: "pointer",
-                      display: "flex",
-                      flexDirection: "row",
-                      width: "100%",
-                      height: "80px",
-                      color: "white",
-                      maxHeight: "80px",
-                      background: "#121c35",
-                      padding: "10px 25px",
-                      margin: "5px 0",
-                    }}
-                  >
-                    <div
+                        try {
+                          setVideoTime(
+                            userInfo.inprogress[item.position - 1].progress
+                          );
+                        } catch (error) {
+                          setVideoTime(0);
+                        }
+                        modalRef.current?.scrollIntoView({
+                          behavior: "smooth",
+                          block: "start",
+                        });
+                      }}
                       style={{
-                        width: "10%",
-                        height: "100%",
+                        cursor: "pointer",
                         display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
+                        flexDirection: "row",
+                        width: "100%",
+                        height: "80px",
                         color: "white",
+                        maxHeight: "80px",
+                        background: "#121c35",
+                        padding: "10px 25px",
+                        margin: "5px 0",
                       }}
                     >
-                      {item.position}
-                    </div>
-                    <img
-                      src={item.thumbnail}
-                      width="20%"
-                      style={{ cursor: "pointer" }}
-                    />
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        width: "60%",
-                        height: "100%",
-                        color: "white",
-                        textAlign: "left",
-                      }}
-                    >
-                      <div>{item.name}</div>
-                      <div style={{ overflow: "scroll" }}>
-                        {item.decription}
+                      <div
+                        style={{
+                          width: "10%",
+                          height: "100%",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          color: "white",
+                        }}
+                      >
+                        {item.position}
+                      </div>
+                      <img
+                        src={item.thumbnail}
+                        width="20%"
+                        style={{ cursor: "pointer" }}
+                      />
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          width: "60%",
+                          height: "100%",
+                          color: "white",
+                          textAlign: "left",
+                        }}
+                      >
+                        <div>{item.name}</div>
+                        <div style={{ overflow: "scroll" }}>
+                          {item.decription}
+                        </div>
+                      </div>
+                      <div
+                        style={{
+                          width: "25%",
+                          display: "flex",
+                          flexDirection: "column",
+                          height: "100%",
+                          justifyContent: "center",
+                          textAlign: "center",
+                        }}
+                      >
+                        {item.duration} min.
                       </div>
                     </div>
-                    <div
-                      style={{
-                        width: "25%",
-                        display: "flex",
-                        flexDirection: "column",
-                        height: "100%",
-                        justifyContent: "center",
-                        textAlign: "center",
-                      }}
-                    >
-                      {item.duration} min.
-                    </div>
                   </div>
-                </div>
                 );
               })}
             </div>
