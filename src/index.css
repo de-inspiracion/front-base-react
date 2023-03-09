@@ -51,7 +51,7 @@ body {
 }
 
 video::-webkit-media-controls-timeline {
-    display: none;
+    /* display: none; */
 }
 
 :root {

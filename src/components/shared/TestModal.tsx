@@ -217,6 +217,7 @@ export default function TestModal({Data, Abrir, Cerrar, Cerrar2,DataModalPadre, 
                 }
 
                 setMostrarResult(finished)
+                handleClose2(indice_video)
                 // handleClose()
               }}>Salir</Button>
           </div>

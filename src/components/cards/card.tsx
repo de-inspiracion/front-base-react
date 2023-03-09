@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { CloseOutlined, DownloadOutlined } from "@ant-design/icons";
+import { CheckCircleOutlined, CloseOutlined, DownloadOutlined } from "@ant-design/icons";
 import {
   Rate,
   Modal,
@@ -25,13 +25,28 @@ const { Content } = Layout;
 const CardV: any = ({ itemData, Image, key, index }: any) => {
   const [open, setOpen] = useState(false);
   const [courseData, setCourseData] = useState([]);
-
+  const userInfo = useSelector((estado: any) => estado.userInfo);
   if (Object.keys(itemData).includes("_id")) {
     itemData["id"] = itemData["_id"];
     delete itemData["_id"];
   }
   const showModal = async () => {
     let res = await services.getCourseVideos(itemData.id);
+    let resGetCourseVideosFinished = await services.getCourseVideosFinished(
+      itemData.id,
+      userInfo.id
+    );
+    const finishedVideos = resGetCourseVideosFinished.payload;
+
+    res.payload.videos.forEach((video: any) => {
+      finishedVideos.forEach((finishedVideo: any) => {
+        if (finishedVideo.video === video.id) {
+          video["finished"] = true;
+        }
+      });
+    });
+    console.log("resGetCourseVideosFinished", resGetCourseVideosFinished);
+    console.log("res", res);
     setCourseData(res.payload);
     setOpen(true);
   };
@@ -43,7 +58,7 @@ const CardV: any = ({ itemData, Image, key, index }: any) => {
     <div
       key={key}
       className="movieRow--item"
-      style={{ overflow: "auto", width: "195px", height: "300px" }}
+      style={{ overflow: "hidden", width: "195px", height: "300px" }}
     >
       {open && (
         <ModalCard
@@ -364,15 +379,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
                       userInfo.id,
                       body
                     );
-                    // res.data.payload.inProgress[videoIndex - 1]['course'] = data;
                     const currentIndex = currentIndexCourses();
-                    // console.log("currentIndex: ", currentIndex)
-                    // const inProgress = res.data.payload.inProgress;
-                    // if(currentIndex < 0) {
-                    //   inProgress['course'] = data
-                    //   userInfo.inprogress.concat(inProgress)
-                    // }
-                    // res.data.payload.inProgress[currentIndex]['course'] = data
                     dispatch(updateVideoTimeStamp(res.data.payload.inProgress));
                   }
                 }}
@@ -391,12 +398,28 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
                     userInfo.id,
                     body
                   );
-                  console.log("res.payload? ", res.data.payload?.finishedNow?.finished)
-                  const finisheCourseNow = res.data.payload?.finishedNow?.finished
-                  setFinishedCourse(finisheCourseNow)
+                  console.log(
+                    "res.payload? ",
+                    res.data.payload?.finishedNow?.finished
+                  );
+            
+                  const finisheCourseNow =
+                    res.data.payload?.finishedNow?.finished;
+                  
+                  const courseVideoFinished = data;
+                  const idCurrentVideo = course_videos[videoIndex - 1].id
+                  console.log("courseVideoFinished", courseVideoFinished)
+                  console.log("idCurrentVideo", idCurrentVideo)
+                  courseVideoFinished.videos.forEach((videoFinished: any) => {
+
+                    if(videoFinished.id === idCurrentVideo) {
+                      videoFinished['finished'] = true;
+                    }
+                  });
+                  
+                  setFinishedCourse(finisheCourseNow);
                   setOpenTestModal(true);
-                  // console.log('res',res)
-                  // console.log(body)
+
                 }}
               />
             </div>
@@ -789,26 +812,6 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
                       setVideoIndex(item.position);
                       setVideoSelected(true);
                       setVideoTime(0);
-                      // modalRef.current?.scrollIntoView({
-                      //   behavior: "smooth",
-                      //   block: "start",
-                      // });
-
-                      // document.dispatchEvent(backspaceEvnt);
-                      // setTimeout(()=>{
-                      //   // setAutoPlay(false)
-
-                      //   // setVideoIndex(item.position);
-                      //   // modalRef.current?.scrollIntoView({
-                      //   //   behavior: "smooth",
-                      //   //   block: "start",
-                      //   // });
-                      //   setAutoPlay(true)
-                      //   setTimeout(()=>{
-                      //     document.dispatchEvent(backspaceEvnt);
-
-                      //   },500)
-                      // },1000)
                     }}
                     style={{
                       cursor: "pointer",
@@ -865,6 +868,18 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
                       }}
                     >
                       {secToMin(item.duration)} min.
+                    </div>
+
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        height: "100%",
+                        justifyContent: "center",
+                        textAlign: "center",
+                      }}
+                    >
+                     {item.finished && <CheckCircleOutlined style={{ color: "#52c41a"}} />}
                     </div>
                   </div>
                 </div>

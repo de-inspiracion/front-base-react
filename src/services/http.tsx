@@ -247,7 +247,18 @@ const getGeneralStatistics = async (directives:any) => {
   return res.data
 }
 
-
+const getCourseVideosFinished = async (courseId: String, userId: string) => {
+  try {
+    const res = await axios.get(`${base_url}/courses/${courseId}/videosFinished`, {
+      headers: {
+        "userId": userId,
+      },
+    });
+    return res.data;
+  } catch (error) {
+    return "ERROR AL TRAER VIDEOS PARA LAS CARDS";
+  }
+};
 const uploadUsers = async () => {
   await await axios.get(
     `${base_url}/user/load/fromFile`
@@ -282,5 +293,6 @@ export default {
   verifyUploaded,
   deleteVideo,
   getGeneralStatistics,
-  uploadUsers
+  uploadUsers,
+  getCourseVideosFinished
 };
