@@ -10,6 +10,7 @@ import {
   Row,
   Space,
   Tag,
+  Skeleton,
 } from "antd";
 import services from "../../services/http";
 import ReactPlayer from "react-player";
@@ -25,12 +26,14 @@ const { Content } = Layout;
 const CardV: any = ({ itemData, Image, key, index }: any) => {
   const [open, setOpen] = useState(false);
   const [courseData, setCourseData] = useState([]);
+  const [openSkeleton, setOpenSkeleton] = useState(false);
   const userInfo = useSelector((estado: any) => estado.userInfo);
   if (Object.keys(itemData).includes("_id")) {
     itemData["id"] = itemData["_id"];
     delete itemData["_id"];
   }
   const showModal = async () => {
+    setOpenSkeleton(true)
     let res = await services.getCourseVideos(itemData.id);
     let resGetCourseVideosFinished = await services.getCourseVideosFinished(
       itemData.id,
@@ -47,6 +50,7 @@ const CardV: any = ({ itemData, Image, key, index }: any) => {
     });
     console.log("resGetCourseVideosFinished", resGetCourseVideosFinished);
     console.log("res", res);
+    setOpenSkeleton(false)
     setCourseData(res.payload);
     setOpen(true);
   };
@@ -60,6 +64,9 @@ const CardV: any = ({ itemData, Image, key, index }: any) => {
       className="movieRow--item"
       style={{ overflow: "hidden", width: "195px", height: "300px" }}
     >
+      { openSkeleton && 
+      <ModalSkeleton></ModalSkeleton>
+      }
       {open && (
         <ModalCard
           index={index}
@@ -78,6 +85,18 @@ const CardV: any = ({ itemData, Image, key, index }: any) => {
     </div>
   );
 };
+
+const ModalSkeleton = () => {
+  
+
+  return (
+      <Modal 
+      footer={[]}
+      title="cargando capsulas" open={true}>
+        <Skeleton active></Skeleton>
+      </Modal>
+  );
+}
 
 const ModalCard = ({ data, Abierto, Cerrar }: any) => {
   // console.log('CardV Modal: ',data)
