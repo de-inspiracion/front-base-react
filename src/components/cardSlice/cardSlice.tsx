@@ -12,8 +12,7 @@ function CardSlide({
   description,
   courses,
   source,
-  setChildItems,
-  searching
+  setChildItems
 }: any) {
   const [abrirModal, setAbrirModal] = useState(false);
   const [dataModal, setDataModal] = useState({});
@@ -25,10 +24,8 @@ function CardSlide({
   const [items, setIems] = useState([]);
   const [displayItems, setDisplayItems] = useState([]);
   const [displayItemsIP, setDisplayItemsIP] = useState([]);
-  const [searchingCourses, setSearchingCourses] = useState(false);
 
   useEffect(() => {
-    setSearchingCourses(searching)
     const getData = async () => {
       const res: any = await services.getCoursesById(id, excludeCourses);
       setIems(res.data);
@@ -101,9 +98,8 @@ function CardSlide({
 
   const ShowTitle = () => {
     const searchValue = useSelector((state: any) => state.searchValue);
-    console.log("el valor ", searchValue.valueToSearch.payload.newValue)
-    const existValueToSearch = searchValue.valueToSearch.payload.newValue
-    if (existValueToSearch === '') {
+    const existValueToSearch = searchValue?.valueToSearch?.payload?.newValue
+    if (!existValueToSearch) {
       return (title);
     }
     return ('');

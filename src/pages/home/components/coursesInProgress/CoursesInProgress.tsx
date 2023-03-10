@@ -13,7 +13,7 @@ const CoursesInProgress: React.FC = () => {
   const [categories, setCategories] = useState([]);
   const [childItems, setChildItems] = useState<any[]>([]);
   useEffect(() => {
-    const valueToSearch = searchValue.valueToSearch.payload.newValue
+    const valueToSearch = searchValue?.valueToSearch?.payload?.newValue
     for (let i = 0; i < childItems.length; i++) {
       const childItem = childItems[i];
       const items = childItem[0];
