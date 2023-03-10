@@ -111,6 +111,13 @@ const NavBarComponent: React.FC = () => {
     },
   ];
 
+  const menuSostenedor = [
+    {
+      label: "Estadisticas",
+      key: "/directive/statistics",
+    },
+  ];
+
   return (
     <Layout>
       <Header
@@ -163,11 +170,12 @@ const NavBarComponent: React.FC = () => {
               }}
               mode="horizontal"
               items={
-                userInfo.profile === "directiva" ||
-                userInfo.profile === "sostenedor"
+                userInfo.profile === "directiva"
                   ? menuDirectiva
                   : userInfo.profile === "virgo"
                   ? menuVirgo
+                  : userInfo.profile === "sostenedor"
+                  ? menuSostenedor
                   : menuProfesor
               }
             />

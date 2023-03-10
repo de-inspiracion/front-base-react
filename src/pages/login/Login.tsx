@@ -67,7 +67,7 @@ export const Login = () => {
   } else if (profile === "directiva" ) {
     return <Navigate to="/directive" />;
   }else if (profile === "sostenedor" ) {
-    return <Navigate to="/directive" />;
+    return <Navigate to="/directive/statistics" />;
   } else if (profile === "profesor") {
     return <Navigate to="/home" />;
   } else {
