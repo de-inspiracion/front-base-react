@@ -118,7 +118,6 @@ const CoursesInProgress: React.FC = () => {
                 id={categoria.id}
                 description={categoria.description}
                 setChildItems={setChildItems}
-                searching={searchValue}
               />
             );
           })}

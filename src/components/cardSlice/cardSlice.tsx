@@ -27,6 +27,7 @@ function CardSlide({
 
   useEffect(() => {
     const getData = async () => {
+      const excludeCourses = userInfo.directive?.excludeCourses;
       const res: any = await services.getCoursesById(id, excludeCourses);
       setIems(res.data);
       setDisplayItems(res.data);
@@ -175,11 +176,11 @@ function CardSlide({
                 marginLeft: scrollX,
               }}
             >
-              {displayItems.length > 0 &&
+              {displayItems && displayItems.length > 0 &&
                 displayItems.map((item: any, key) => {
                   return (
                     <CardV
-                      key={key}
+                      key={item.id}
                       itemData={item}
                       Image={item.cover}
                       index={key}
