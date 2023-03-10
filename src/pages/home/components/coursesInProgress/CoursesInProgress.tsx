@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Row, Col } from "antd";
 import "./coursesInProgress.css";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import CardSlice from "../../../../components/cardSlice/cardSlice";
 import services from "./services/http";
 import { Input } from "antd";
@@ -10,10 +10,15 @@ const { Search } = Input;
 const CoursesInProgress: React.FC = () => {
   const userInfo = useSelector((state: any) => state.userInfo);
   const searchValue = useSelector((state: any) => state.searchValue);
+  const dispatch = useDispatch();
   const [categories, setCategories] = useState([]);
   const [childItems, setChildItems] = useState<any[]>([]);
   useEffect(() => {
-    const valueToSearch = searchValue?.valueToSearch?.payload?.newValue
+    const valueToSearch = searchValue?.valueToSearch?.payload?.newValue;
+    searchCourse(valueToSearch);
+  }, [searchValue]);
+
+  const searchCourse = (valueToSearch: string) => {
     for (let i = 0; i < childItems.length; i++) {
       const childItem = childItems[i];
       const items = childItem[0];
@@ -44,8 +49,7 @@ const CoursesInProgress: React.FC = () => {
         childItem[1](displayItems);
       }
     }
-  }, [searchValue])
-
+  };
   useEffect(() => {
     const getData = async () => {
       const res = await services.getCategories();
@@ -60,43 +64,20 @@ const CoursesInProgress: React.FC = () => {
         gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
         style={{ overflow: "hidden" }}
       >
-        <Col className="search-course-in-progress" xs={22} sm={8} lg={8} style={{ margin: "2%", width: "40vw" }}>
+        <Col
+          className="search-course-in-progress"
+          xs={22}
+          sm={8}
+          lg={8}
+          style={{ margin: "2%", width: "40vw" }}
+        >
           <Search
             size="large"
             enterButton
             placeholder="Buscar Curso"
             onChange={(event) => {
               const e = event.target.value;
-              for (let i = 0; i < childItems.length; i++) {
-                const childItem = childItems[i];
-                const items = childItem[0];
-                let displayItems: any = [];
-                if (e.length === 0) {
-                  displayItems = items;
-                  childItem[1](displayItems);
-                  continue;
-                }
-
-                if (childItem[2] === "En Progreso") {
-                  for (let j = 0; j < items.length; j++) {
-                    const item = items[j];
-                    const name = new String(item.course.name).toUpperCase();
-                    if (name.includes(e.toUpperCase())) {
-                      displayItems.push(item);
-                    }
-                  }
-                  childItem[1](displayItems);
-                } else {
-                  for (let j = 0; j < items.length; j++) {
-                    const item = items[j];
-                    const name = new String(item.name).toUpperCase();
-                    if (name.includes(e.toUpperCase())) {
-                      displayItems.push(item);
-                    }
-                  }
-                  childItem[1](displayItems);
-                }
-              }
+              searchCourse(e);
             }}
           />
         </Col>

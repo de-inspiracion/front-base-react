@@ -24,7 +24,6 @@ function CardSlide({
   const [items, setIems] = useState([]);
   const [displayItems, setDisplayItems] = useState([]);
   const [displayItemsIP, setDisplayItemsIP] = useState([]);
-
   useEffect(() => {
     const getData = async () => {
       const excludeCourses = userInfo.directive?.excludeCourses;
