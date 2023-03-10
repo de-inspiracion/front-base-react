@@ -91,6 +91,7 @@ function CardSlide({
         handleLeftArrow();
       } else {
         handleRightArrow();
+        handleRightArrowInProgress();
       }
     },
   });
