@@ -17,7 +17,8 @@ import "./navbar.css";
 
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { newSearchValue, updateSearchValue } from "../../store/search/search.store";
 const { Search } = Input;
 
 const { Header, Content, Footer } = Layout;
@@ -42,6 +43,7 @@ const items: MenuProps["items"] = [
 ];
 
 const NavBarComponent: React.FC = () => {
+  const dispatch = useDispatch();
   const userInfo = useSelector((estado: any) => estado.userInfo);
   const navigate = useNavigate();
   const { logout } = useAuth0();
@@ -178,7 +180,11 @@ const NavBarComponent: React.FC = () => {
               placeholder="Buscar Curso"
               onChange={(event) => {
                 const e = event.target.value;
-
+                dispatch(
+                  newSearchValue({
+                    newValue: e,
+                  })
+                );
                 for (let i = 0; i < childItems.length; i++) {
                   const childItem = childItems[i];
                   const items = childItem[0];

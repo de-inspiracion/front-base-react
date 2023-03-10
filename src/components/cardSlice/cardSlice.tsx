@@ -19,6 +19,7 @@ function CardSlide({
   courses,
   source,
   setChildItems,
+  searching
 }: any) {
   const [abrirModal, setAbrirModal] = useState(false);
   const [dataModal, setDataModal] = useState({});
@@ -30,8 +31,10 @@ function CardSlide({
   const [items, setIems] = useState([]);
   const [displayItems, setDisplayItems] = useState([]);
   const [displayItemsIP, setDisplayItemsIP] = useState([]);
+  const [searchingCourses, setSearchingCourses] = useState(false);
 
   useEffect(() => {
+    setSearchingCourses(searching)
     const getData = async () => {
       const res: any = await services.getCoursesById(id, excludeCourses);
       setIems(res.data);
@@ -92,6 +95,15 @@ function CardSlide({
     },
   });
 
+  const ShowTitle = () => {
+    const searchValue = useSelector((state: any) => state.searchValue);
+    console.log("el valor ", searchValue.valueToSearch.payload.newValue)
+    const existValueToSearch = searchValue.valueToSearch.payload.newValue
+    if (existValueToSearch === '') {
+      return (title);
+    }
+    return ('');
+  }
   return (
     <>
       {source == "En Progreso" ? (
@@ -107,7 +119,7 @@ function CardSlide({
                 marginBottom: "0.2em",
               }}
             >
-              {title}
+              <ShowTitle></ShowTitle>
             </div>
             <div className="movieRow--left" onClick={handleRightArrow}>
               <img src="https://img.icons8.com/ios-glyphs/50/FFFFFF/chevron-left.png" />
@@ -150,7 +162,7 @@ function CardSlide({
               marginLeft: "2em",
             }}
           >
-            {title}
+            <ShowTitle></ShowTitle>
           </div>
           <div className="movieRow--left" onClick={handleLeftArrow}>
             <img src="https://img.icons8.com/ios-glyphs/50/FFFFFF/chevron-left.png" />

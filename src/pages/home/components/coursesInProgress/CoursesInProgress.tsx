@@ -9,9 +9,42 @@ const { Search } = Input;
 
 const CoursesInProgress: React.FC = () => {
   const userInfo = useSelector((state: any) => state.userInfo);
+  const searchValue = useSelector((state: any) => state.searchValue);
   const [categories, setCategories] = useState([]);
-  const [search, setSearch] = useState("");
   const [childItems, setChildItems] = useState<any[]>([]);
+  useEffect(() => {
+    const valueToSearch = searchValue.valueToSearch.payload.newValue
+    for (let i = 0; i < childItems.length; i++) {
+      const childItem = childItems[i];
+      const items = childItem[0];
+      let displayItems: any = [];
+      if (valueToSearch.length === 0) {
+        displayItems = items;
+        childItem[1](displayItems);
+        continue;
+      }
+
+      if (childItem[2] === "En Progreso") {
+        for (let j = 0; j < items.length; j++) {
+          const item = items[j];
+          const name = new String(item.course.name).toUpperCase();
+          if (name.includes(valueToSearch.toUpperCase())) {
+            displayItems.push(item);
+          }
+        }
+        childItem[1](displayItems);
+      } else {
+        for (let j = 0; j < items.length; j++) {
+          const item = items[j];
+          const name = new String(item.name).toUpperCase();
+          if (name.includes(valueToSearch.toUpperCase())) {
+            displayItems.push(item);
+          }
+        }
+        childItem[1](displayItems);
+      }
+    }
+  }, [searchValue])
 
   useEffect(() => {
     const getData = async () => {
@@ -34,7 +67,6 @@ const CoursesInProgress: React.FC = () => {
             placeholder="Buscar Curso"
             onChange={(event) => {
               const e = event.target.value;
-
               for (let i = 0; i < childItems.length; i++) {
                 const childItem = childItems[i];
                 const items = childItem[0];
@@ -86,6 +118,7 @@ const CoursesInProgress: React.FC = () => {
                 id={categoria.id}
                 description={categoria.description}
                 setChildItems={setChildItems}
+                searching={searchValue}
               />
             );
           })}
