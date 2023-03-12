@@ -380,7 +380,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
                 ref={playerRef}
                 width={"100%"}
                 height={"auto"}
-                url={course_videos[videoIndex - 1].urlEmbed}
+                url={course_videos[videoIndex - 1]?.urlEmbed}
                 playing={true}
                 controls={true}
                 onProgress={async (evt: any) => {
@@ -531,7 +531,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
                     fontWeight: 900,
                   }}
                 >
-                  {data.videos[videoIndex - 1].name}
+                  {data.videos[videoIndex - 1]?.name}
                 </div>
               )}
               {videoIndex === 0 ? (
@@ -540,7 +540,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
                 </p>
               ) : (
                 <p style={{ color: "white", overflowY: "auto", width: "100%" }}>
-                  {data.videos[videoIndex - 1].description}
+                  {data.videos[videoIndex - 1]?.description}
                 </p>
               )}
             </div>
