@@ -246,7 +246,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
       currentVideos.forEach((video: any) => {
         if (
           inprogress.video === video.id ||
-          inprogress.video._id === video.id
+          inprogress?.video?._id === video.id
         ) {
           currentInProgress = inprogress;
         }
