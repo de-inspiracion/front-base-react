@@ -265,6 +265,26 @@ const uploadUsers = async () => {
   )
 }
 
+const assingRoutes = async (courseId:string) => {
+  console.log(courseId)
+ const routes = await (await axios.get(`${base_url}/route`)).data.payload
+ const mapRoutes:any = {}
+  for (let i = 0; i < routes.length; i++) {
+      mapRoutes[routes[i].id] = routes[i].name
+  }
+  let r_ = []
+  for (let i = 0; i < routes.length; i++) {
+    for (let j = 0; j < routes[i].courses.length; j++) {
+      if(routes[i].courses[j].id === courseId){
+        r_.push(routes[i].courses)
+      }
+    }
+  }
+  r_ = r_.flat(1)
+  r_ = r_.filter((course)=>course.id !== courseId)
+  return r_
+}
+
 export default {
   post,
   getCourses,
@@ -294,5 +314,6 @@ export default {
   deleteVideo,
   getGeneralStatistics,
   uploadUsers,
-  getCourseVideosFinished
+  getCourseVideosFinished,
+  assingRoutes
 };

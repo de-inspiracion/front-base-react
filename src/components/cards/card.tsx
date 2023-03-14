@@ -32,11 +32,13 @@ const CardV: any = ({ itemData, Image, key, index }: any) => {
     itemData["id"] = itemData["_id"];
     delete itemData["_id"];
   }
-  const showModal = async () => {
+
+  const showModal = async (showId:string) => {
     setOpenSkeleton(true)
-    let res = await services.getCourseVideos(itemData.id);
+    let res = await services.getCourseVideos(showId);
+    let r_ = await services.assingRoutes(showId)
     let resGetCourseVideosFinished = await services.getCourseVideosFinished(
-      itemData.id,
+      showId,
       userInfo.id
     );
     const finishedVideos = resGetCourseVideosFinished.payload;
@@ -48,8 +50,7 @@ const CardV: any = ({ itemData, Image, key, index }: any) => {
         }
       });
     });
-    console.log("resGetCourseVideosFinished", resGetCourseVideosFinished);
-    console.log("res", res);
+    res.payload.route = r_
     setOpenSkeleton(false)
     setCourseData(res.payload);
     setOpen(true);
@@ -73,13 +74,14 @@ const CardV: any = ({ itemData, Image, key, index }: any) => {
           data={courseData}
           Abierto={open}
           Cerrar={handleClose}
+          showModal = {showModal}
         />
       )}
       <img
         style={{ height: "100%" }}
         src={Image ? Image : ""}
         onClick={() => {
-          showModal();
+          showModal(itemData.id);
         }}
       />
     </div>
@@ -98,7 +100,7 @@ const ModalSkeleton = () => {
   );
 }
 
-const ModalCard = ({ data, Abierto, Cerrar }: any) => {
+const ModalCard = ({ data, Abierto, Cerrar, showModal }: any) => {
   // console.log('CardV Modal: ',data)
   let playerRef = useRef<any>(null);
   const { user } = useAuth0();
@@ -127,6 +129,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
   const course_tags = data?.tags;
   const course_videos = data?.videos;
   const course_routes = data?.route;
+
   const cerrarModal = () => {
     Cerrar(false);
     setOpen(false);
@@ -291,7 +294,7 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
     const result = `${padTo2Digits(minutes)}:${padTo2Digits(
       Math.trunc(seconds)
     )}`;
-    console.log(result); // 👉️ "09:25"
+    // console.log(result); // 👉️ "09:25"
     return result;
   };
 
@@ -417,18 +420,18 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
                     userInfo.id,
                     body
                   );
-                  console.log(
-                    "res.payload? ",
-                    res.data.payload?.finishedNow?.finished
-                  );
+                  // console.log(
+                  //   "res.payload? ",
+                  //   res.data.payload?.finishedNow?.finished
+                  // );
             
                   const finisheCourseNow =
                     res.data.payload?.finishedNow?.finished;
                   
                   const courseVideoFinished = data;
                   const idCurrentVideo = course_videos[videoIndex - 1].id
-                  console.log("courseVideoFinished", courseVideoFinished)
-                  console.log("idCurrentVideo", idCurrentVideo)
+                  // console.log("courseVideoFinished", courseVideoFinished)
+                  // console.log("idCurrentVideo", idCurrentVideo)
                   courseVideoFinished.videos.forEach((videoFinished: any) => {
 
                     if(videoFinished.id === idCurrentVideo) {
@@ -955,26 +958,60 @@ const ModalCard = ({ data, Abierto, Cerrar }: any) => {
                     />
                   </svg>
                 </span>
-                Rutas de aprendizaje
+                Cursos Asociados
               </p>
             </div>
             {course_routes.map((item: any, index: any) => {
+              
               return (
-                <Card
+                <div style={{ width: "100%" }} 
+                  onClick = {()=>{
+                    Cerrar()
+                    showModal(item.id)
+                  }}
+                  >
+                <div
                   key={index}
-                  //  style={{ display: 'flex', flexDirection: 'row', width: '100%', height: '100px', border: '1px solid green', marginTop: '2%', color: 'white' }}
-                  hoverable
-                  style={{ width: "155px", height: "155px" }}
-                  cover={
-                    <img
-                      style={{ height: "100px" }}
-                      alt="example"
-                      src="https://ichef.bbci.co.uk/news/640/cpsprodpb/870D/production/_111437543_197389d9-800f-4763-8654-aa30c04220e4.png"
-                    />
-                  }
+                  style={{
+                    cursor: "pointer",
+                    display: "flex",
+                    flexDirection: "row",
+                    width: "100%",
+                    color: "white",
+                    maxHeight: "80px",
+                    background: "#121c35",
+                    padding: "10px 25px",
+                    margin: "5px 0",
+                  }}
                 >
-                  <Meta style={{ color: "white" }} title={item.name} />
-                </Card>
+                  <div
+                    style={{
+                      width: "10%",
+                      height: "100%",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      color: "white",
+                    }}
+                  >
+                  </div>
+
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      width: "60%",
+                      height: "100%",
+                      color: "white",
+                      textAlign: "left",
+                    }}
+                  >
+                    <div>{item.name}</div>
+                    <div style={{ overflow: "scroll" }}>
+                    </div>
+                  </div>
+                </div>
+              </div>
               );
             })}
           </div>
