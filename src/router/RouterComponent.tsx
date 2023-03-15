@@ -1,92 +1,53 @@
-import React, { useEffect, useState } from "react";
-import {
-  createBrowserRouter,
-  RouterProvider,
-  HashRouter,
-  createHashRouter,
-} from "react-router-dom";
-import { AccountPage } from "../pages/account/Account";
+import React, { useEffect } from "react";
+import { RouterProvider, createHashRouter } from "react-router-dom";
 import PublicRoute from "./PublicRoute";
 import PrivateRoute from "./PrivateRoute";
 import { HomePage } from "../pages/home/HomePage";
 import { Main } from "../pages/main/main";
-import { Login } from "../pages/login/Login";
 import { useAuth0 } from "@auth0/auth0-react";
 import { AdminCourses } from "../pages/admin-virgo/pages/editCourses/AdminCourses";
 import { ViewCourses } from "../pages/admin-virgo/pages/editCourses/ViewCourses";
 import MiProgreso from "../pages/mi-progreso/MiProgreso";
 import RutasDeAprendizaje from "../pages/rutas-aprendizaje/RutasDeAprendizaje";
-import { Button, ConfigProvider, Empty, Result, theme } from "antd";
+import { ConfigProvider, theme } from "antd";
 import AdminMain from "../pages/admin-virgo/pages/AdminMain";
 import Landing from "../pages/landing/Landing";
 import NoAccount from "../pages/NoAccount/NoAccount";
 import DirectiveMain from "../pages/directive/pages/DirectiveMain";
 import DashboardDirective from "../pages/directive/pages/DashboardDirective";
-import services from "../services/http";
-import { newDataUser } from "../store/user/userData";
-import { useDispatch } from "react-redux";
 import { Unauthorized } from "./unauthorized.component";
 import ViewStatistics from "../pages/directive/pages/ViewStatistics";
 export default function RouterComponent() {
-  const { isLoading, isAuthenticated, error, user, loginWithRedirect, logout } =
-    useAuth0();
+  const { isLoading, isAuthenticated, error, user } = useAuth0();
+  const [userRole, setUserRole] = React.useState<string>("virgo");
 
   if (isLoading) {
     return <div></div>;
   }
   if (error) {
-    return <Unauthorized error={error} user={user}/>
+    return <Unauthorized error={error} user={user} />;
   }
-  const dispatch = useDispatch();
-  const [profile, setProfile] = useState("");
-  const getData = async () => {
-    try {
-      let res = await services.getUserInfo(String(user?.email));
-      if(res.perfil == 'profesor'){
-        try {
-          const excloudedCourses = res.directive.excludeCourses
-          res.inprogress = res.inprogress.filter((course:any) => !excloudedCourses.includes(course.course._id))
-        } catch (error) {
-          
-        }
-
-      }
-      dispatch(
-        newDataUser({
-          id: res.id,
-          name: res.nombre,
-          email: res.email,
-          directive: res.directive,
-          directives:res.directives || [],
-          profile: res.perfil,
-          authenticated: isAuthenticated,
-          age: res.age,
-          inprogress: res.inprogress,
-          finished: res.finished,
-          scored: res.scored,
-        })
-      );
-      setProfile(res.perfil);
-    } catch (err) {
-      // navigate("/accountnotfound");
-    }
-  };
-  getData();
+  console.log("roleUser", userRole);
   const router = createHashRouter([
     {
       path: "/",
       element: (
         <PublicRoute
           isAuthenticated={isAuthenticated}
-          redirectTo="/home"
           component={<Landing />}
+          setUserRole={setUserRole}
         />
       ),
     },
     {
       path: "/home",
       element: (
-        <PrivateRoute isAuthenticated={isAuthenticated} component={<Main />} />
+        <PrivateRoute
+          isAuthenticated={isAuthenticated}
+          component={<Main />}
+          role="profesor"
+          userRole={userRole}
+        />
       ),
       children: [
         {
@@ -95,6 +56,8 @@ export default function RouterComponent() {
             <PrivateRoute
               isAuthenticated={isAuthenticated}
               component={<HomePage />}
+              role="profesor"
+              userRole={userRole}
             />
           ),
         },
@@ -104,6 +67,8 @@ export default function RouterComponent() {
             <PrivateRoute
               isAuthenticated={isAuthenticated}
               component={<RutasDeAprendizaje />}
+              role="profesor"
+              userRole={userRole}
             />
           ),
         },
@@ -113,6 +78,8 @@ export default function RouterComponent() {
             <PrivateRoute
               isAuthenticated={isAuthenticated}
               component={<MiProgreso />}
+              role="profesor"
+              userRole={userRole}
             />
           ),
         },
@@ -121,7 +88,12 @@ export default function RouterComponent() {
     {
       path: "/admin",
       element: (
-        <PrivateRoute isAuthenticated={isAuthenticated} component={<Main />} />
+        <PrivateRoute
+          isAuthenticated={isAuthenticated}
+          component={<Main />}
+          role="virgo"
+          userRole={userRole}
+        />
       ),
       children: [
         {
@@ -130,6 +102,8 @@ export default function RouterComponent() {
             <PrivateRoute
               isAuthenticated={isAuthenticated}
               component={<AdminMain />}
+              role="virgo"
+              userRole={userRole}
             />
           ),
         },
@@ -139,6 +113,8 @@ export default function RouterComponent() {
             <PrivateRoute
               isAuthenticated={isAuthenticated}
               component={<ViewCourses />}
+              role="virgo"
+              userRole={userRole}
             />
           ),
         },
@@ -148,6 +124,19 @@ export default function RouterComponent() {
             <PrivateRoute
               isAuthenticated={isAuthenticated}
               component={<AdminCourses />}
+              role="virgo"
+              userRole={userRole}
+            />
+          ),
+        },
+        {
+          path: "/admin/statistics",
+          element: (
+            <PrivateRoute
+              isAuthenticated={isAuthenticated}
+              component={<ViewStatistics />}
+              role="virgo"
+              userRole={userRole}
             />
           ),
         },
@@ -156,7 +145,12 @@ export default function RouterComponent() {
     {
       path: "/directive",
       element: (
-        <PrivateRoute isAuthenticated={isAuthenticated} component={<Main />} />
+        <PrivateRoute
+          isAuthenticated={isAuthenticated}
+          role="directiva"
+          component={<Main />}
+          userRole={userRole}
+        />
       ),
       children: [
         {
@@ -165,6 +159,8 @@ export default function RouterComponent() {
             <PrivateRoute
               isAuthenticated={isAuthenticated}
               component={<DirectiveMain />}
+              role="directiva"
+              userRole={userRole}
             />
           ),
         },
@@ -174,6 +170,8 @@ export default function RouterComponent() {
             <PrivateRoute
               isAuthenticated={isAuthenticated}
               component={<DashboardDirective />}
+              role="directiva"
+              userRole={userRole}
             />
           ),
         },
@@ -183,6 +181,32 @@ export default function RouterComponent() {
             <PrivateRoute
               isAuthenticated={isAuthenticated}
               component={<ViewStatistics />}
+              role="directiva"
+              userRole={userRole}
+            />
+          ),
+        },
+      ],
+    },
+    {
+      path: "/sostenedor",
+      element: (
+        <PrivateRoute
+          isAuthenticated={isAuthenticated}
+          role="sostenedor"
+          component={<Main />}
+          userRole={userRole}
+        />
+      ),
+      children: [
+        {
+          path: "/sostenedor/statistics",
+          element: (
+            <PrivateRoute
+              isAuthenticated={isAuthenticated}
+              component={<ViewStatistics />}
+              role="sostenedor"
+              userRole={userRole}
             />
           ),
         },
@@ -192,30 +216,6 @@ export default function RouterComponent() {
       path: "/accountnotfound",
       element: <NoAccount />,
     },
-    // {
-    //   path: "/director",
-    //   element: <DirectiveMain/>,
-    // },
-    // {
-    //   path: "/director/courses",
-    //   element: <DashboardDirective/>,
-    // },
-    // {
-    //   path: "/account",
-    //   element: <AccountPage></AccountPage>,
-    // },
-    // {
-    //   path: "/admin",
-    //   element: <AdminMain />,
-    // },
-    // {
-    //   path: "/admin/course",
-    //   element: <ViewCourses></ViewCourses>,
-    // },
-    // {
-    //   path: "/admin/course/:idCourse",
-    //   element: <AdminCourses></AdminCourses>,
-    // },
   ]);
 
   return (

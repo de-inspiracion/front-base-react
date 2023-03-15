@@ -18,7 +18,10 @@ import "./navbar.css";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { newSearchValue, updateSearchValue } from "../../store/search/search.store";
+import {
+  newSearchValue,
+  updateSearchValue,
+} from "../../store/search/search.store";
 const { Search } = Input;
 
 const { Header, Content, Footer } = Layout;
@@ -77,7 +80,7 @@ const NavBarComponent: React.FC = () => {
     },
     {
       label: "Estadisticas",
-      key: "/directive/statistics",
+      key: "/admin/statistics",
     },
   ];
   const menuProfesor = [
@@ -114,7 +117,7 @@ const NavBarComponent: React.FC = () => {
   const menuSostenedor = [
     {
       label: "Estadisticas",
-      key: "/directive/statistics",
+      key: "/sostenedor/statistics",
     },
   ];
 

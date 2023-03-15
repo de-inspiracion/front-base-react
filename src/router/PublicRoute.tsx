@@ -1,11 +1,15 @@
 import { Login } from "../pages/login/Login";
 
-export default function PublicRoute({
+const PublicRoute = ({
   isAuthenticated,
   component: Component,
-}: any) {
+  setUserRole,
+}: any) => {
+  console.log("role", setUserRole);
   if (isAuthenticated) {
-    return <Login />;
+    return <Login setUserRole={setUserRole} />;
   }
   return Component;
-}
+};
+
+export default PublicRoute;
