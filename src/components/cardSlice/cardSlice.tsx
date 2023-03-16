@@ -12,7 +12,7 @@ function CardSlide({
   description,
   courses,
   source,
-  setChildItems
+  setChildItems,
 }: any) {
   const [abrirModal, setAbrirModal] = useState(false);
   const [dataModal, setDataModal] = useState({});
@@ -24,6 +24,8 @@ function CardSlide({
   const [items, setIems] = useState([]);
   const [displayItems, setDisplayItems] = useState([]);
   const [displayItemsIP, setDisplayItemsIP] = useState([]);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [sizeScreen, setSizeScreen] = useState(0);
   useEffect(() => {
     const getData = async () => {
       const excludeCourses = userInfo.directive?.excludeCourses;
@@ -51,7 +53,23 @@ function CardSlide({
     } else {
       getData();
     }
+
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
+
+  useEffect(() => {
+    if (windowWidth > 760) {
+      setSizeScreen(200);
+    } else {
+      setSizeScreen(125);
+    }
+  }, [windowWidth]);
 
   useEffect(() => {
     setDisplayItemsIP(userInfo.inprogress);
@@ -69,18 +87,18 @@ function CardSlide({
 
   const handleRightArrow = () => {
     let x = scrollX - Math.round(window.innerWidth / 3);
-    let listW = displayItems?.length * 200;
+    let listW = displayItems?.length * sizeScreen;
     if (window.innerWidth - listW > x) {
-      x = window.innerWidth - listW - 70;
+      x = window.innerWidth - listW - 75;
     }
     setScrollX(x);
   };
 
   const handleRightArrowInProgress = () => {
     let x = scrollX - Math.round(window.innerWidth / 3);
-    let listW = displayItemsIP?.length * 200;
+    let listW = displayItemsIP?.length * sizeScreen;
     if (window.innerWidth - listW > x) {
-      x = window.innerWidth - listW - 70;
+      x = window.innerWidth - listW - 75;
     }
     setScrollX(x);
   };
@@ -98,12 +116,12 @@ function CardSlide({
 
   const ShowTitle = () => {
     const searchValue = useSelector((state: any) => state.searchValue);
-    const existValueToSearch = searchValue?.valueToSearch?.payload?.newValue
+    const existValueToSearch = searchValue?.valueToSearch?.payload?.newValue;
     if (!existValueToSearch) {
-      return (title);
+      return title;
     }
-    return ('');
-  }
+    return "";
+  };
   return (
     <>
       {source == "En Progreso" ? (
@@ -175,7 +193,8 @@ function CardSlide({
                 marginLeft: scrollX,
               }}
             >
-              {displayItems && displayItems.length > 0 &&
+              {displayItems &&
+                displayItems.length > 0 &&
                 displayItems.map((item: any, key) => {
                   return (
                     <CardV
