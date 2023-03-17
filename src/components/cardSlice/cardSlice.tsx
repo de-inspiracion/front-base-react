@@ -53,14 +53,6 @@ function CardSlide({
     } else {
       getData();
     }
-
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth);
-    };
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
   }, []);
 
   useEffect(() => {
@@ -89,7 +81,7 @@ function CardSlide({
     let x = scrollX - Math.round(window.innerWidth / 3);
     let listW = displayItems?.length * sizeScreen;
     if (window.innerWidth - listW > x) {
-      x = window.innerWidth - listW - 75;
+      x = window.innerWidth - listW - 70;
     }
     setScrollX(x);
   };
@@ -98,7 +90,7 @@ function CardSlide({
     let x = scrollX - Math.round(window.innerWidth / 3);
     let listW = displayItemsIP?.length * sizeScreen;
     if (window.innerWidth - listW > x) {
-      x = window.innerWidth - listW - 75;
+      x = window.innerWidth - listW - 70;
     }
     setScrollX(x);
   };
@@ -109,6 +101,15 @@ function CardSlide({
         handleLeftArrow();
       } else {
         handleRightArrow();
+      }
+    },
+  });
+
+  const handlersCoursesInProgress = useSwipeable({
+    onSwiped: (eventData) => {
+      if (eventData.dir === "Right") {
+        handleLeftArrow();
+      } else {
         handleRightArrowInProgress();
       }
     },
@@ -125,7 +126,7 @@ function CardSlide({
   return (
     <>
       {source == "En Progreso" ? (
-        <div className="movieRow" {...handlers}>
+        <div className="movieRow" {...handlersCoursesInProgress}>
           <div
             className="movieRow--title"
             style={{
