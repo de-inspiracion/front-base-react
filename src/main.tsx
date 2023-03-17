@@ -14,6 +14,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
         redirectUri={window.location.origin}
         // audience="https://rsolar.auth0.com/api/v2/"
         scope="read:users update:current_user_metadata "
+        cacheLocation="localstorage"
       >
         {/* <RouterProvider router={router} /> */}
         <RouterComponent />
