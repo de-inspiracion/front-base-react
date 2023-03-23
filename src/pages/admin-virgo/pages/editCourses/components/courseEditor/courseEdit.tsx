@@ -96,7 +96,7 @@ export const CourseEditor = (state: any) => {
     setVideos([...videos])
     messageApi.open({
       type: 'loading',
-      content: 'Eliminando Capsula...',
+      content: 'actualizando Capsula...',
       duration: 0,
     });
     

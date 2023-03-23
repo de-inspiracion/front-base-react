@@ -1,5 +1,10 @@
 import axios from "axios";
+import { BlobServiceClient } from "@azure/storage-blob";
+import { v4 as uuidv4 } from 'uuid';
+// const blobServiceClient = new BlobServiceClient("DefaultEndpointsProtocol=https;AccountName=virgoeducation;AccountKey=Gr8XFkzOt+/vUr9OwUy6SXcTBD91M8jWcEnPkrTGiefJzGAzxwIB4Er8Lzo4Xp7/f6yWcQgTh0pN+AStZfPzLw==;EndpointSuffix=core.windows.net");
 const base_url = import.meta.env.VITE_BASE_URL;
+const base_url_azure_store = import.meta.env.VITE_BASE_URL_AZURE_STORE;
+const base_url_azure_sas = import.meta.env.VITE_AZURE_STORE_SAS;
 const post = async (url: string) => {
   const result = await axios({
     method: "get",
@@ -110,6 +115,7 @@ const getInfo = async (id: string | undefined) => {
 };
 
 const editVideoInfo = async (id: string, body: any) => {
+  console.log("id ", id, "body", body)
   const res = await axios.post(`${base_url}/videos/${id}`, body);
   // console.log(res.data)
   // window.location.reload();
@@ -128,12 +134,41 @@ const newCourse = async (name: string) => {
   return res.data;
 };
 
-const newVideo = async (id: string, body: any) => {
-  const res = await axios.post(`${base_url}/courses/${id}/uploadVideo`, body, {
-    timeout: 1800000,
-    headers: { "Access-Control-Allow-Origin": "*" },
-  });
-  return res.data;
+const newVideo = async (id: string, file: any) => {
+  
+  try {
+    const result = await uploadFile(file, id)
+    console.log("result info : ", result)
+    const res = await axios.post(`${base_url}/courses/${id}/video/new`, result);
+    console.log("result info res: ", res)
+    return res.data;
+  } catch (error) {
+    console.log("error ,", error)
+  }
+
+};
+
+const infoToVideo = (fileParts: string) => {
+  const nameParts = fileParts[0].split('-');
+  const name = nameParts[1] || 'sin nombre';
+  const num = nameParts[0] || 0;
+  return {
+    num,
+    name,
+  };
+}
+const uploadFile = async (file: any, course: string) => {
+  const blobServiceClient = new BlobServiceClient(base_url_azure_sas);
+  const fileParts = file.name.split('.');
+  const extension = fileParts[fileParts.length - 1];
+  const fileName = `${course}-${uuidv4()}.${extension}`;
+  const containerClient = blobServiceClient.getContainerClient("");
+  const blockBlobClient = containerClient.getBlockBlobClient(fileName);
+  // blobServiceClient.setProperties({ defaultServiceVersion: '2019-02-02' });
+  const { num, name } = infoToVideo(fileParts);
+  await blockBlobClient.uploadData(file)
+  const url = base_url_azure_store +  'test/' +  fileName
+  return {url, num, name};
 };
 
 const getRoutes = async () => {

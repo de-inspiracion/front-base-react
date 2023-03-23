@@ -87,7 +87,38 @@ const verifyUploaded = async (responseFile: any) => {
   }
 }
 
+const [uploading, setUploading] = useState(false);
+const [fileList, setFileList] = useState<any>();
+const handleUpload = async () => {
+  setConfirmLoading(true);
+  setTextBtn('subiendo');
+  console.log("fileList", fileList)
+  try {
+    const responseFile = await services.newVideo(props.id, fileList);
+    console.log("result : ", responseFile)
+    responseFile['id'] = responseFile._id
+    setIdVideo(responseFile.id)
+    setUrl(responseFile.url)
+    setConfirmLoading(false);
+    setTextBtn('ok');
+    props.onAction(responseFile)
+    setIsModalOpen(false)
+  } catch (error) {
+    setConfirmLoading(false);
+    setTextBtn('ok');
+  }
 
+};
+
+const propsVideo: UploadProps = {
+  onRemove: (file) => {
+    setFileList(undefined);
+  },
+  beforeUpload: (file) => {
+    setFileList(file);
+    return false;
+  }
+};
   return (
 
     
@@ -114,7 +145,7 @@ const verifyUploaded = async (responseFile: any) => {
            
         
             <Modal title="Subir Video" open={isModalOpen} 
-                        onOk={createVideo} 
+                        onOk={handleUpload} 
                         confirmLoading={confirmLoading}
                         onCancel={()=>cancel()}
                         okText={textBtn}
@@ -123,7 +154,10 @@ const verifyUploaded = async (responseFile: any) => {
                         listType="picture"
                         accept="video/*"
                         maxCount={1} 
-                        {...propsFilesVideo}
+                        onChange= {() => {
+                          
+                        }}
+                        {...propsVideo}
                         // beforeUpload = {(e) => {
                         //         const blob = new Blob([e])
                         //         const newVideo = new File([blob],`${e.name}`,{type:e.type})
@@ -132,7 +166,7 @@ const verifyUploaded = async (responseFile: any) => {
                         //     }}
                         >
                         <VideoCameraAddOutlined style={{ fontSize: 30 }} />
-                        
+
                     </Upload>
                     <div>{courseVideo.name}</div>
                 </Modal>
