@@ -167,7 +167,7 @@ const uploadFile = async (file: any, course: string) => {
   // blobServiceClient.setProperties({ defaultServiceVersion: '2019-02-02' });
   const { num, name } = infoToVideo(fileParts);
   await blockBlobClient.uploadData(file)
-  const url = base_url_azure_store +  'test/' +  fileName
+  const url = base_url_azure_store +  'videos/' +  fileName
   return {url, num, name};
 };
 
