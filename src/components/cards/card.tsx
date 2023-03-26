@@ -232,7 +232,9 @@ const ModalCard = ({ data, Abierto, Cerrar, showModal }: any) => {
   const downloadFile = (fileUrl: any) => {
     const link = document.createElement("a");
     link.href = fileUrl;
+    link.download = 'file'
     link.setAttribute("download", "");
+    link.setAttribute("target", "_blank");
     link.style.display = "none";
     document.body.appendChild(link);
     link.click();

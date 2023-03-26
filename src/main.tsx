@@ -5,6 +5,15 @@ import RouterComponent from "./router/RouterComponent";
 import store from "./store";
 import { Provider } from "react-redux";
 import { Auth0Provider } from "@auth0/auth0-react";
+import * as Sentry from "@sentry/react";
+import { BrowserTracing } from "@sentry/tracing";
+
+Sentry.init({
+  dsn: "https://4ec300470b6147c492e5afcb30602d91@o4504893794287616.ingest.sentry.io/4504893794353152",
+  integrations: [new BrowserTracing()],
+  tracesSampleRate: 1.0,
+});
+
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <Provider store={store}>
