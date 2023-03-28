@@ -62,13 +62,13 @@ const Landing = () => {
               level={1}
               style={{ margin: 0, color: "white", textAlign: "center" }}
             >
-              Formando a los Educadores
+              Formando Educadores
             </Typography.Title>
             <Typography.Title
               level={1}
               style={{ margin: 0, color: "white", textAlign: "center" }}
             >
-              Para el Siglo XXI
+              para el Siglo XXI
             </Typography.Title>
           </Paragraph>
           <Paragraph
@@ -78,7 +78,7 @@ const Landing = () => {
           </Paragraph>
 
           <Paragraph style={{ color: "white", textAlign: "center" }}>
-            Listo para aprender? Ingresa tu correo para iniciar sesión
+          ¿Empecemos a aprender? Haz click para comenzar
           </Paragraph>
 
           <Button
