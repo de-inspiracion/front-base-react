@@ -41,14 +41,14 @@ interface DataType {
 
 const getFinishedCourses = (courses: any) => {
   const data: DataType[] = [];
-
+  console.log("courses: " , courses)
   for (let i = 0; i < courses.length; i++) {
     const course = courses[i].course;
     data.push({
       key: i + 1,
       name: course.name,
       id: course._id,
-      date: course.updatedAt,
+      date: courses[i].date,
     });
   }
 
@@ -107,6 +107,7 @@ const MiProgreso = () => {
               courseName: row.name,
               courseDate: row.date,
             };
+            console.log("row ", row)
             const res = await services.getCertificate(body);
             setTimeout(messageApi.destroy, 0);
           }}
