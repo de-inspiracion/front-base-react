@@ -1,4 +1,4 @@
-import { Login } from "../pages/login/Login";
+import { Login } from "../pages/public/login/Login";
 
 const PublicRoute = ({
   isAuthenticated,

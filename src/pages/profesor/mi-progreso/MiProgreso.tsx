@@ -17,8 +17,7 @@ import {
 } from "@ant-design/icons";
 import Table, { ColumnsType } from "antd/es/table";
 import { useSelector } from "react-redux";
-import services from "../../services/http";
-import CourseInProgressModal from "./components/CourseInProgressModal";
+import services from "../../../services/http";
 import { useEffect, useState } from "react";
 import { message } from 'antd';
 const { Meta } = Card;

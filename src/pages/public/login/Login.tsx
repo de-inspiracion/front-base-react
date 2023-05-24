@@ -1,7 +1,7 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { useDispatch } from "react-redux";
-import { newDataUser } from "../../store/user/userData";
-import services from "../../services/http";
+import { newDataUser } from "../../../store/user/userData";
+import services from "../../../services/http";
 import { useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Row, Col } from "antd";
 import "./coursesInProgress.css";
 import { useDispatch, useSelector } from "react-redux";
-import CardSlice from "../../../../components/cardSlice/cardSlice";
+import CardSlice from "../../../../../components/cardSlice/cardSlice";
 import services from "./services/http";
 import { Input } from "antd";
 const { Search } = Input;
@@ -10,7 +10,6 @@ const { Search } = Input;
 const CoursesInProgress: React.FC = () => {
   const userInfo = useSelector((state: any) => state.userInfo);
   const searchValue = useSelector((state: any) => state.searchValue);
-  const dispatch = useDispatch();
   const [categories, setCategories] = useState([]);
   const [childItems, setChildItems] = useState<any[]>([]);
   useEffect(() => {
@@ -19,30 +18,30 @@ const CoursesInProgress: React.FC = () => {
   }, [searchValue]);
 
   const searchCourse = (valueToSearch: string) => {
-    for (let i = 0; i < childItems.length; i++) {
+    for (let i = 0; i < childItems?.length; i++) {
       const childItem = childItems[i];
       const items = childItem[0];
       let displayItems: any = [];
-      if (valueToSearch.length === 0) {
+      if (valueToSearch?.length === 0) {
         displayItems = items;
         childItem[1](displayItems);
         continue;
       }
 
       if (childItem[2] === "En Progreso") {
-        for (let j = 0; j < items.length; j++) {
+        for (let j = 0; j < items?.length; j++) {
           const item = items[j];
           const name = new String(item.course.name).toUpperCase();
-          if (name.includes(valueToSearch.toUpperCase())) {
+          if (name.includes(valueToSearch?.toUpperCase())) {
             displayItems.push(item);
           }
         }
         childItem[1](displayItems);
       } else {
-        for (let j = 0; j < items.length; j++) {
+        for (let j = 0; j < items?.length; j++) {
           const item = items[j];
           const name = new String(item.name).toUpperCase();
-          if (name.includes(valueToSearch.toUpperCase())) {
+          if (name.includes(valueToSearch?.toUpperCase())) {
             displayItems.push(item);
           }
         }
@@ -82,16 +81,16 @@ const CoursesInProgress: React.FC = () => {
           />
         </Col>
 
-        {userInfo.inprogress.length > 0 && (
+        {userInfo?.inprogress?.length > 0 && (
           <CardSlice
-            title="Cursos en Progreso"
+            title="Cursos en Progresos"
             id="progreso"
             source="En Progreso"
             description="Cursos en Progreso"
             setChildItems={setChildItems}
           />
         )}
-        {categories.length > 0 &&
+        {categories?.length > 0 &&
           categories.map((categoria: any) => {
             return (
               <CardSlice

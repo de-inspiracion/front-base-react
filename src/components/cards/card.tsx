@@ -23,7 +23,7 @@ import { updateVideoTimeStamp } from "../../store/user/userData";
 import TestModal from "../shared/TestModal";
 const base_url = import.meta.env.VITE_BASE_URL;
 const { Content } = Layout;
-const CardV: any = ({ itemData, Image, key, index }: any) => {
+const CardV: any = ({ itemData, Image, index }: any) => {
   const [open, setOpen] = useState(false);
   const [courseData, setCourseData] = useState([]);
   const [openSkeleton, setOpenSkeleton] = useState(false);
@@ -61,7 +61,6 @@ const CardV: any = ({ itemData, Image, key, index }: any) => {
 
   return (
     <div
-      key={key}
       className="movieRow--item"
       style={{ overflow: "hidden", width: "195px", height: "300px" }}
     >
