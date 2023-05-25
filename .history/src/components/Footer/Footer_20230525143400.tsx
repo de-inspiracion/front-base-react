@@ -8,7 +8,7 @@ const FooterPage = () => {
     <div>
       <Divider style={{ margin: 0 }} />
       <Footer style={{ textAlign: "center" }}>
-        Creado por © Virgo Education el año {año}. Hecho con ⭐
+        Creado por © Virgo Education {año}. Hecho con ⭐
       </Footer>
     </div>
   );
