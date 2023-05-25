@@ -2,10 +2,10 @@ import React,{ useState, useEffect, useRef } from 'react'
 import { Modal, Layout, Row, Tag, Card } from 'antd';
 const { Meta } = Card
 import { CloseOutlined } from '@ant-design/icons'
-import services from '../../../services/http'
+import services from '../../../../services/http'
 import { ReactNetflixPlayer } from "react-netflix-player";
 import { useSelector, useDispatch } from 'react-redux'
-import { updateVideoTimeStamp } from '../../../store/user/userData';
+import { updateVideoTimeStamp } from '../../../../store/user/userData';
 const { Content } = Layout;
 
 export default function CourseInProgressModal({Open,Data,Cerrar}:any) {

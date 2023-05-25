@@ -2,21 +2,22 @@ import React, { useEffect } from "react";
 import { RouterProvider, createHashRouter } from "react-router-dom";
 import PublicRoute from "./PublicRoute";
 import PrivateRoute from "./PrivateRoute";
-import { HomePage } from "../pages/home/HomePage";
 import { Main } from "../pages/main/main";
 import { useAuth0 } from "@auth0/auth0-react";
 import { AdminCourses } from "../pages/admin-virgo/pages/editCourses/AdminCourses";
 import { ViewCourses } from "../pages/admin-virgo/pages/editCourses/ViewCourses";
-import MiProgreso from "../pages/mi-progreso/MiProgreso";
-import RutasDeAprendizaje from "../pages/rutas-aprendizaje/RutasDeAprendizaje";
+
+import RutasDeAprendizaje from "../pages/profesor/rutas-aprendizaje/RutasDeAprendizaje";
 import { ConfigProvider, theme } from "antd";
 import AdminMain from "../pages/admin-virgo/pages/AdminMain";
-import Landing from "../pages/landing/Landing";
-import NoAccount from "../pages/NoAccount/NoAccount";
+import Landing from "../pages/public/landing/Landing";
+import NoAccount from "../pages/public/NoAccount/NoAccount";
 import DirectiveMain from "../pages/directive/pages/DirectiveMain";
 import DashboardDirective from "../pages/directive/pages/DashboardDirective";
 import { Unauthorized } from "./unauthorized.component";
 import ViewStatistics from "../pages/directive/pages/ViewStatistics";
+import { HomePage } from "../pages/profesor/home/HomePage";
+import MiProgreso from "../pages/profesor/mi-progreso/MiProgreso";
 export default function RouterComponent() {
   const { isLoading, isAuthenticated, error, user } = useAuth0();
   const [userRole, setUserRole] = React.useState<string>("virgo");

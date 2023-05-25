@@ -1,7 +1,7 @@
 import React,{useEffect, useState} from "react"
 import services from './services/http'
 import './RutasDeAprendizaje.css'
-import CardSlice from "../../components/cardSlice/cardSlice"
+import CardSlice from "../../../components/cardSlice/cardSlice"
 import { Card, Row } from "antd";;
 
 const RutasDeAprendizaje = () => {
